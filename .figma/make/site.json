@@ -1,0 +1,10 @@
+{
+  "description": "Create stunning online portfolios effortlessly with customizable templates, perfect for showcasing your work and attracting potential clients.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
