@@ -1,8 +1,10 @@
 import { useState } from "react"
 import type { PointerEvent } from "react"
-import heroImage from "@/imports/image.png"
-import projectImage from "@/imports/image-1.png"
+import interviewmeVideo from "@/imports/interviewme.mov"
+import pfizerImage from "@/imports/pfizer.avif"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
+import zotmeet from "@/imports/zotmeet.png"
+import fusion from "@/imports/fusion.png"
 
 const experience = [
   { year: "2026", company: "Pfizer", role: "Software Engineering Extern" },
@@ -15,56 +17,73 @@ const experience = [
   { year: "2025", company: "AntAlmanac", role: "Software Engineer" },
 ]
 
-const projects = [
+type Project = {
+  id: string
+  title: string
+  displayTitle: string
+  eyebrow?: string
+  tags: string[]
+  description: string
+  height: number
+  isLight?: boolean
+  gradient?: string
+  image?: string
+  video?: string
+  poster?: string
+}
+
+const projects: Project[] = [
   {
-    id: "openai",
-    title: "OpenAI x Hardware",
-    displayTitle: "OpenAI x Hardware",
-    tags: ["Product Design", "Prototyping"],
+    id: "pfizer",
+    title: "Pfizer",
+    displayTitle: "Pfizer",
+    tags: ["Externship", "Engineering"],
+    image: pfizerImage,
+    gradient: "linear-gradient(135deg, #e8f4fd 0%, #c9e8f8 50%, #a8d5f0 100%)",
+    description:
+      "Building OCR + RAG pipelines",
+    isLight: true,
+    height: 340,
+  },
+  {
+    id: "ZotMeet",
+    title: "ZotMeet",
+    displayTitle: "ZotMeet",
+    image: zotmeet,
+    eyebrow: "Lead Product + Softare Engineer",
+    tags: ["Product Engineering"],
+    gradient: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+    description:
+      "Spearheaded & scaled developement for UCI's scheduler ",
+    height: 260,
+  },
+  {
+    id: "fusion",
+    title: "FUSION Engineering",
+    image: fusion,
+    displayTitle: "FUSION Engineering",
+    eyebrow: "Lead Software Engineer",
+    tags: ["Product Design", ""],
+    gradient: "linear-gradient(135deg, #f0f7ff 0%, #d6eaff 50%, #b8d4ff 100%)",
+    description:
+      "Mentored 6 engineers to build software for UCI Kababayan",
+    isLight: true,
+    height: 260,
+  },
+  {
+    id: "InterviewMe",
+    title: "InterviewMe",
+    displayTitle: "InterviewMe",
+    eyebrow: "Project",
+    tags: ["Personal Project", ""],
+    video: interviewmeVideo,
     gradient:
       "linear-gradient(135deg, #f7c59f 0%, #e8a87c 30%, #d4856a 60%, #c9768f 100%)",
     description:
-      "Exploring the intersection of AI and physical computing — designing interactions that feel natural across hardware form factors.",
+      "Built for competitive programmers",
     height: 340,
-  },
-  {
-    id: "chess",
-    title: "GTO Chess Strategy Tool",
-    displayTitle: "GTO Strategy Tool",
-    tags: ["Product Design", "Engineering"],
-    gradient: "linear-gradient(135deg, #e8f4fd 0%, #c9e8f8 50%, #a8d5f0 100%)",
-    description:
-      "A chess analysis interface that breaks down GTO vs exploitative strategy for any given position.",
-    isLight: true,
-    image: projectImage,
-    height: 340,
-  },
-  {
-    id: "bloomberg",
-    title: "Bloomberg Terminal UX",
-    displayTitle: "Terminal UX Redesign",
-    eyebrow: "Bloomberg",
-    tags: ["UX Research", "Interface Design"],
-    gradient: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
-    description:
-      "Redesigning complex financial data workflows for the Bloomberg Terminal professional audience.",
-    height: 260,
-  },
-  {
-    id: "1password",
-    title: "1Password Onboarding",
-    displayTitle: "Onboarding Redesign",
-    eyebrow: "1Password",
-    tags: ["Product Design", "Mobile"],
-    gradient: "linear-gradient(135deg, #f0f7ff 0%, #d6eaff 50%, #b8d4ff 100%)",
-    description:
-      "Streamlining the new-user experience to reduce time-to-value for enterprise password management.",
-    isLight: true,
-    height: 260,
   },
 ]
-
-type Project = typeof projects[number]
 
 type TiltState = {
   id: string
@@ -89,6 +108,7 @@ function ProjectCard({
 }) {
   const rotateX = tilt?.id === project.id ? tilt.rotateX : 0
   const rotateY = tilt?.id === project.id ? tilt.rotateY : 0
+  const hasRichMedia = Boolean(project.video || project.image)
   const textColor = project.isLight ? "text-[#111]" : "text-white"
   const eyebrowColor = project.isLight ? "text-[#888]" : "text-white/50"
   const ctaClass = project.isLight
@@ -120,10 +140,22 @@ function ProjectCard({
             transform: isHovered
               ? "translateZ(38px) scale(1.055)"
               : "translateZ(0) scale(1)",
-            background: project.image ? undefined : project.gradient,
+            background: hasRichMedia ? undefined : project.gradient,
           }}
         >
-          {project.image ? (
+          {project.video ? (
+            <video
+              src={project.video}
+              poster={project.poster}
+              className="h-full w-full object-cover object-top"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label={`${project.title} preview`}
+            />
+          ) : project.image ? (
             <ImageWithFallback
               src={project.image}
               alt={`${project.title} interface`}
@@ -134,7 +166,7 @@ function ProjectCard({
 
         <div
           className={`absolute inset-0 transition-opacity duration-300 ${
-            project.image
+            hasRichMedia
               ? "bg-gradient-to-t from-black/35 via-transparent to-transparent"
               : ""
           }`}
@@ -155,7 +187,7 @@ function ProjectCard({
                 : "translateZ(0) translateY(6px)",
             }}
           >
-            <span className="text-[8px]">⊙</span> VIEW CASE STUDY
+            <span className="text-[8px]">⊙</span> VIEW MORE
           </div>
 
           <div
@@ -230,12 +262,12 @@ export default function App() {
             </span>
             <span className="text-[#ccc]">|</span>
             <span className="text-[10px] tracking-wider uppercase text-[#888] font-medium">
-              Product + Software Engineering
+              Software Engineering + Health Infomatics @ UC Irvine
             </span>
           </div>
 
           <div className="flex items-center gap-7">
-            {["WORK", "FUN", "ABOUT", "RESUME"].map((item) => (
+            {["WORK", "ABOUT ME"].map((item) => (
               <button
                 key={item}
                 onClick={() => setActiveNav(item)}
