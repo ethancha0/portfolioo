@@ -7,7 +7,15 @@ import zotmeet from "@/imports/zotmeet.png"
 import zotmeetMobile from "@/imports/zotmeet-mobile.png"
 import fusion from "@/imports/fusion.png"
 
-const experience = [
+type TimelineEvent = {
+  year: string
+  company: string
+  role: string
+  leadershipOnly?: boolean
+  delay?: number
+}
+
+const experience: TimelineEvent[] = [
   { year: "2026", company: "Pfizer", role: "Software Engineering Extern" },
   { year: "2026", company: "ZotMeet", role: "Lead Software Engineer" },
   {
@@ -16,6 +24,40 @@ const experience = [
     role: "Lead Software Engineer",
   },
   { year: "2025", company: "AntAlmanac", role: "Software Engineer" },
+]
+
+const leadershipEvents: TimelineEvent[] = [
+  {
+    year: "2026",
+    company: "ICS Student Council",
+    role: "Webmaster",
+    leadershipOnly: true,
+    delay: 60,
+  },
+  {
+    year: "2026",
+    company: "Tomo no Kai",
+    role: "Director of Public Relations",
+    leadershipOnly: true,
+    delay: 120,
+  },
+  {
+    year: "2025",
+    company: "Kababayan at UCI",
+    role: "Technical Lead",
+    leadershipOnly: true,
+    delay: 180,
+  },
+]
+
+const timelineRows: TimelineEvent[] = [
+  experience[0],
+  experience[1],
+  leadershipEvents[0],
+  experience[2],
+  leadershipEvents[1],
+  experience[3],
+  leadershipEvents[2],
 ]
 
 type Project = {
@@ -312,9 +354,13 @@ function ProjectCard({
 
 export default function App() {
   const [activeNav, setActiveNav] = useState("WORK")
+  const [timelineMode, setTimelineMode] = useState<"experience" | "leadership">(
+    "experience",
+  )
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
   const [tilt, setTilt] = useState<TiltState | null>(null)
   const isProjectFocused = hoveredProject !== null
+  const showLeadership = timelineMode === "leadership"
 
   const handleProjectPointerMove = (
     event: PointerEvent<HTMLDivElement>,
@@ -389,29 +435,84 @@ export default function App() {
 
           {/* Right: experience timeline */}
           <div className="pt-2">
-            <div className="flex justify-end mb-6">
+            <div className="mb-6 flex items-center justify-between gap-4">
+              <div className="relative flex rounded-full border border-[#e8e8e8] bg-[#f7f7f7] p-1">
+                <span
+                  className="absolute bottom-1 top-1 rounded-full bg-white shadow-[0_3px_10px_rgba(17,17,17,0.08)] transition-transform duration-300 ease-out"
+                  style={{
+                    left: 4,
+                    width: "calc(50% - 4px)",
+                    transform:
+                      timelineMode === "leadership"
+                        ? "translateX(100%)"
+                        : "translateX(0)",
+                  }}
+                />
+                {[
+                  ["experience", "Experience"],
+                  ["leadership", "Leadership"],
+                ].map(([mode, label]) => (
+                  <button
+                    key={mode}
+                    onClick={() =>
+                      setTimelineMode(mode as "experience" | "leadership")
+                    }
+                    className="relative z-10 min-w-24 rounded-full px-4 py-1.5 text-[10px] font-semibold uppercase tracking-widest transition-colors"
+                    style={{
+                      color: timelineMode === mode ? "#e05a28" : "#888",
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
               <div className="w-2 h-2 rounded-full bg-[#e05a28]" />
             </div>
-            <table className="w-full">
-              <tbody>
-                {experience.map((exp, i) => (
-                  <tr
-                    key={`${exp.company}-${exp.year}`}
-                    className="group border-t border-[#e8e8e8] transition-colors hover:bg-[#fafafa]"
+            <div className="w-full overflow-hidden">
+              {timelineRows.map((exp) => {
+                const isHiddenLeadership =
+                  exp.leadershipOnly && !showLeadership
+
+                return (
+                  <div
+                    key={`${exp.company}-${exp.role}-${exp.year}`}
+                    className={`group overflow-hidden border-t transition-[max-height,opacity,transform,border-color,background-color] duration-500 ease-out hover:bg-[#fafafa] ${
+                      exp.leadershipOnly
+                        ? "border-[#f1d8cf] bg-[#fffaf8]"
+                        : "border-[#e8e8e8]"
+                    }`}
+                    style={{
+                      maxHeight: isHiddenLeadership ? 0 : 52,
+                      opacity: isHiddenLeadership ? 0 : 1,
+                      transform: isHiddenLeadership
+                        ? "translateX(42px)"
+                        : "translateX(0)",
+                      transitionDelay:
+                        showLeadership && exp.leadershipOnly
+                          ? `${exp.delay ?? 0}ms`
+                          : "0ms",
+                    }}
                   >
-                    <td className="w-12 py-3 pr-6 text-[11px] font-medium text-[#888]">
-                      {exp.year}
-                    </td>
-                    <td className="w-40 py-3 pr-8 text-[13px] font-semibold text-[#111]">
-                      {exp.company}
-                    </td>
-                    <td className="py-3 text-[12px] text-[#666]">
-                      {exp.role}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    <div className="grid grid-cols-[48px_minmax(150px,190px)_1fr] items-center py-3 pr-4">
+                      <span className="text-[11px] font-medium text-[#888]">
+                        {exp.year}
+                      </span>
+                      <span className="flex items-center gap-2 pr-8 text-[13px] font-semibold text-[#111]">
+                        {exp.company}
+                        {exp.leadershipOnly ? (
+                          <span className="rounded-full bg-[#e05a28]/10 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-widest text-[#e05a28]">
+                            Lead
+                          </span>
+                        ) : null}
+                      </span>
+                      <span className="text-[12px] text-[#666]">
+                        {exp.role}
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </section>
 
