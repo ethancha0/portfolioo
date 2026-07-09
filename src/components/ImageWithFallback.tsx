@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, type ImgHTMLAttributes } from 'react'
 
 interface Props extends ImgHTMLAttributes<HTMLImageElement> {

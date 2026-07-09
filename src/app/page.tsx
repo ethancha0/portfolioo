@@ -1,13 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import type { PointerEvent } from "react"
+import type { PointerEvent, ReactNode } from "react"
 import interviewmeVideo from "@/imports/interviewme.mov"
-import pfizerImage from "@/imports/pfizer.avif"
+import pfizerImage from "@/imports/pfizer.png"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
 import zotmeet from "@/imports/zotmeet.png"
 import zotmeetMobile from "@/imports/zotmeet-mobile.png"
 import fusion from "@/imports/fusion.png"
+import Grainient from "@/components/Grainient"
 
 type TimelineEvent = {
   year: string
@@ -71,7 +72,7 @@ type Project = {
   description: string
   height: number
   isLight?: boolean
-  gradient?: string
+  gradient?: string | ReactNode
   image?: string
   video?: string
   poster?: string
@@ -93,6 +94,15 @@ const popoutSizeClasses = {
   square: "h-28 w-28",
 }
 
+const defaultGradient =
+  "linear-gradient(135deg, #f7c59f 0%, #e05a28 100%)"
+
+function isCssGradient(
+  gradient: Project["gradient"],
+): gradient is string {
+  return typeof gradient === "string"
+}
+
 const projects: Project[] = [
   {
     id: "pfizer",
@@ -100,7 +110,32 @@ const projects: Project[] = [
     displayTitle: "Pfizer",
     tags: ["Externship", "Engineering"],
     image: pfizerImage,
-    gradient: "linear-gradient(135deg, #e8f4fd 0%, #c9e8f8 50%, #a8d5f0 100%)",
+    gradient: <div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
+    <Grainient
+      color1="#ceb0cd"
+      color2="#9e8ce8"
+      color3="#c6a8e2"
+      timeSpeed={0.25}
+      colorBalance={0}
+      warpStrength={1}
+      warpFrequency={5}
+      warpSpeed={3.6}
+      warpAmplitude={38}
+      blendAngle={0}
+      blendSoftness={0.05}
+      rotationAmount={500}
+      noiseScale={2}
+      grainAmount={0.1}
+      grainScale={2}
+      grainAnimated={false}
+      contrast={1.5}
+      gamma={0.9}
+      saturation={1}
+      centerX={0}
+      centerY={0}
+      zoom={0.9}
+    />
+  </div>,
     description:
       "Building OCR + RAG pipelines",
     popoutImages: [
@@ -199,6 +234,12 @@ function ProjectCard({
   const rotateX = tilt?.id === project.id ? tilt.rotateX : 0
   const rotateY = tilt?.id === project.id ? tilt.rotateY : 0
   const hasRichMedia = Boolean(project.video || project.image)
+  const hasComponentBackground =
+    project.gradient !== undefined && !isCssGradient(project.gradient)
+  const cssBackground =
+    isCssGradient(project.gradient) && !hasRichMedia
+      ? project.gradient
+      : undefined
   const popoutPanels = [
     {
       className:
@@ -226,6 +267,7 @@ function ProjectCard({
   }
   return (
     <div
+      data-cursor-label="View Project"
       className={`group relative z-0 cursor-pointer transition-[filter,opacity,transform] duration-300 [perspective:1100px] hover:z-30 ${
         isDimmed ? "scale-[0.992] opacity-55 blur-[1.25px]" : ""
       }`}
@@ -252,14 +294,19 @@ function ProjectCard({
               transform: isHovered
                 ? "translateZ(28px) scale(1.035)"
                 : "translateZ(0) scale(1)",
-              background: hasRichMedia ? undefined : project.gradient,
+              background: cssBackground,
             }}
           >
+            {hasComponentBackground ? (
+              <div className="absolute inset-0 z-0">{project.gradient}</div>
+            ) : null}
             {project.video ? (
               <video
                 src={project.video}
                 poster={project.poster}
-                className="h-full w-full object-cover object-top"
+                className={`h-full w-full object-cover object-top ${
+                  hasComponentBackground ? "relative z-10" : ""
+                }`}
                 autoPlay
                 muted
                 loop
@@ -268,17 +315,27 @@ function ProjectCard({
                 aria-label={`${project.title} preview`}
               />
             ) : project.image ? (
-              <ImageWithFallback
-                src={project.image}
-                alt={`${project.title} interface`}
-                className="h-full w-full object-cover object-top"
-              />
+              hasComponentBackground ? (
+                <div className="absolute inset-0 z-10 flex items-center justify-center p-8">
+                  <ImageWithFallback
+                    src={project.image}
+                    alt={`${project.title} interface`}
+                    className="max-h-[72%] max-w-[82%] object-contain mix-blend-screen"
+                  />
+                </div>
+              ) : (
+                <ImageWithFallback
+                  src={project.image}
+                  alt={`${project.title} interface`}
+                  className="h-full w-full object-cover object-top"
+                />
+              )
             ) : null}
           </div>
 
           <div
             className={`absolute inset-0 transition-opacity duration-300 ${
-              hasRichMedia
+              hasRichMedia || hasComponentBackground
                 ? "bg-gradient-to-t from-black/25 via-transparent to-transparent"
                 : ""
             }`}
@@ -310,9 +367,9 @@ function ProjectCard({
                   <div
                     className="h-5 rounded-t-[6px]"
                     style={{
-                      background:
-                        project.gradient ??
-                        "linear-gradient(135deg, #f7c59f 0%, #e05a28 100%)",
+                      background: isCssGradient(project.gradient)
+                        ? project.gradient
+                        : defaultGradient,
                     }}
                   />
                   <div className="space-y-2 p-3">
