@@ -251,7 +251,7 @@ function ProjectCard({
   project: Project
   isHovered: boolean
   isDimmed: boolean
-  link: string
+  link?: string
   tilt: TiltState | null
   onPointerMove: (event: PointerEvent<HTMLDivElement>, id: string) => void
   onPointerEnter: (id: string) => void
