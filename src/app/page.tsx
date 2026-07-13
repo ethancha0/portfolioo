@@ -9,6 +9,7 @@ import zotmeet from "@/imports/zotmeet.png"
 import zotmeetMobile from "@/imports/zotmeet-mobile.png"
 import fusion from "@/imports/fusion.png"
 import Grainient from "@/components/Grainient"
+import dsadash from "@/imports/dsa/dsa-dash.png"
 
 type TimelineEvent = {
   year: string
@@ -76,12 +77,14 @@ type Project = {
   image?: string
   video?: string
   poster?: string
-  popoutImages?: ProjectPopoutImage[]
+  popoutImages?: ProjectPopoutItem[]
 }
 
-type ProjectPopoutImage = {
+type ProjectPopoutItem = {
   src: string
+  type?: "image" | "video"
   alt?: string
+  poster?: string
   objectPosition?: string
   size?: "wide" | "tall" | "square" | "default"
   className?: string
@@ -94,28 +97,59 @@ const popoutSizeClasses = {
   square: "h-28 w-28",
 }
 
-const defaultGradient =
-  "linear-gradient(135deg, #f7c59f 0%, #e05a28 100%)"
-
 function isCssGradient(
   gradient: Project["gradient"],
 ): gradient is string {
   return typeof gradient === "string"
 }
 
+function isPopoutVideo(item: ProjectPopoutItem): boolean {
+  if (item.type === "video") return true
+  if (item.type === "image") return false
+  return /\.(mov|mp4|webm|ogg)$/i.test(item.src)
+}
+
 const projects: Project[] = [
+
+  {
+    id: "ZotMeet",
+    title: "ZotMeet",
+    displayTitle: "ZotMeet",
+    image: zotmeet,
+    eyebrow: "Lead Product + Softare Engineer",
+    tags: ["Product Engineering"],
+    gradient: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+    description:
+      "Spearheaded & scaled developement for UCI's scheduler ",
+      /*
+    popoutImages: [
+      {
+        src: zotmeetMobile,
+        alt: "ZotMeet desktop preview",
+        size: "wide",
+      },
+      {
+        src: zotmeetMobile,
+        alt: "ZotMeet mobile preview",
+        size: "tall",
+        objectPosition: "top",
+      },
+    ],
+    */
+    height: 360,
+  },
   {
     id: "pfizer",
     title: "Pfizer",
     displayTitle: "Pfizer",
     tags: ["Externship", "Engineering"],
     image: pfizerImage,
-    gradient: <div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
+    gradient: <div style={{ width: '2080px', height: '1080px', position: 'relative' }}>
     <Grainient
       color1="#ceb0cd"
       color2="#9e8ce8"
       color3="#c6a8e2"
-      timeSpeed={0.25}
+      timeSpeed={1}
       colorBalance={0}
       warpStrength={1}
       warpFrequency={5}
@@ -138,6 +172,7 @@ const projects: Project[] = [
   </div>,
     description:
       "Building OCR + RAG pipelines",
+      /*
     popoutImages: [
       {
         src: pfizerImage,
@@ -145,34 +180,11 @@ const projects: Project[] = [
         size: "wide",
       },
     ],
+    */
     isLight: true,
-    height: 340,
+    height: 360,
   },
-  {
-    id: "ZotMeet",
-    title: "ZotMeet",
-    displayTitle: "ZotMeet",
-    image: zotmeet,
-    eyebrow: "Lead Product + Softare Engineer",
-    tags: ["Product Engineering"],
-    gradient: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
-    description:
-      "Spearheaded & scaled developement for UCI's scheduler ",
-    popoutImages: [
-      {
-        src: zotmeetMobile,
-        alt: "ZotMeet desktop preview",
-        size: "wide",
-      },
-      {
-        src: zotmeetMobile,
-        alt: "ZotMeet mobile preview",
-        size: "tall",
-        objectPosition: "top",
-      },
-    ],
-    height: 260,
-  },
+  /*
   {
     id: "fusion",
     title: "FUSION Engineering",
@@ -193,6 +205,7 @@ const projects: Project[] = [
     isLight: true,
     height: 260,
   },
+  */
   {
     id: "InterviewMe",
     title: "InterviewMe",
@@ -204,7 +217,17 @@ const projects: Project[] = [
       "linear-gradient(135deg, #f7c59f 0%, #e8a87c 30%, #d4856a 60%, #c9768f 100%)",
     description:
       "Built for competitive programmers",
-    height: 340,
+    height: 360,
+    /*
+    popoutImages: [
+      {
+        src: dsadash,
+        type: "image",
+        alt: "InterviewMe interviewer preview",
+        size: "wide",
+      },
+    ],
+    */
   },
 ]
 
@@ -256,14 +279,13 @@ function ProjectCard({
         "left-10 top-12 h-16 w-24 [transform:translateZ(0)_translate3d(0,0,0)_rotate(0deg)_scale(.84)] group-hover:[transform:translateZ(70px)_translate3d(-24px,-20px,0)_rotate(-10deg)_scale(1)]",
       delay: 110,
     },
-  ]
-  const popoutItems = popoutPanels.map((panel, index) => ({
-    ...panel,
-    image: project.popoutImages?.[index],
+  ] as const
+  const popoutItems = (project.popoutImages ?? []).slice(0, 3).map((media, index) => ({
+    ...popoutPanels[index],
+    media,
   }))
-  const getPopoutSizeClass = (image?: ProjectPopoutImage) => {
-    if (!image) return ""
-    return image.className ?? popoutSizeClasses[image.size ?? "default"]
+  const getPopoutSizeClass = (media: ProjectPopoutItem) => {
+    return media.className ?? popoutSizeClasses[media.size ?? "default"]
   }
   return (
     <div
@@ -346,42 +368,40 @@ function ProjectCard({
         <div className="pointer-events-none absolute inset-0 z-20 [transform-style:preserve-3d]">
           {popoutItems.map((panel, index) => (
             <div
-              key={index}
-              className={`absolute overflow-hidden rounded-[7px] border border-white/70 bg-white/90 opacity-0 shadow-[0_18px_38px_rgba(17,17,17,0.20),0_6px_14px_rgba(17,17,17,0.12)] drop-shadow-lg backdrop-blur-sm transition-[opacity,transform,filter] duration-400 ease-out group-hover:opacity-100 ${panel.className} ${getPopoutSizeClass(panel.image)}`}
+              key={`${panel.media.src}-${index}`}
+              className={`absolute overflow-hidden rounded-[7px] border border-white/70 bg-white/90 opacity-0 shadow-[0_18px_38px_rgba(17,17,17,0.20),0_6px_14px_rgba(17,17,17,0.12)] drop-shadow-lg backdrop-blur-sm transition-[opacity,transform,filter] duration-400 ease-out group-hover:opacity-100 ${panel.className} ${getPopoutSizeClass(panel.media)}`}
               style={{ transitionDelay: `${panel.delay}ms` }}
             >
-              {panel.image ? (
+              {isPopoutVideo(panel.media) ? (
+                <video
+                  src={panel.media.src}
+                  poster={panel.media.poster}
+                  className="h-full w-full object-cover"
+                  style={{
+                    objectPosition: panel.media.objectPosition ?? "center",
+                  }}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  aria-label={
+                    panel.media.alt ??
+                    `${project.title} popout preview ${index + 1}`
+                  }
+                />
+              ) : (
                 <ImageWithFallback
-                  src={panel.image.src}
+                  src={panel.media.src}
                   alt={
-                    panel.image.alt ??
+                    panel.media.alt ??
                     `${project.title} popout preview ${index + 1}`
                   }
                   className="h-full w-full object-cover"
                   style={{
-                    objectPosition: panel.image.objectPosition ?? "center",
+                    objectPosition: panel.media.objectPosition ?? "center",
                   }}
                 />
-              ) : (
-                <>
-                  <div
-                    className="h-5 rounded-t-[6px]"
-                    style={{
-                      background: isCssGradient(project.gradient)
-                        ? project.gradient
-                        : defaultGradient,
-                    }}
-                  />
-                  <div className="space-y-2 p-3">
-                    <div className="h-1.5 w-16 rounded-full bg-[#111]/80" />
-                    <div className="h-1.5 w-20 rounded-full bg-[#111]/18" />
-                    <div className="grid grid-cols-3 gap-1.5 pt-1">
-                      <div className="h-7 rounded-[4px] bg-[#111]/10" />
-                      <div className="h-7 rounded-[4px] bg-[#111]/20" />
-                      <div className="h-7 rounded-[4px] bg-[#111]/10" />
-                    </div>
-                  </div>
-                </>
               )}
               <div className="pointer-events-none absolute inset-0 rounded-[7px] ring-1 ring-white/40" />
               <div className="pointer-events-none absolute -bottom-3 left-4 right-4 h-4 rounded-full bg-black/20 blur-lg" />
@@ -576,8 +596,8 @@ export default function App() {
         </section>
 
         {/* Projects */}
-        <section className="max-w-[1200px] mx-auto px-6 pb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <section className="max-w-[1200px] mx-auto px-6 pb-24 mt-80">
+          <div className="grid grid-cols-1  gap-6">
             {projects.map((project) => (
               <ProjectCard
                 key={project.id}
