@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-display: Georgia, 'Times New Roman', serif;
-  --font-sans: Arial, Helvetica, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  --font-sans: var(--font-fraunces), Georgia, 'Times New Roman', serif;
   --color-background: #f0f0f0;
   --color-foreground: #f0f0f0;
   --color-muted: #888888;
@@ -54,12 +54,15 @@
 
 html {
   font-family: var(--font-sans);
+  font-weight: 500;
   background: var(--color-background);
   color: var(--color-foreground);
 }
 
 body {
   margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 500;
 }
 
 @media (hover: hover) and (pointer: fine) {
