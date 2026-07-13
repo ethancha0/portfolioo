@@ -6,10 +6,9 @@ import interviewmeVideo from "@/imports/interviewme.mov"
 import pfizerImage from "@/imports/pfizer.png"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
 import zotmeet from "@/imports/zotmeet.png"
-import zotmeetMobile from "@/imports/zotmeet-mobile.png"
-import fusion from "@/imports/fusion.png"
+//import fusion from "@/imports/fusion.png"
 import Grainient from "@/components/Grainient"
-import dsadash from "@/imports/dsa/dsa-dash.png"
+//import dsadash from "@/imports/dsa/dsa-dash.png"
 
 type TimelineEvent = {
   year: string
@@ -462,7 +461,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-[#111]">
+    <div className="min-h-screen bg- text-[#111]">
       {/* Nav */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#e8e8e8]">
         <nav className="max-w-[1200px] mx-auto px-6 h-12 flex items-center justify-between">

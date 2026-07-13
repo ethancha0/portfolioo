@@ -7,8 +7,8 @@
 @theme inline {
   --font-display: Georgia, 'Times New Roman', serif;
   --font-sans: Arial, Helvetica, sans-serif;
-  --color-background: #ffffff;
-  --color-foreground: #111111;
+  --color-background: #f0f0f0;
+  --color-foreground: #f0f0f0;
   --color-muted: #888888;
   --color-accent: #e05a28;
   --color-border: #e8e8e8;
