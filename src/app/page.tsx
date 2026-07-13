@@ -67,6 +67,7 @@ type Project = {
   id: string
   title: string
   displayTitle: string
+  link?:string
   eyebrow?: string
   tags: string[]
   description: string
@@ -115,6 +116,7 @@ const projects: Project[] = [
     title: "ZotMeet",
     displayTitle: "ZotMeet",
     image: zotmeet,
+    link: "/zotmeet",
     eyebrow: "Lead Product + Softare Engineer",
     tags: ["Product Engineering"],
     gradient: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
@@ -241,6 +243,7 @@ function ProjectCard({
   isHovered,
   isDimmed,
   tilt,
+  link,
   onPointerMove,
   onPointerEnter,
   onPointerLeave,
@@ -248,6 +251,7 @@ function ProjectCard({
   project: Project
   isHovered: boolean
   isDimmed: boolean
+  link: string
   tilt: TiltState | null
   onPointerMove: (event: PointerEvent<HTMLDivElement>, id: string) => void
   onPointerEnter: (id: string) => void
@@ -287,6 +291,7 @@ function ProjectCard({
     return media.className ?? popoutSizeClasses[media.size ?? "default"]
   }
   return (
+    <a href={link}>
     <div
       data-cursor-label="View Project"
       className={`group relative z-0 cursor-pointer transition-[filter,opacity,transform] duration-300 [perspective:1100px] hover:z-30 ${
@@ -427,6 +432,7 @@ function ProjectCard({
         </p>
       </div>
     </div>
+  </a>
   )
 }
 
@@ -601,6 +607,7 @@ export default function App() {
               <ProjectCard
                 key={project.id}
                 project={project}
+                link={project.link}
                 isHovered={hoveredProject === project.id}
                 isDimmed={isProjectFocused && hoveredProject !== project.id}
                 tilt={tilt}
