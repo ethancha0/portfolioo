@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Fraunces } from "next/font/google"
 import { CustomCursor } from "@/components/CustomCursor"
+import { SiteNav } from "@/components/SiteNav"
 import "./globals.css"
 
 const fraunces = Fraunces({
@@ -23,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={fraunces.variable}>
       <body className={fraunces.className}>
+        <SiteNav />
         {children}
         <CustomCursor />
       </body>

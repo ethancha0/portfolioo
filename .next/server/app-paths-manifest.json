@@ -1,4 +1,4 @@
 {
-  "/zotmeet/page": "app/zotmeet/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/zotmeet/page": "app/zotmeet/page.js"
 }

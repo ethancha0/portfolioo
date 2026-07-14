@@ -8,6 +8,7 @@ import { ImageWithFallback } from "@/components/ImageWithFallback"
 import zotmeet from "@/imports/zotmeet.png"
 //import fusion from "@/imports/fusion.png"
 import Grainient from "@/components/Grainient"
+import { ZotMeetGrainient } from "@/components/ZotMeetGrainient"
 //import dsadash from "@/imports/dsa/dsa-dash.png"
 
 type TimelineEvent = {
@@ -63,6 +64,19 @@ const timelineRows: TimelineEvent[] = [
   leadershipEvents[2],
 ]
 
+type ProjectImageLayout = {
+  /** Scale relative to the card (1 = 100%). Default 0.82 */
+  scale?: number
+  /** Horizontal shift in px (positive = right). Default 0 */
+  x?: number
+  /** Vertical shift in px (positive = down). Default 0 */
+  y?: number
+  /** Max width as % of the card. Default 82 */
+  maxWidth?: number
+  /** Max height as % of the card. Default 72 */
+  maxHeight?: number
+}
+
 type Project = {
   id: string
   title: string
@@ -75,6 +89,8 @@ type Project = {
   isLight?: boolean
   gradient?: string | ReactNode
   image?: string
+  /** Size / position for product mockups over a component gradient */
+  imageLayout?: ProjectImageLayout
   video?: string
   poster?: string
   popoutImages?: ProjectPopoutItem[]
@@ -116,10 +132,24 @@ const projects: Project[] = [
     title: "ZotMeet",
     displayTitle: "ZotMeet",
     image: zotmeet,
+    // Tweak these to expand / move the product image in the card
+    imageLayout: {
+      scale: 1.3,
+      x: 0,
+      y: 60,
+      maxWidth: 92,
+      maxHeight: 86,
+    },
+
+    gradient: (
+      <div style={{ width: "2080px", height: "1080px", position: "relative" }}>
+        <ZotMeetGrainient />
+      </div>
+    ),
+    
     link: "/zotmeet",
     eyebrow: "Lead Product + Softare Engineer",
     tags: ["Product Engineering"],
-    gradient: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
     description:
       "Spearheaded & scaled developement for UCI's scheduler ",
       /*
@@ -147,9 +177,9 @@ const projects: Project[] = [
     image: pfizerImage,
     gradient: <div style={{ width: '2080px', height: '1080px', position: 'relative' }}>
     <Grainient
-      color1="#ceb0cd"
-      color2="#9e8ce8"
-      color3="#c6a8e2"
+      color1="#4d4244"
+      color2="#21211e"
+      color3="#121009"
       timeSpeed={1}
       colorBalance={0}
       warpStrength={1}
@@ -266,6 +296,12 @@ function ProjectCard({
     isCssGradient(project.gradient) && !hasRichMedia
       ? project.gradient
       : undefined
+  const imageLayout = project.imageLayout ?? {}
+  const imageScale = imageLayout.scale ?? 0.82
+  const imageX = imageLayout.x ?? 0
+  const imageY = imageLayout.y ?? 0
+  const imageMaxWidth = imageLayout.maxWidth ?? 82
+  const imageMaxHeight = imageLayout.maxHeight ?? 72
   const popoutPanels = [
     {
       className:
@@ -346,7 +382,13 @@ function ProjectCard({
                   <ImageWithFallback
                     src={project.image}
                     alt={`${project.title} interface`}
-                    className="max-h-[72%] max-w-[82%] object-contain mix-blend-screen"
+                    className="object-contain"
+                    style={{
+                      maxWidth: `${imageMaxWidth}%`,
+                      maxHeight: `${imageMaxHeight}%`,
+                      transform: `translate(${imageX}px, ${imageY}px) scale(${imageScale})`,
+                      transformOrigin: "center center",
+                    }}
                   />
                 </div>
               ) : (
@@ -437,7 +479,6 @@ function ProjectCard({
 }
 
 export default function App() {
-  const [activeNav, setActiveNav] = useState("WORK")
   const [timelineMode, setTimelineMode] = useState<"experience" | "leadership">(
     "experience",
   )
@@ -468,34 +509,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg- text-[#111]">
-      {/* Nav */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#e8e8e8]">
-        <nav className="max-w-[1200px] mx-auto px-6 h-12 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-[11px] font-semibold tracking-widest uppercase text-[#111]">
-              Ethan Chao
-            </span>
-            <span className="text-[#ccc]">|</span>
-            <span className="text-[10px] tracking-wider uppercase text-[#888] font-medium">
-              Software Engineering + Health Infomatics @ UC Irvine
-            </span>
-          </div>
-
-          <div className="flex items-center gap-7">
-            {["WORK", "ABOUT ME"].map((item) => (
-              <button
-                key={item}
-                onClick={() => setActiveNav(item)}
-                className="text-[11px] tracking-widest font-medium transition-colors"
-                style={{ color: activeNav === item ? "#e05a28" : "#888" }}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </nav>
-      </header>
-
       {/* Hero */}
       <main className="pt-12">
         <section className="max-w-[1200px] mx-auto px-6 py-16 lg:py-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
@@ -601,7 +614,7 @@ export default function App() {
         </section>
 
         {/* Projects */}
-        <section className="max-w-[1200px] mx-auto px-6 pb-24 mt-80">
+        <section id="work" className="max-w-[1200px] mx-auto px-6 pb-24 mt-80">
           <div className="grid grid-cols-1  gap-6">
             {projects.map((project) => (
               <ProjectCard
@@ -620,7 +633,7 @@ export default function App() {
         </section>
 
         {/* About strip */}
-        <section className="border-t border-[#e8e8e8] max-w-[1200px] mx-auto px-6 py-16">
+        <section id="about" className="border-t border-[#e8e8e8] max-w-[1200px] mx-auto px-6 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div>
               <h3 className="text-[10px] tracking-widest font-semibold text-[#888] uppercase mb-4">

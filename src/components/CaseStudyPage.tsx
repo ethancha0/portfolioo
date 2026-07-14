@@ -6,10 +6,25 @@ type DetailBlock = {
   value: ReactNode
 }
 
+type HeroImageLayout = {
+  /** Scale relative to the hero frame (1 = 100%). Default 1 */
+  scale?: number
+  /** Horizontal shift in px (positive = right). Default 0 */
+  x?: number
+  /** Vertical shift in px (positive = down). Default 0 */
+  y?: number
+  /** Max width as % of the hero frame. Default 100 */
+  maxWidth?: number
+  /** Max height as % of the hero frame. Default 100 */
+  maxHeight?: number
+}
+
 type HeroImage = {
   src: string
   alt: string
   objectPosition?: string
+  /** Size / position for product mockups over a hero background */
+  layout?: HeroImageLayout
 }
 
 export type CaseStudyPageProps = {
@@ -18,6 +33,8 @@ export type CaseStudyPageProps = {
   intro: string
   heroImage?: HeroImage
   hero?: ReactNode
+  /** Full-bleed layer behind the hero image (e.g. Grainient) */
+  heroBackground?: ReactNode
   details: DetailBlock[]
   contextTitle?: string
   context: ReactNode
@@ -29,25 +46,48 @@ export function CaseStudyPage({
   intro,
   heroImage,
   hero,
+  heroBackground,
   details,
   contextTitle = "Context",
   context,
 }: CaseStudyPageProps) {
+  const layout = heroImage?.layout ?? {}
+  const imageScale = layout.scale ?? 1
+  const imageX = layout.x ?? 0
+  const imageY = layout.y ?? 0
+  const imageMaxWidth = layout.maxWidth ?? 100
+  const imageMaxHeight = layout.maxHeight ?? 100
+
   return (
-    <main className="min-h-screen bg-white text-black">
+    <main className="min-h-screen bg-white pt-12 text-black">
       <section className="mx-auto max-w-[1440px] px-5 pt-8 md:px-8">
-        <div className="h-[220px] overflow-hidden bg-[#f2f0ed] md:h-[340px]">
-          {hero ??
-            (heroImage ? (
-              <ImageWithFallback
-                src={heroImage.src}
-                alt={heroImage.alt}
-                className="h-full w-full object-cover"
-                style={{
-                  objectPosition: heroImage.objectPosition ?? "center",
-                }}
-              />
-            ) : null)}
+        <div className="relative h-[220px] overflow-hidden bg-[#f2f0ed] md:h-[340px]">
+          {heroBackground ? (
+            <div className="absolute inset-0 z-0">{heroBackground}</div>
+          ) : null}
+          <div className="relative z-10 flex h-full w-full items-center justify-center">
+            {hero ??
+              (heroImage ? (
+                <ImageWithFallback
+                  src={heroImage.src}
+                  alt={heroImage.alt}
+                  className={
+                    heroBackground ? "object-contain" : "h-full w-full object-cover"
+                  }
+                  style={{
+                    objectPosition: heroImage.objectPosition ?? "center",
+                    ...(heroBackground
+                      ? {
+                          maxWidth: `${imageMaxWidth}%`,
+                          maxHeight: `${imageMaxHeight}%`,
+                          transform: `translate(${imageX}px, ${imageY}px) scale(${imageScale})`,
+                          transformOrigin: "center center",
+                        }
+                      : null),
+                  }}
+                />
+              ) : null)}
+          </div>
         </div>
       </section>
 
