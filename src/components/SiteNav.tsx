@@ -5,8 +5,11 @@ import { usePathname } from "next/navigation"
 
 const navItems = [
   { label: "WORK", href: "/#work" },
-  { label: "ABOUT ME", href: "/#about" },
-  { label: "RESUME", href: "https://drive.google.com/file/d/1a40jwDFfLG5DBDAXZaZafwwdplUpLRCl/view?usp=sharing" },
+  { label: "ABOUT ME", href: "/about" },
+  {
+    label: "RESUME",
+    href: "https://drive.google.com/file/d/1a40jwDFfLG5DBDAXZaZafwwdplUpLRCl/view?usp=sharing",
+  },
 ] as const
 
 export function SiteNav() {
@@ -29,7 +32,11 @@ export function SiteNav() {
         <div className="flex items-center gap-7">
           {navItems.map((item) => {
             const isActive =
-              item.label === "WORK" ? !onAboutPage : onAboutPage
+              item.label === "ABOUT ME"
+                ? onAboutPage
+                : item.label === "WORK"
+                  ? !onAboutPage
+                  : false
 
             return (
               <Link

@@ -515,9 +515,9 @@ export default function App() {
           {/* Left: headline */}
           <div>
             <h1 className="text-[42px] lg:text-[54px] leading-[1.1] font-light text-[#111] tracking-tight">
-              I'm Ethan, a software
+              I'm Ethan, I build software
               <br />
-              engineer who{" "}
+              and the {" "}
               <em
                 style={{
                   fontFamily: "'Instrument Serif', serif",
@@ -525,8 +525,9 @@ export default function App() {
                 }}
                 className="font-normal"
               >
-                leads.
+                teams.
               </em>
+              <h1>behind it </h1>
             </h1>
           </div>
 
