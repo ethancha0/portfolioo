@@ -9,6 +9,7 @@ export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [isActive, setIsActive] = useState(false)
+  const [isPressed, setIsPressed] = useState(false)
   const [isLabeled, setIsLabeled] = useState(false)
   const [label, setLabel] = useState("View")
 
@@ -37,29 +38,54 @@ export function CustomCursor() {
       setLabel(cursorLabel || "")
     }
 
-    const hideCursor = () => setIsVisible(false)
+    const hideCursor = () => {
+      setIsVisible(false)
+      setIsPressed(false)
+    }
+
+    const handlePointerDown = () => setIsPressed(true)
+    const handlePointerUp = () => setIsPressed(false)
 
     window.addEventListener("mousemove", updateCursor)
     window.addEventListener("mouseleave", hideCursor)
     window.addEventListener("blur", hideCursor)
+    window.addEventListener("mousedown", handlePointerDown)
+    window.addEventListener("mouseup", handlePointerUp)
 
     return () => {
       document.documentElement.classList.remove("has-custom-cursor")
       window.removeEventListener("mousemove", updateCursor)
       window.removeEventListener("mouseleave", hideCursor)
       window.removeEventListener("blur", hideCursor)
+      window.removeEventListener("mousedown", handlePointerDown)
+      window.removeEventListener("mouseup", handlePointerUp)
     }
   }, [])
+
+  const sizeClass = (() => {
+    if (isLabeled) {
+      return isPressed ? "h-6 w-28" : "h-5 w-24"
+    }
+    if (isPressed && isActive) return "h-9 w-9"
+    if (isPressed) return "h-6 w-6"
+    if (isActive) return "h-7 w-7"
+    return "h-3.5 w-3.5"
+  })()
+
+  const opacityClass = (() => {
+    if (!isVisible) return "opacity-0"
+    if (isLabeled) return "opacity-100"
+    if (isActive) return "opacity-55"
+    return "opacity-100"
+  })()
 
   return (
     <div
       ref={cursorRef}
       aria-hidden="true"
-      className={`pointer-events-none fixed left-0 top-0 z-[9999] flex items-center justify-center rounded-full text-[10px] font-semibold uppercase tracking-widest text-white shadow-[0_10px_28px_rgba(36,211,101,0.22)] transition-[width,height,opacity,background-color,box-shadow] duration-200 ease-out ${
-        isLabeled ? "h-5 w-24 bg-[#4c705b]" : "h-3.5 w-3.5"
-      } ${isActive && !isLabeled ? "bg-[#6f927d] opacity-80" : "bg-[#4c705b]"} ${
-        isVisible ? "opacity-100" : "opacity-0"
-      }`}
+      className={`pointer-events-none fixed left-0 top-0 z-[9999] flex items-center justify-center rounded-full text-[10px] font-semibold uppercase tracking-widest text-white shadow-[0_10px_28px_rgba(36,211,101,0.22)] transition-[width,height,opacity,background-color,box-shadow] duration-200 ease-out ${sizeClass} ${
+        isActive && !isLabeled ? "bg-[#6f927d]" : "bg-[#4c705b]"
+      } ${opacityClass}`}
     >
       <span
         className={`whitespace-nowrap transition-opacity duration-150 ${
