@@ -9,20 +9,19 @@ import { PhotoStack } from "@/components/about/PhotoStack"
 import { ScrollReveal } from "@/components/about/ScrollReveal"
 import { TypewriterGreeting } from "@/components/about/TypewriterGreeting"
 import { placeholderSrc } from "@/components/about/placeholder"
-import zotmeet from "@/imports/zotmeet.png"
-import pfizerImage from "@/imports/pfizer.png"
+import { img } from "@/imports/registry"
 
 const heroCards = [
   {
-    src: placeholderSrc("Ethan", "#2b2b2b", 420, 540),
+    src: img("portrait.jpeg"),
     alt: "Portrait of Ethan Chao",
   },
   {
-    src: pfizerImage,
+    src: img("pfizer"),
     alt: "Pfizer work",
   },
   {
-    src: zotmeet,
+    src: img("zotmeet"),
     alt: "ZotMeet",
   },
   {
@@ -34,100 +33,100 @@ const heroCards = [
     alt: "Building products",
   },
   {
-    src: placeholderSrc("Code", "#3d6b4f", 420, 540),
+    src: img("portrait.jpeg"),
     alt: "Engineering",
   },
 ]
 
 const peopleCards = [
   {
-    src: placeholderSrc("ZotMeet", "#1f4e79", 480, 360),
-    alt: "ZotMeet team",
-    caption: "ZotMeet — shipping with 10 people",
+    src: img("zmxaa"),
+    alt: "",
+    caption: "ZotMeet x AntAlmanac Social",
   },
   {
-    src: placeholderSrc("ICS SC", "#5b4b8a", 480, 360),
-    alt: "ICS Student Council",
-    caption: "ICS Student Council :D",
+    src: img("tomo"),
+    alt: "",
+    caption: "Serving on Tomo no Kai board!",
   },
   {
-    src: placeholderSrc("Kababayan", "#c45c26", 480, 360),
-    alt: "Kababayan at UCI",
-    caption: "Kababayan — tech + community",
+    src: img("dog"),
+    alt: "",
+    caption: "Corgi Hiking Club",
   },
   {
-    src: placeholderSrc("Tomo", "#8a3a4b", 480, 360),
-    alt: "Tomo no Kai",
-    caption: "Tomo no Kai PR crew",
+    src: img("hollywood"),
+    alt: "",
+    caption: "Hollywood Hike",
   },
   {
-    src: placeholderSrc("FUSION", "#2f6f5e", 480, 360),
-    alt: "FUSION Engineering",
-    caption: "FUSION — mentoring & building",
+    src: img("sd"),
+    alt: "",
+    caption: "San Diego",
   },
   {
-    src: placeholderSrc("Pfizer", "#0b5cab", 480, 360),
-    alt: "Pfizer cohort",
-    caption: "Pfizer extern cohort",
+    src: img("seaside"),
+    alt: "",
+    caption: "Many nights at Seaside",
   },
   {
-    src: placeholderSrc("Friends", "#6b7280", 480, 360),
-    alt: "Friends",
-    caption: "the people who keep me curious",
+    src: img("masami"),
+    alt: "",
+    caption: "Masami :D",
   },
 ]
 
 const hobbyCards = [
   {
-    src: placeholderSrc("Games", "#1a1a2e", 320, 480),
-    alt: "Gaming",
-    caption: "late-night ranked",
+    src: img("rock.JPG"),
+    alt: "Boldering",
+    caption: "Boldering",
   },
   {
-    src: placeholderSrc("Film", "#3d3d3d", 320, 480),
-    alt: "Film / media",
-    caption: "screens & stories",
+    src: img("bonsai.jpeg"),
+    alt: "",
+    caption: "Growing Bonsai",
   },
   {
-    src: placeholderSrc("Night", "#1f2937", 320, 480),
-    alt: "Nights out",
-    caption: "city lights",
+    src: img("vball.jpeg"),
+    alt: "Intramural Sports",
+    caption: "Intramural Sports",
   },
   {
-    src: placeholderSrc("Bloom", "#c4786a", 320, 480),
-    alt: "Flowers",
-    caption: "still life moments",
+    src: img("hikinh"),
+    alt: "",
+    caption: "Hikes!",
   },
   {
-    src: placeholderSrc("Hike", "#4a6741", 320, 480),
+    src: img("bonsai2"),
     alt: "Hiking",
-    caption: "trail days",
+    caption: "Bonsai!",
   },
   {
-    src: placeholderSrc("Matcha", "#6b8f71", 320, 480),
+    src: img("bixby.JPG"),
     alt: "Matcha",
-    caption: "caffeinated always",
+    caption: "Going to concerts!",
   },
   {
-    src: placeholderSrc("Polaroids", "#6b7280", 320, 480),
-    alt: "Polaroids",
-    caption: "memory wall",
+    src: img("mazemen.jpeg"),
+    alt: "Good Eats!",
+    caption: "Good Eats!",
   },
 ]
 
 const values = [
   {
-    before: "Lead with",
-    emphasis: "curiosity & empathy",
+    before: "Change your future's",
+    emphasis: "past",
   },
   {
-    before: "Show up",
-    emphasis: "fully",
-    after: "and honestly",
+    before: "Habits are the ",
+    emphasis: "compound interest",
+    after: "of self-improvement",
   },
   {
-    before: "Live every day with",
-    emphasis: "intention",
+    before: "Have fun along the way ",
+    emphasis: ":)",
   },
 ]
 
@@ -144,7 +143,7 @@ export default function AboutPage() {
 
         <div className="max-w-xl">
           <TypewriterGreeting
-            text="Heyo I'm Ethan"
+            text="Hey there, I'm Ethan!"
             className="mb-5 text-[34px] leading-tight tracking-tight text-[#111] sm:text-[42px]"
             onDone={() => setBioVisible(true)}
           />
@@ -157,23 +156,15 @@ export default function AboutPage() {
             }}
           >
             <p className="text-[16px] font-semibold leading-snug text-[#222] sm:text-[17px]">
-              Software isn&apos;t just shipping features. It&apos;s how we make
-              complex systems feel human — especially in healthcare.
+            This summer I’m currently an working as an extern at Pfizer where I’m working on an AI pipeline to extract and organize data across pharmaceutical vendor documents
             </p>
             <p className="text-[14px] leading-relaxed text-[#555]">
-              I&apos;m studying Software Engineering + Health Informatics at UC
-              Irvine. Years of building products and leading teams taught me
-              that the best tools disappear into the work people already do.
-            </p>
-            <p className="text-[14px] leading-relaxed text-[#555]">
-              Today I bridge engineering rigor and human behavior — OCR + RAG
-              pipelines at Pfizer, student products like ZotMeet, and
-              leadership roles across campus orgs.
+            At UC Irvine, I serve as Webmaster for the Computer Science Student Council and Lead Software Engineer for ZotMeet, which is a campus wide study room scheduler where I lead a team of designers and engineers. 
             </p>
             <p className="text-[14px] leading-relaxed text-[#555]">
               I love talking product and systems — let&apos;s chat! Find me on{" "}
               <Link
-                href="https://www.linkedin.com/in/"
+                href="https://www.linkedin.com/in/ethanchaoo"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-[#0a66c2] transition-opacity hover:opacity-80"
@@ -194,8 +185,7 @@ export default function AboutPage() {
               Awesome People
             </h2>
             <p className="mt-2 max-w-xs text-[13px] leading-relaxed text-[#777]">
-              what&apos;s a journey without the amazing people you come across,
-              right?
+              The many friends I made along the way of the journey called life :)
             </p>
             <p className="mt-8 text-[11px] tracking-wide text-[#bbb]">
               hover over the cards
@@ -220,7 +210,7 @@ export default function AboutPage() {
             So What Else?
           </h2>
           <p className="mt-2 max-w-md text-[13px] leading-relaxed text-[#777]">
-            this is what I do when I&apos;m not hunched over my laptop shipping
+            I love exploring new cities, hobbies, and foods!
           </p>
         </ScrollReveal>
 
@@ -232,17 +222,15 @@ export default function AboutPage() {
       {/* Core Values */}
       <section className="mx-auto max-w-[1100px] px-6 py-16 lg:py-20">
         <ScrollReveal>
-          <div className="mb-8 flex items-center gap-3">
+          <div className="mb-2 flex items-center gap-3">
             <h2 className="text-[26px] tracking-tight text-[#111] sm:text-[30px]">
               My Core Values
             </h2>
-            <span
-              aria-hidden
-              className="inline-flex size-8 items-center justify-center rounded-full border border-[#ddd] text-[14px] text-[#888]"
-            >
-              ?
-            </span>
+          
           </div>
+          <p className=" max-w-md text-[13px] leading-relaxed text-[#777]">
+            Some quotes that live in my mind rent-free
+          </p>
         </ScrollReveal>
 
         <ScrollReveal delayMs={70}>
