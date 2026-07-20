@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react"
 import { CaseStudyShell } from "@/components/casestudy/CaseStudyShell"
+import { ClayButton, ClayFrame, clayColorNameAt } from "@/components/clay"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
 import { ZotMeetGrainient } from "@/components/ZotMeetGrainient"
 import { formatTimeline } from "@/lib/formatTimeline"
@@ -174,7 +175,7 @@ const impactPoints: ReactNode[] = [
       href="https://zotmeet.com"
       target="_blank"
       rel="noopener noreferrer"
-      className="font-medium text-[#e05a28] underline decoration-[1.5px] underline-offset-2"
+      className="font-medium text-[#8fad6e] underline decoration-[1.5px] underline-offset-2"
     >
       zotmeet.com
     </a>
@@ -245,6 +246,7 @@ function MediaSlot({
   maxWidth,
   src,
   alt,
+  colorIndex = 0,
 }: {
   label?: string
   caption?: string
@@ -257,6 +259,7 @@ function MediaSlot({
   maxWidth?: string | number
   src?: string
   alt?: string
+  colorIndex?: number
 }) {
   const [expanded, setExpanded] = useState(false)
   const isVideo =
@@ -271,6 +274,7 @@ function MediaSlot({
         : maxWidth
   const resolvedRatio = ratio ?? (isVideo ? "16 / 9" : undefined)
   const objectFitClass = fit === "contain" ? "object-contain" : "object-cover"
+  const clay = clayColorNameAt(colorIndex)
 
   useEffect(() => {
     if (!expanded) return
@@ -292,71 +296,76 @@ function MediaSlot({
         className={`my-2 ${resolvedMaxWidth ? "mx-auto w-full" : ""}`}
         style={resolvedMaxWidth ? { maxWidth: resolvedMaxWidth } : undefined}
       >
-        <div
-          className={`relative flex items-center justify-center overflow-hidden rounded-xl border border-[#ececec] bg-gradient-to-br from-[#faf9f7] to-[#f0eeea] ${
-            isExpandableImage ? "group cursor-pointer" : ""
-          }`}
+        <ClayFrame
+          color={clay}
+          thickness={5}
+          rounded="xl"
+          className={isExpandableImage ? "group cursor-pointer" : ""}
           style={resolvedRatio ? { aspectRatio: resolvedRatio } : undefined}
-          {...(isExpandableImage
-            ? {
-                role: "button" as const,
-                tabIndex: 0,
-                "data-cursor-label": "View Image",
-                "aria-label": `View larger: ${alt ?? label ?? "image"}`,
-                onClick: () => setExpanded(true),
-                onKeyDown: (event: ReactKeyboardEvent) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault()
-                    setExpanded(true)
-                  }
-                },
-              }
-            : {})}
         >
-          {src ? (
-            isVideo ? (
-              <video
-                src={src}
-                className={`h-full w-full ${objectFitClass}`}
-                autoPlay
-                muted
-                loop
-                playsInline
-                controls={false}
-                disablePictureInPicture
-                preload="metadata"
-                aria-label={alt ?? label}
-              />
-            ) : (
-              <>
-                <ImageWithFallback
+          <div
+            className="relative flex h-full w-full items-center justify-center bg-gradient-to-br from-[#faf6ef] to-[#efe6d6]"
+            {...(isExpandableImage
+              ? {
+                  role: "button" as const,
+                  tabIndex: 0,
+                  "data-cursor-label": "View Image",
+                  "aria-label": `View larger: ${alt ?? label ?? "image"}`,
+                  onClick: () => setExpanded(true),
+                  onKeyDown: (event: ReactKeyboardEvent) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault()
+                      setExpanded(true)
+                    }
+                  },
+                }
+              : {})}
+          >
+            {src ? (
+              isVideo ? (
+                <video
                   src={src}
-                  alt={alt ?? label ?? ""}
-                  className={
-                    resolvedRatio
-                      ? `h-full w-full ${objectFitClass} transition-[filter,opacity] duration-300 group-hover:brightness-[0.82]`
-                      : "h-auto w-full transition-[filter,opacity] duration-300 group-hover:brightness-[0.82]"
-                  }
+                  className={`h-full w-full ${objectFitClass}`}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  controls={false}
+                  disablePictureInPicture
+                  preload="metadata"
+                  aria-label={alt ?? label}
                 />
-                <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/18" />
-              </>
-            )
-          ) : (
-            <div
-              className="flex flex-col items-center gap-2.5 text-[#b9b4ac]"
-              style={resolvedRatio ? undefined : { aspectRatio: "16 / 9" }}
-            >
-              <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e0d9] bg-white/70">
-                <MediaIcon kind={isVideo ? "video" : "image"} />
-              </span>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.16em]">
-                {label}
-              </span>
-            </div>
-          )}
-        </div>
+              ) : (
+                <>
+                  <ImageWithFallback
+                    src={src}
+                    alt={alt ?? label ?? ""}
+                    className={
+                      resolvedRatio
+                        ? `h-full w-full ${objectFitClass} transition-[filter,opacity] duration-300 group-hover:brightness-[0.82]`
+                        : "h-auto w-full transition-[filter,opacity] duration-300 group-hover:brightness-[0.82]"
+                    }
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/18" />
+                </>
+              )
+            ) : (
+              <div
+                className="flex flex-col items-center gap-2.5 text-[#b5a894]"
+                style={resolvedRatio ? undefined : { aspectRatio: "16 / 9" }}
+              >
+                <span className="flex h-11 w-11 items-center justify-center rounded-full border-[2.5px] border-[#c4b49a] bg-[#f7f2ea]/80">
+                  <MediaIcon kind={isVideo ? "video" : "image"} />
+                </span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.16em]">
+                  {label}
+                </span>
+              </div>
+            )}
+          </div>
+        </ClayFrame>
         {caption ? (
-          <figcaption className="mt-3 text-[13px] italic leading-snug text-[#8f8a83]">
+          <figcaption className="mt-3 text-[13px] italic leading-snug text-[#8f8578]">
             {caption}
           </figcaption>
         ) : null}
@@ -364,21 +373,32 @@ function MediaSlot({
 
       {expanded && src && !isVideo ? (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-5 backdrop-blur-[2px] sm:p-10"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#2a1f16]/70 p-5 backdrop-blur-[2px] sm:p-10"
           role="dialog"
           aria-modal="true"
           aria-label={alt ?? label ?? "Expanded image"}
           data-cursor-label="Close"
           onClick={() => setExpanded(false)}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={src}
-            alt={alt ?? label ?? ""}
-            className="max-h-full max-w-full rounded-xl object-contain shadow-[0_24px_80px_rgba(0,0,0,0.45)]"
+          <div
+            className="max-h-full max-w-full"
             onClick={(event) => event.stopPropagation()}
-            draggable={false}
-          />
+          >
+            <ClayFrame
+              color={clay}
+              thickness={6}
+              rounded="xl"
+              animate={false}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={src}
+                alt={alt ?? label ?? ""}
+                className="max-h-[85vh] max-w-full object-contain"
+                draggable={false}
+              />
+            </ClayFrame>
+          </div>
         </div>
       ) : null}
     </>
@@ -397,11 +417,11 @@ function Section({
   children: ReactNode
 }) {
   return (
-    <section id={id} className="scroll-mt-28 border-t border-[#eee] pt-14 first:border-t-0 first:pt-0">
-      <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#a2a2a2]">
+    <section id={id} className="scroll-mt-28 border-t border-[#e4ddd2] pt-14 first:border-t-0 first:pt-0">
+      <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9a8f82]">
         {eyebrow}
       </p>
-      <h2 className="mb-6 max-w-[620px] text-[26px] font-semibold leading-[1.18] tracking-tight text-[#141414] md:text-[32px]">
+      <h2 className="mb-6 max-w-[620px] text-[26px] font-semibold leading-[1.18] tracking-tight text-[#2a1f16] md:text-[32px]">
         {title}
       </h2>
       {children}
@@ -409,38 +429,54 @@ function Section({
   )
 }
 
-function StackCard({ label, items }: { label: string; items: ReactNode[] }) {
+function StackCard({
+  label,
+  items,
+  colorIndex = 0,
+}: {
+  label: string
+  items: ReactNode[]
+  colorIndex?: number
+}) {
   return (
-    <div className="rounded-xl border border-[#ececec] bg-[#fbfaf9] p-5">
-      <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#e05a28]">
-        {label}
-      </p>
-      <ul className="space-y-2">
-        {items.map((item, i) => (
-          <li
-            key={i}
-            className="flex gap-2 text-[14px] leading-[1.55] text-[#3f3f3f]"
-          >
-            <span className="mt-[9px] h-[3px] w-[3px] shrink-0 rounded-full bg-[#cfcbc4]" />
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ClayFrame
+      colorIndex={colorIndex}
+      thickness={4}
+      rounded="xl"
+      className="h-full"
+      innerClassName="!bg-[#faf6ef]"
+    >
+      <div className="p-5">
+        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8fad6e]">
+          {label}
+        </p>
+        <ul className="space-y-2">
+          {items.map((item, i) => (
+            <li
+              key={i}
+              className="flex gap-2 text-[14px] leading-[1.55] text-[#4a3f34]"
+            >
+              <span className="mt-[9px] h-[3px] w-[3px] shrink-0 rounded-full bg-[#c4b49a]" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </ClayFrame>
   )
 }
 
-const bodyText = "text-[16px] leading-[1.72] text-[#3a3a3a] md:text-[17px]"
+const bodyText = "text-[16px] leading-[1.72] text-[#4a3f34] md:text-[17px]"
 
 export default function Page() {
   return (
     <CaseStudyShell sections={sections} backHref="/" backLabel="Back">
       {/* Hero header */}
       <header>
-        <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#a2a2a2]">
+        <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9a8f82]">
           ZotMeet · Shipped 2026
         </p>
-        <h1 className="mb-5 max-w-[640px] text-[40px] font-semibold leading-[1.05] tracking-tight text-[#111] md:text-[54px]">
+        <h1 className="mb-5 max-w-[640px] text-[40px] font-semibold leading-[1.05] tracking-tight text-[#2a1f16] md:text-[54px]">
           Find the best time and place to meet
         </h1>
         <p className={`mb-8 max-w-[560px] ${bodyText}`}>
@@ -448,53 +484,61 @@ export default function Page() {
           availability onto a shared grid, a live heatmap surfaces the best
           overlapping slot, and ZotMeet books a real campus study room for it.
         </p>
-        <a
-          href="https://zotmeet.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group inline-flex items-center gap-2 rounded-full border border-[#e6e3de] bg-white px-4 py-2 text-[12px] font-semibold uppercase tracking-widest text-[#333] transition-colors hover:border-[#e05a28] hover:text-[#e05a28]"
-        >
-          Live at zotmeet.com
-          <span className="transition-transform group-hover:translate-x-0.5">
-            &#8599;
-          </span>
-        </a>
-        <a
-          href="https://apps.apple.com/us/app/zotmeet/id6773529198"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group inline-flex items-center gap-2 rounded-full border border-[#e6e3de] bg-white px-4 py-2 text-[12px] font-semibold uppercase tracking-widest text-[#333] transition-colors hover:border-[#e05a28] hover:text-[#e05a28]"
-        >
-          App Store!
-          <span className="transition-transform group-hover:translate-x-0.5">
-            &#8599;
-          </span>
-        </a>
-
-
+        <div className="flex flex-wrap gap-3">
+          <ClayButton
+            href="https://zotmeet.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            colorIndex={0}
+            variant="solid"
+            size="md"
+            className="uppercase tracking-widest"
+          >
+            Live at zotmeet.com
+            <span>&#8599;</span>
+          </ClayButton>
+          <ClayButton
+            href="https://apps.apple.com/us/app/zotmeet/id6773529198"
+            target="_blank"
+            rel="noopener noreferrer"
+            colorIndex={2}
+            variant="outline"
+            size="md"
+            className="uppercase tracking-widest"
+          >
+            App Store!
+            <span>&#8599;</span>
+          </ClayButton>
+        </div>
 
         {/* Hero visual */}
-        <div className="relative mt-10 h-[240px] overflow-hidden rounded-2xl bg-[#f2f0ed] md:h-[380px]">
+        <ClayFrame
+          color="chocolate"
+          thickness={6}
+          rounded="2xl"
+          className="relative mt-10 h-[240px] w-full md:h-[380px]"
+          innerClassName="!bg-transparent"
+        >
           <div className="absolute inset-0">
             <ZotMeetGrainient />
           </div>
-          <div className="relative flex h-full w-full items-center justify-center mt-12">
+          <div className="relative mt-12 flex h-full w-full items-center justify-center">
             <ImageWithFallback
               src={zotmeet}
               alt="ZotMeet app preview"
               className="max-h-[86%] max-w-[92%] object-contain drop-shadow-2xl"
             />
           </div>
-        </div>
+        </ClayFrame>
 
         {/* Details grid */}
-        <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-[#eee] pt-8 md:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-[#e4ddd2] pt-8 md:grid-cols-4">
           {details.map((detail) => (
             <div key={detail.label}>
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#a2a2a2]">
+              <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9a8f82]">
                 {detail.label}
               </p>
-              <p className="text-[13px] leading-[1.5] text-[#2b2b2b]">
+              <p className="text-[13px] leading-[1.5] text-[#3d3228]">
                 {detail.value}
               </p>
             </div>
@@ -525,7 +569,7 @@ export default function Page() {
             <p>
               It ships as one codebase across three surfaces — a responsive web
               app, an installable PWA, and a native iOS App Store build — and is
-              developed under UCI's ICS Student Council (ICSSC)
+              developed under UCI&apos;s ICS Student Council (ICSSC)
             </p>
           </div>
           <div className="mt-8 flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-center">
@@ -533,6 +577,7 @@ export default function Page() {
               src={meeting}
               alt="ZotMeet meeting availability grid"
               maxWidth={900}
+              colorIndex={1}
             />
             <MediaSlot
               src={roomrec}
@@ -541,6 +586,7 @@ export default function Page() {
               caption="Room Recommendations based on best available time slots"
               ratio="4/5"
               maxWidth={250}
+              colorIndex={2}
             />
           </div>
         </Section>
@@ -563,7 +609,7 @@ export default function Page() {
               an actual campus room. So people bounced between three apps and a
               group chat — and still ended up without a place to sit.
             </p>
-            <p className="text-[#141414]">Thus, ZotMeet was born.</p>
+            <p className="text-[#2a1f16]">Thus, ZotMeet was born.</p>
           </div>
         </Section>
 
@@ -574,8 +620,13 @@ export default function Page() {
           title="TypeScript end-to-end, from Server Actions to the paint grid"
         >
           <div className="grid gap-4 sm:grid-cols-2">
-            {stackGroups.map((group) => (
-              <StackCard key={group.label} label={group.label} items={group.items} />
+            {stackGroups.map((group, i) => (
+              <StackCard
+                key={group.label}
+                label={group.label}
+                items={group.items}
+                colorIndex={i}
+              />
             ))}
           </div>
         </Section>
@@ -587,8 +638,13 @@ export default function Page() {
           title="Serverless on AWS, shipped by a zero-touch CI/CD pipeline"
         >
           <div className="grid gap-4 sm:grid-cols-2">
-            {infraGroups.map((group) => (
-              <StackCard key={group.label} label={group.label} items={group.items} />
+            {infraGroups.map((group, i) => (
+              <StackCard
+                key={group.label}
+                label={group.label}
+                items={group.items}
+                colorIndex={i + 2}
+              />
             ))}
           </div>
           <div className="mt-8">
@@ -597,6 +653,7 @@ export default function Page() {
               label="ZotMeet Deployment Architecture"
               caption="ZotMeet Deployment Architecture"
               ratio="16 / 9"
+              colorIndex={3}
             />
           </div>
         </Section>
@@ -611,10 +668,10 @@ export default function Page() {
             {spotlightFeatures.map((feature, index) => (
               <div key={feature.name}>
                 <div className="mb-4 flex items-baseline gap-3">
-                  <span className="text-[13px] font-semibold tabular-nums text-[#e05a28]">
+                  <span className="text-[13px] font-semibold tabular-nums text-[#8fad6e]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="text-[19px] font-semibold tracking-tight text-[#141414] md:text-[21px]">
+                  <h3 className="text-[19px] font-semibold tracking-tight text-[#2a1f16] md:text-[21px]">
                     {feature.name}
                   </h3>
                 </div>
@@ -624,22 +681,23 @@ export default function Page() {
                   kind={feature.media.kind}
                   ratio={feature.media.ratio}
                   caption={feature.media.caption}
+                  colorIndex={index}
                 />
               </div>
             ))}
           </div>
 
-          <div className="mt-12 border-t border-[#eee] pt-8">
-            <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#a2a2a2]">
+          <div className="mt-12 border-t border-[#e4ddd2] pt-8">
+            <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9a8f82]">
               And more
             </p>
             <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
               {moreFeatures.map((feature) => (
                 <div key={feature.name}>
-                  <h4 className="mb-1.5 text-[15px] font-semibold text-[#141414]">
+                  <h4 className="mb-1.5 text-[15px] font-semibold text-[#2a1f16]">
                     {feature.name}
                   </h4>
-                  <p className="text-[14px] leading-[1.55] text-[#565656]">
+                  <p className="text-[14px] leading-[1.55] text-[#6b5f52]">
                     {feature.blurb}
                   </p>
                 </div>
@@ -656,24 +714,29 @@ export default function Page() {
           title="A production app serving the UCI community"
         >
           <div className="mb-9 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {impactStats.map((stat) => (
-              <div
+            {impactStats.map((stat, i) => (
+              <ClayFrame
                 key={stat.label}
-                className="rounded-xl border border-[#ececec] bg-[#fbfaf9] px-4 py-5"
+                colorIndex={i}
+                thickness={4}
+                rounded="xl"
+                innerClassName="!bg-[#faf6ef]"
               >
-                <p className="text-[26px] font-semibold leading-none tracking-tight text-[#e05a28] md:text-[30px]">
-                  {stat.value}
-                </p>
-                <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[#8f8a83]">
-                  {stat.label}
-                </p>
-              </div>
+                <div className="px-4 py-5">
+                  <p className="text-[26px] font-semibold leading-none tracking-tight text-[#8fad6e] md:text-[30px]">
+                    {stat.value}
+                  </p>
+                  <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[#8f8578]">
+                    {stat.label}
+                  </p>
+                </div>
+              </ClayFrame>
             ))}
           </div>
           <ul className="space-y-4">
             {impactPoints.map((point, i) => (
               <li key={i} className={`flex gap-3 ${bodyText}`}>
-                <span className="mt-[11px] h-[5px] w-[5px] shrink-0 rounded-full bg-[#e05a28]" />
+                <span className="mt-[11px] h-[5px] w-[5px] shrink-0 rounded-full bg-[#8fad6e]" />
                 <span>{point}</span>
               </li>
             ))}

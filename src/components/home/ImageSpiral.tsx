@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { ClayFrame } from "@/components/clay"
 import { cn } from "@/lib/utils"
 
 export type SpiralImage = {
@@ -85,7 +86,7 @@ export function ImageSpiral({
             return (
               <div
                 key={`${image.src}-${i}`}
-                className="absolute size-[64px] overflow-hidden rounded-[13px] bg-[#ddd] shadow-[0_10px_28px_rgba(17,17,17,0.13),0_2px_6px_rgba(17,17,17,0.06)] sm:size-[76px] sm:rounded-[15px] md:size-[86px] md:rounded-[16px]"
+                className="absolute size-[64px] sm:size-[76px] md:size-[86px]"
                 style={{
                   left: `${x.toFixed(3)}%`,
                   top: `${y.toFixed(3)}%`,
@@ -95,13 +96,20 @@ export function ImageSpiral({
                   willChange: "transform, opacity",
                 }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={image.src}
-                  alt=""
-                  className="h-full w-full object-cover"
-                  draggable={false}
-                />
+                <ClayFrame
+                  colorIndex={i}
+                  thickness={4}
+                  rounded="lg"
+                  className="h-full w-full"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={image.src}
+                    alt=""
+                    className="h-full w-full object-cover"
+                    draggable={false}
+                  />
+                </ClayFrame>
               </div>
             )
           })

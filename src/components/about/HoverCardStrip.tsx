@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { ClayFrame, clayColor, clayColorNameAt } from "@/components/clay"
 import { cn } from "@/lib/utils"
 
 export type HoverStripItem = {
@@ -25,6 +26,8 @@ export function HoverCardStrip({ items, className }: HoverCardStripProps) {
       {items.map((item, i) => {
         const isActive = active === i
         const dimmed = active !== null && !isActive
+        const clayName = clayColorNameAt(i)
+        const clay = clayColor(clayName)
 
         return (
           <button
@@ -45,7 +48,12 @@ export function HoverCardStrip({ items, className }: HoverCardStripProps) {
             onFocus={() => setActive(i)}
             aria-label={item.caption}
           >
-            <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-black/5 bg-[#ddd] shadow-[0_10px_24px_rgba(0,0,0,0.1)]">
+            <ClayFrame
+              color={clayName}
+              thickness={5}
+              rounded="2xl"
+              className="aspect-[4/3] w-full"
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={item.src}
@@ -53,11 +61,12 @@ export function HoverCardStrip({ items, className }: HoverCardStripProps) {
                 className="h-full w-full object-cover"
                 draggable={false}
               />
-            </div>
+            </ClayFrame>
 
             <span
-              className="pointer-events-none absolute left-1/2 top-0 z-50 -translate-x-1/2 -translate-y-[calc(100%+14px)] whitespace-nowrap rounded-full bg-[#9babf0] px-3.5 py-1.5 text-[11px] leading-none text-white shadow-sm"
+              className="pointer-events-none absolute left-1/2 top-0 z-50 -translate-x-1/2 -translate-y-[calc(100%+14px)] whitespace-nowrap rounded-full px-3.5 py-1.5 text-[11px] leading-none text-[#1a1a1a] shadow-sm"
               style={{
+                background: clay,
                 opacity: isActive ? 1 : 0,
                 transform: isActive
                   ? "translate(-50%, 0)"
@@ -69,7 +78,8 @@ export function HoverCardStrip({ items, className }: HoverCardStripProps) {
               {item.caption}
               <span
                 aria-hidden
-                className="absolute left-1/2 top-full -translate-x-1/2 border-x-[6px] border-t-[7px] border-x-transparent border-t-[#9babf0]"
+                className="absolute left-1/2 top-full -translate-x-1/2 border-x-[6px] border-t-[7px] border-x-transparent"
+                style={{ borderTopColor: clay }}
               />
             </span>
           </button>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { ClayFrame } from "@/components/clay"
 import { cn } from "@/lib/utils"
 
 export type StackCard = {
@@ -55,7 +56,7 @@ export function PhotoStack({ cards, className }: PhotoStackProps) {
         return (
           <div
             key={`${card.alt}-${i}`}
-            className="absolute left-[12%] top-[6%] h-[78%] w-[58%] overflow-hidden rounded-2xl border border-black/5 bg-[#ddd] shadow-[0_18px_40px_rgba(0,0,0,0.14)]"
+            className="absolute left-[12%] top-[6%] h-[78%] w-[58%]"
             style={{
               zIndex: i + 1,
               transform: `translate3d(${x}px, ${y}px, 0) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) scale(${scale})`,
@@ -64,13 +65,20 @@ export function PhotoStack({ cards, className }: PhotoStackProps) {
               transformOrigin: "left center",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={card.src}
-              alt={card.alt}
-              className="h-full w-full object-cover"
-              draggable={false}
-            />
+            <ClayFrame
+              colorIndex={i}
+              thickness={5}
+              rounded="2xl"
+              className="h-full w-full"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={card.src}
+                alt={card.alt}
+                className="h-full w-full object-cover"
+                draggable={false}
+              />
+            </ClayFrame>
           </div>
         )
       })}

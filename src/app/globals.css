@@ -7,11 +7,17 @@
 @theme inline {
   --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
   --font-sans: var(--font-outfit), 'Avenir Next', 'Segoe UI', sans-serif;
-  --color-background: #f0f0f0;
-  --color-foreground: #f0f0f0;
+  --color-background: #f5f0e8;
+  --color-foreground: #f5f0e8;
   --color-muted: #888888;
-  --color-accent: #e05a28;
-  --color-border: #e8e8e8;
+  --color-accent: #8fad6e;
+  --color-border: #e4ddd2;
+  --color-clay-matcha: #8fad6e;
+  --color-clay-cream: #efe6d6;
+  --color-clay-chocolate: #6a4a35;
+  --color-clay-matcha-soft: #a8b87c;
+  --color-clay-oat: #d9cdb5;
+  --color-clay-cocoa: #4f3628;
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -176,4 +182,133 @@ body {
   50% {
     transform: translateY(-10px) rotate(4deg);
   }
+}
+
+/* Earthy claymation — textured rim + tactile hover */
+.clay-frame {
+  isolation: isolate;
+}
+
+.clay-frame-shadow {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.28) inset,
+    0 -1px 0 rgba(60, 40, 25, 0.12) inset,
+    0 5px 14px rgba(60, 40, 25, 0.12),
+    0 1px 3px rgba(60, 40, 25, 0.08);
+}
+
+.clay-texture {
+  z-index: 0;
+  background-image:
+    radial-gradient(
+      ellipse 120% 80% at 22% 18%,
+      rgba(255, 255, 255, 0.28),
+      transparent 52%
+    ),
+    radial-gradient(
+      ellipse 90% 70% at 78% 82%,
+      rgba(40, 28, 18, 0.18),
+      transparent 48%
+    ),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.25 0 0 0 0 0.18 0 0 0 0 0.1 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
+  background-size:
+    100% 100%,
+    100% 100%,
+    140px 140px;
+  background-blend-mode: soft-light, multiply, overlay;
+  opacity: 0.85;
+  mix-blend-mode: multiply;
+}
+
+.clay-frame-animate {
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.45s ease;
+  will-change: transform;
+}
+
+.clay-frame-animate:hover,
+.group:hover .clay-frame-animate {
+  transform: translateY(-3px) scale(1.025) rotate(0.6deg);
+  filter: brightness(1.04) saturate(1.06);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.34) inset,
+    0 -1px 0 rgba(60, 40, 25, 0.1) inset,
+    0 12px 28px rgba(60, 40, 25, 0.16),
+    0 4px 10px rgba(60, 40, 25, 0.1);
+}
+
+.clay-frame-animate:hover .clay-texture,
+.group:hover .clay-frame-animate .clay-texture {
+  animation: clay-grain-shift 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes clay-grain-shift {
+  0% {
+    background-position:
+      0 0,
+      0 0,
+      0 0;
+    opacity: 0.78;
+  }
+  100% {
+    background-position:
+      0 0,
+      0 0,
+      12px -8px;
+    opacity: 0.95;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clay-frame-animate,
+  .clay-frame-animate:hover,
+  .group:hover .clay-frame-animate {
+    transition: none;
+    transform: none;
+    animation: none;
+  }
+
+  .clay-frame-animate:hover .clay-texture,
+  .group:hover .clay-frame-animate .clay-texture {
+    animation: none;
+  }
+}
+
+.clay-btn {
+  position: relative;
+  overflow: hidden;
+  border-width: 3.5px !important;
+  border-style: solid !important;
+}
+
+.clay-btn > * {
+  position: relative;
+  z-index: 1;
+}
+
+.clay-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.3 0 0 0 0 0.22 0 0 0 0 0.12 0 0 0 0.45 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
+  background-size: 120px 120px;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.clay-btn:hover {
+  filter: brightness(1.04);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 3px 0 var(--clay-rim),
+    0 8px 18px rgba(60, 40, 25, 0.12) !important;
+}
+
+.clay-btn:active {
+  filter: brightness(0.98);
+  transform: translateY(1px) scale(0.99);
 }

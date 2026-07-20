@@ -1,13 +1,13 @@
 "use client"
 
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Home, Mail } from "lucide-react"
+import { ClayButton } from "@/components/clay"
 
 const RESUME_HREF =
   "https://drive.google.com/file/d/1a40jwDFfLG5DBDAXZaZafwwdplUpLRCl/view?usp=sharing"
 const LINKEDIN_HREF = "https://www.linkedin.com/in/ethanchaoo"
-const EMAIL_HREF = "/about"
+const EMAIL_HREF = "mailto:ewchao1@uci.edu"
 
 export function SiteNav() {
   const pathname = usePathname()
@@ -15,73 +15,78 @@ export function SiteNav() {
   const onHome = pathname === "/"
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#f5f5f5]/80 backdrop-blur-md">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#f5f0e8]/80 backdrop-blur-md">
       <nav className="mx-auto flex h-14 max-w-[1100px] items-center justify-between px-5 sm:px-8">
         <div className="flex items-center gap-2.5 sm:gap-3">
-          <Link
+          <ClayButton
             href="/"
             aria-label="Home"
-            className="flex size-8 items-center justify-center rounded-md border border-[#ddd] text-[#222] transition-colors hover:border-[#bbb] hover:bg-white"
+            size="icon"
+            colorIndex={2}
+            variant="soft"
+            className="size-8"
           >
             <Home className="size-3.5" strokeWidth={2} />
-          </Link>
-          <Link
+          </ClayButton>
+          <a
             href="/"
-            className="text-[14px] font-semibold tracking-tight text-[#111] lowercase"
+            className="text-[14px] font-semibold tracking-tight text-[#111] lowercase transition-colors hover:text-[#555]"
           >
             ethan chao
-          </Link>
+          </a>
           <div className="ml-0.5 flex items-center gap-1.5">
-            <Link
+            <ClayButton
               href={EMAIL_HREF}
               aria-label="Contact"
-              className="flex size-7 items-center justify-center rounded-full border border-[#e0e0e0] text-[#555] transition-colors hover:border-[#ccc] hover:bg-white hover:text-[#111]"
+              size="icon"
+              colorIndex={0}
+              variant="soft"
+              className="size-7"
             >
               <Mail className="size-3.5" strokeWidth={2} />
-            </Link>
-            <a
+            </ClayButton>
+            <ClayButton
               href={LINKEDIN_HREF}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="flex size-7 items-center justify-center rounded-full border border-[#e0e0e0] text-[#555] transition-colors hover:border-[#ccc] hover:bg-white hover:text-[#111]"
+              size="icon"
+              colorIndex={3}
+              variant="soft"
+              className="size-7"
             >
               <LinkedInIcon />
-            </a>
+            </ClayButton>
           </div>
         </div>
 
-        <div className="flex items-center gap-5 sm:gap-7">
-          {!onHome ? (
-            <Link
-              href="/#work"
-              className="text-[13px] font-medium text-[#444] transition-colors hover:text-[#111]"
-            >
-              Work
-            </Link>
-          ) : (
-            <a
-              href="#work"
-              className="text-[13px] font-medium text-[#444] transition-colors hover:text-[#111]"
-            >
-              Work
-            </a>
-          )}
-          <Link
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <ClayButton
+            href={onHome ? "#work" : "/#work"}
+            colorIndex={4}
+            variant={onHome ? "soft" : "outline"}
+            size="sm"
+          >
+            Work
+          </ClayButton>
+          <ClayButton
             href="/about"
-            className="text-[13px] font-medium transition-colors hover:text-[#111]"
-            style={{ color: onAboutPage ? "#111" : "#444" }}
+            colorIndex={5}
+            variant={onAboutPage ? "solid" : "outline"}
+            size="sm"
           >
             About
-          </Link>
-          <a
+          </ClayButton>
+          <ClayButton
             href={RESUME_HREF}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[13px] font-medium text-[#444] transition-colors hover:text-[#111]"
+            colorIndex={1}
+            variant="outline"
+            size="sm"
           >
             Resume
-          </a>
+          </ClayButton>
         </div>
       </nav>
     </header>

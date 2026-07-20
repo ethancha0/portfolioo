@@ -1,7 +1,7 @@
 "use client"
 
-import Link from "next/link"
 import { useCallback, useEffect, useState, type ReactNode } from "react"
+import { ClayButton } from "@/components/clay"
 
 type SectionMeta = {
   id: string
@@ -64,19 +64,20 @@ export function CaseStudyShell({
   }
 
   return (
-    <main className="min-h-screen bg-white pt-12 text-[#111]">
+    <main className="min-h-screen bg-[#f5f0e8] pt-12 text-[#2a1f16]">
       <div className="mx-auto flex max-w-[1200px] gap-10 px-6 py-10 lg:gap-16 lg:py-14">
         <aside className="hidden w-[186px] shrink-0 lg:block">
           <div className="sticky top-24">
-            <Link
+            <ClayButton
               href={backHref}
-              className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-[#888] transition-colors hover:text-[#e05a28]"
+              colorIndex={0}
+              variant="outline"
+              size="sm"
+              className="uppercase tracking-widest"
             >
-              <span className="transition-transform group-hover:-translate-x-0.5">
-                &larr;
-              </span>
+              <span>&larr;</span>
               {backLabel}
-            </Link>
+            </ClayButton>
 
             <nav className="mt-9 flex flex-col gap-2.5">
               {sections.map((section) => {
@@ -89,8 +90,8 @@ export function CaseStudyShell({
                       event.preventDefault()
                       scrollToSection(section.id)
                     }}
-                    className="text-left text-[12px] leading-tight tracking-tight transition-colors duration-200 hover:text-[#111]"
-                    style={{ color: isActive ? "#e05a28" : "#9a9a9a" }}
+                    className="text-left text-[12px] leading-tight tracking-tight transition-colors duration-200 hover:text-[#4f3628]"
+                    style={{ color: isActive ? "#8fad6e" : "#9a8f82" }}
                   >
                     {section.label}
                   </a>
@@ -98,13 +99,13 @@ export function CaseStudyShell({
               })}
             </nav>
 
-            <div className="relative mt-10 ml-1 h-24 w-px bg-[#ececec]">
+            <div className="relative mt-10 ml-1 h-24 w-px bg-[#e4ddd2]">
               <div
-                className="absolute left-0 top-0 w-px bg-[#e05a28]/40"
+                className="absolute left-0 top-0 w-px bg-[#8fad6e]/50"
                 style={{ height: `${progress * 100}%` }}
               />
               <div
-                className="absolute left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#e05a28] shadow-[0_0_0_4px_rgba(224,90,40,0.12)] transition-[top] duration-150 ease-out"
+                className="absolute left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#8fad6e] shadow-[0_0_0_4px_rgba(143,173,110,0.2)] transition-[top] duration-150 ease-out"
                 style={{ top: `calc(${progress * 100}% - 4px)` }}
               />
             </div>
@@ -112,15 +113,18 @@ export function CaseStudyShell({
         </aside>
 
         <div className="min-w-0 flex-1 lg:max-w-[760px]">
-          <Link
-            href={backHref}
-            className="group mb-8 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-[#888] transition-colors hover:text-[#e05a28] lg:hidden"
-          >
-            <span className="transition-transform group-hover:-translate-x-0.5">
-              &larr;
-            </span>
-            {backLabel}
-          </Link>
+          <div className="mb-8 lg:hidden">
+            <ClayButton
+              href={backHref}
+              colorIndex={0}
+              variant="outline"
+              size="sm"
+              className="uppercase tracking-widest"
+            >
+              <span>&larr;</span>
+              {backLabel}
+            </ClayButton>
+          </div>
           {children}
         </div>
       </div>

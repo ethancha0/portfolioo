@@ -2,7 +2,7 @@
 
 import Grainient from "@/components/Grainient"
 
-/** Shared ZotMeet Grainient — keep in sync with the home project card */
+/** Shared ZotMeet Grainient — earthy matcha / cream / chocolate clay theme */
 export function ZotMeetGrainient() {
   return (
     <Grainient

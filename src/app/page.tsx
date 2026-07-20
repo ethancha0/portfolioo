@@ -5,6 +5,7 @@ import type { PointerEvent, ReactNode } from "react"
 import interviewmeVideo from "@/imports/interviewme.mov"
 import pfizerImage from "@/imports/pfizer.png"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
+import { ClayButton, ClayFrame } from "@/components/clay"
 import zotmeet from "@/imports/zotmeet.png"
 import Grainient from "@/components/Grainient"
 import { ZotMeetGrainient } from "@/components/ZotMeetGrainient"
@@ -82,7 +83,6 @@ const spiralImages = [
 ]
 
 const heroPhrases = [
-  "ethan chao",
   "software engineer",
   "product engineer",
   "team lead",
@@ -118,7 +118,14 @@ const projects: Project[] = [
     displayTitle: "Pfizer",
     tags: ["Externship", "Engineering"],
     image: pfizerImage,
-    gradient: (
+    imageLayout: {
+      scale: 1,
+      x: 0,
+      y: 0,
+      maxWidth: 80,
+      maxHeight: 86,
+    },
+    /* gradient: ( 
       <div style={{ width: "2080px", height: "1080px", position: "relative" }}>
         <Grainient
           color1="#4d4244"
@@ -144,11 +151,12 @@ const projects: Project[] = [
           centerY={0}
           zoom={0.9}
         />
-      </div>
+      </div> 
     ),
+    */
     description: "Building OCR + RAG pipelines",
     isLight: true,
-    height: 360,
+    height: 300,
   },
   {
     id: "InterviewMe",
@@ -176,6 +184,7 @@ function ProjectCard({
   isDimmed,
   tilt,
   link,
+  colorIndex = 0,
   onPointerMove,
   onPointerEnter,
   onPointerLeave,
@@ -184,6 +193,7 @@ function ProjectCard({
   isHovered: boolean
   isDimmed: boolean
   link?: string
+  colorIndex?: number
   tilt: TiltState | null
   onPointerMove: (event: PointerEvent<HTMLDivElement>, id: string) => void
   onPointerEnter: (id: string) => void
@@ -194,9 +204,15 @@ function ProjectCard({
   const hasRichMedia = Boolean(project.video || project.image)
   const hasComponentBackground =
     project.gradient !== undefined && !isCssGradient(project.gradient)
+  const useContainedImage = Boolean(project.imageLayout) || hasComponentBackground
   const cssBackground =
     isCssGradient(project.gradient) && !hasRichMedia
       ? project.gradient
+      : undefined
+  // Soft cream fill when a logo is centered without a grainient backdrop
+  const containedImageFill =
+    useContainedImage && !hasComponentBackground && !cssBackground
+      ? "#f7f2ea"
       : undefined
   const imageLayout = project.imageLayout ?? {}
   const imageScale = imageLayout.scale ?? 0.82
@@ -240,7 +256,7 @@ function ProjectCard({
         onPointerLeave={onPointerLeave}
       >
         <div
-          className="relative overflow-visible rounded-[2px] transition-[transform,box-shadow,filter] duration-400 ease-out will-change-transform [transform-style:preserve-3d]"
+          className="relative overflow-visible transition-[transform,box-shadow,filter] duration-400 ease-out will-change-transform [transform-style:preserve-3d]"
           style={{
             height: project.height,
             transform: isHovered
@@ -251,114 +267,129 @@ function ProjectCard({
               : "0 0 0 rgba(17, 17, 17, 0)",
           }}
         >
-          <div className="absolute inset-0 overflow-hidden rounded-[2px]">
-            <div
-              className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
-              style={{
-                transform: isHovered
-                  ? "translateZ(28px) scale(1.035)"
-                  : "translateZ(0) scale(1)",
-                background: cssBackground,
-              }}
-            >
-              {hasComponentBackground ? (
-                <div className="absolute inset-0 z-0">{project.gradient}</div>
-              ) : null}
-              {project.video ? (
-                <video
-                  src={project.video}
-                  poster={project.poster}
-                  className={`h-full w-full object-cover object-top ${
-                    hasComponentBackground ? "relative z-10" : ""
-                  }`}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  aria-label={`${project.title} preview`}
-                />
-              ) : project.image ? (
-                hasComponentBackground ? (
-                  <div className="absolute inset-0 z-10 flex items-center justify-center p-8">
-                    <ImageWithFallback
-                      src={project.image}
-                      alt={`${project.title} interface`}
-                      className="object-contain"
-                      style={{
-                        maxWidth: `${imageMaxWidth}%`,
-                        maxHeight: `${imageMaxHeight}%`,
-                        transform: `translate(${imageX}px, ${imageY}px) scale(${imageScale})`,
-                        transformOrigin: "center center",
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <ImageWithFallback
-                    src={project.image}
-                    alt={`${project.title} interface`}
-                    className="h-full w-full object-cover object-top"
-                  />
-                )
-              ) : null}
-            </div>
-
-            <div
-              className={`absolute inset-0 transition-opacity duration-300 ${
-                hasRichMedia || hasComponentBackground
-                  ? "bg-gradient-to-t from-black/25 via-transparent to-transparent"
-                  : ""
-              }`}
-              style={{ transform: "translateZ(44px)" }}
-            />
-          </div>
-
-          <div className="pointer-events-none absolute inset-0 z-20 [transform-style:preserve-3d]">
-            {popoutItems.map((panel, index) => (
+          <ClayFrame
+            colorIndex={colorIndex}
+            thickness={6}
+            rounded="xl"
+            className="absolute inset-0 h-full w-full"
+            innerClassName="!bg-transparent"
+            shadow={!isHovered}
+          >
+            <div className="absolute inset-0 overflow-hidden">
               <div
-                key={`${panel.media.src}-${index}`}
-                className={`absolute overflow-hidden rounded-[7px] border border-white/70 bg-white/90 opacity-0 shadow-[0_18px_38px_rgba(17,17,17,0.20),0_6px_14px_rgba(17,17,17,0.12)] drop-shadow-lg backdrop-blur-sm transition-[opacity,transform,filter] duration-400 ease-out group-hover:opacity-100 ${panel.className} ${getPopoutSizeClass(panel.media)}`}
-                style={{ transitionDelay: `${panel.delay}ms` }}
+                className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
+                style={{
+                  transform: isHovered
+                    ? "translateZ(28px) scale(1.035)"
+                    : "translateZ(0) scale(1)",
+                  background: cssBackground ?? containedImageFill,
+                }}
               >
-                {isPopoutVideo(panel.media) ? (
+                {hasComponentBackground ? (
+                  <div className="absolute inset-0 z-0">{project.gradient}</div>
+                ) : null}
+                {project.video ? (
                   <video
-                    src={panel.media.src}
-                    poster={panel.media.poster}
-                    className="h-full w-full object-cover"
-                    style={{
-                      objectPosition: panel.media.objectPosition ?? "center",
-                    }}
+                    src={project.video}
+                    poster={project.poster}
+                    className={`h-full w-full object-cover object-top ${
+                      hasComponentBackground ? "relative z-10" : ""
+                    }`}
                     autoPlay
                     muted
                     loop
                     playsInline
                     preload="metadata"
-                    aria-label={
-                      panel.media.alt ??
-                      `${project.title} popout preview ${index + 1}`
-                    }
+                    aria-label={`${project.title} preview`}
                   />
-                ) : (
-                  <ImageWithFallback
-                    src={panel.media.src}
-                    alt={
-                      panel.media.alt ??
-                      `${project.title} popout preview ${index + 1}`
-                    }
-                    className="h-full w-full object-cover"
-                    style={{
-                      objectPosition: panel.media.objectPosition ?? "center",
-                    }}
-                  />
-                )}
-                <div className="pointer-events-none absolute inset-0 rounded-[7px] ring-1 ring-white/40" />
+                ) : project.image ? (
+                  useContainedImage ? (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center p-8">
+                      <ImageWithFallback
+                        src={project.image}
+                        alt={`${project.title} interface`}
+                        className="object-contain"
+                        style={{
+                          maxWidth: `${imageMaxWidth}%`,
+                          maxHeight: `${imageMaxHeight}%`,
+                          transform: `translate(${imageX}px, ${imageY}px) scale(${imageScale})`,
+                          transformOrigin: "center center",
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <ImageWithFallback
+                      src={project.image}
+                      alt={`${project.title} interface`}
+                      className="h-full w-full object-cover object-top"
+                    />
+                  )
+                ) : null}
+              </div>
+
+              <div
+                className={`absolute inset-0 transition-opacity duration-300 ${
+                  hasRichMedia && !useContainedImage
+                    ? "bg-gradient-to-t from-black/25 via-transparent to-transparent"
+                    : ""
+                }`}
+                style={{ transform: "translateZ(44px)" }}
+              />
+            </div>
+          </ClayFrame>
+
+          <div className="pointer-events-none absolute inset-0 z-20 [transform-style:preserve-3d]">
+            {popoutItems.map((panel, index) => (
+              <div
+                key={`${panel.media.src}-${index}`}
+                className={`absolute opacity-0 transition-[opacity,transform,filter] duration-400 ease-out group-hover:opacity-100 ${panel.className} ${getPopoutSizeClass(panel.media)}`}
+                style={{ transitionDelay: `${panel.delay}ms` }}
+              >
+                <ClayFrame
+                  color="chocolate"
+                  thickness={4}
+                  rounded="md"
+                  className="h-full w-full"
+                >
+                  {isPopoutVideo(panel.media) ? (
+                    <video
+                      src={panel.media.src}
+                      poster={panel.media.poster}
+                      className="h-full w-full object-cover"
+                      style={{
+                        objectPosition: panel.media.objectPosition ?? "center",
+                      }}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      aria-label={
+                        panel.media.alt ??
+                        `${project.title} popout preview ${index + 1}`
+                      }
+                    />
+                  ) : (
+                    <ImageWithFallback
+                      src={panel.media.src}
+                      alt={
+                        panel.media.alt ??
+                        `${project.title} popout preview ${index + 1}`
+                      }
+                      className="h-full w-full object-cover"
+                      style={{
+                        objectPosition: panel.media.objectPosition ?? "center",
+                      }}
+                    />
+                  )}
+                </ClayFrame>
                 <div className="pointer-events-none absolute -bottom-3 left-4 right-4 h-4 rounded-full bg-black/20 blur-lg" />
               </div>
             ))}
           </div>
 
           <div
-            className="pointer-events-none absolute inset-0 z-40 rounded-[2px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            className="pointer-events-none absolute inset-0 z-40 rounded-[22px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             style={{
               transform: "translateZ(74px)",
               background:
@@ -406,7 +437,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] text-[#111]">
+    <div className="min-h-screen bg-[#f5f0e8] text-[#2a1f16]">
       <main>
         {/* Hero — mockup-inspired centered composition */}
         <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-5 pb-16 pt-20">
@@ -415,11 +446,11 @@ export default function App() {
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse 70% 55% at 50% 42%, #ffffff 0%, #f5f5f5 55%, #eeeeee 100%)",
+                "radial-gradient(ellipse 70% 55% at 50% 42%, #fbf7f0 0%, #f5f0e8 52%, #ebe3d6 100%)",
             }}
           />
           <div
-            className="pointer-events-none absolute inset-0 opacity-[0.35]"
+            className="pointer-events-none absolute inset-0 opacity-[0.28]"
             style={{
               backgroundImage:
                 "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")",
@@ -433,7 +464,12 @@ export default function App() {
               <ImageSpiral images={spiralImages} />
 
               <div className="absolute bottom-0 left-1/2 z-20 w-[108px] -translate-x-1/2 sm:w-[124px] md:w-[136px]">
-                <div className="overflow-hidden rounded-full shadow-[0_12px_40px_rgba(17,17,17,0.12)] ring-4 ring-white/90">
+                <ClayFrame
+                  color="chocolate"
+                  thickness={5}
+                //  rounded="full"
+                  className="w-full"
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={img("portrait")}
@@ -441,22 +477,28 @@ export default function App() {
                     className="aspect-square w-full object-cover object-[50%_18%]"
                     draggable={false}
                   />
-                </div>
+                </ClayFrame>
               </div>
             </div>
 
+
+            <h1 className="min-h-[1.15em] text-center text-[36px] font-bold leading-none tracking-tight text-[#111] lowercase sm:text-[44px] md:text-[52px]">
+              Ethan Chao
+            </h1>
+
             <CyclingTypewriter
               phrases={heroPhrases}
-              className="min-h-[1.15em] text-center text-[36px] font-bold leading-none tracking-tight text-[#111] lowercase sm:text-[44px] md:text-[52px]"
+              className="mt-4 max-w-[340px] text-center text-[14px] leading-relaxed text-[#666] sm:max-w-[380px] sm:text-[15px]"
             />
+
 
             <p className="mt-4 max-w-[340px] text-center text-[14px] leading-relaxed text-[#666] sm:max-w-[380px] sm:text-[15px]">
               building software and the teams behind it — from campus products
               to production systems
             </p>
 
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#dff5e4] px-4 py-2 text-[13px] text-[#1f6b3a]">
-              <span className="size-1.5 rounded-full bg-[#2f9e5a] shadow-[0_0_0_3px_rgba(47,158,90,0.2)]" />
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border-[3.5px] border-[#8fad6e] bg-[#eef3e4] px-4 py-2 text-[13px] text-[#3d5a2e] shadow-[0_2px_0_#6f8c52,0_5px_12px_rgba(60,40,25,0.08)]">
+              <span className="size-1.5 rounded-full bg-[#6f8c52] shadow-[0_0_0_3px_rgba(111,140,82,0.25)]" />
               <span
                 className="font-medium"
                 style={{
@@ -488,11 +530,12 @@ export default function App() {
             </h2>
           </div>
           <div className="grid grid-cols-1 gap-6">
-            {projects.map((project) => (
+            {projects.map((project, index) => (
               <ProjectCard
                 key={project.id}
                 project={project}
                 link={project.link}
+                colorIndex={index}
                 isHovered={hoveredProject === project.id}
                 isDimmed={isProjectFocused && hoveredProject !== project.id}
                 tilt={tilt}
@@ -534,38 +577,38 @@ export default function App() {
               <h3 className="mb-4 text-[10px] font-semibold tracking-widest text-[#888] uppercase">
                 Links
               </h3>
-              <div className="flex flex-col gap-2">
-                <a
+              <div className="flex flex-col gap-2.5">
+                <ClayButton
                   href="https://www.linkedin.com/in/ethanchaoo"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/link flex items-center gap-1.5 text-left text-[13px] text-[#111] transition-colors hover:text-[#2f9e5a]"
+                  colorIndex={3}
+                  variant="outline"
+                  size="sm"
+                  className="w-fit"
                 >
-                  <span className="text-[#ccc] transition-colors group-hover/link:text-[#2f9e5a]">
-                    →
-                  </span>
                   LinkedIn
-                </a>
-                <a
+                </ClayButton>
+                <ClayButton
                   href="https://drive.google.com/file/d/1a40jwDFfLG5DBDAXZaZafwwdplUpLRCl/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/link flex items-center gap-1.5 text-left text-[13px] text-[#111] transition-colors hover:text-[#2f9e5a]"
+                  colorIndex={0}
+                  variant="outline"
+                  size="sm"
+                  className="w-fit"
                 >
-                  <span className="text-[#ccc] transition-colors group-hover/link:text-[#2f9e5a]">
-                    →
-                  </span>
                   Resume
-                </a>
-                <a
+                </ClayButton>
+                <ClayButton
                   href="/about"
-                  className="group/link flex items-center gap-1.5 text-left text-[13px] text-[#111] transition-colors hover:text-[#2f9e5a]"
+                  colorIndex={2}
+                  variant="outline"
+                  size="sm"
+                  className="w-fit"
                 >
-                  <span className="text-[#ccc] transition-colors group-hover/link:text-[#2f9e5a]">
-                    →
-                  </span>
                   About
-                </a>
+                </ClayButton>
               </div>
             </div>
           </div>
