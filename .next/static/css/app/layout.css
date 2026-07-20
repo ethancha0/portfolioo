@@ -1188,6 +1188,9 @@
   .bg-\[\#e8e4dc\] {
     background-color: #e8e4dc;
   }
+  .bg-\[\#ebe4d8\] {
+    background-color: #ebe4d8;
+  }
   .bg-\[\#ececec\] {
     background-color: #ececec;
   }
@@ -1327,6 +1330,9 @@
   .px-0 {
     padding-inline: 0;
   }
+  .px-1\.5 {
+    padding-inline: calc(var(--spacing) * 1.5);
+  }
   .px-2\.5 {
     padding-inline: calc(var(--spacing) * 2.5);
   }
@@ -1344,6 +1350,9 @@
   }
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
+  }
+  .py-0\.5 {
+    padding-block: calc(var(--spacing) * 0.5);
   }
   .py-1 {
     padding-block: var(--spacing);

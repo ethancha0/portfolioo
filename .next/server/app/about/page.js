@@ -320,6 +320,7 @@ var map = {
 	"./people/tomo.jpeg": "(ssr)/./src/imports/people/tomo.jpeg",
 	"./people/zmxaa.jpeg": "(ssr)/./src/imports/people/zmxaa.jpeg",
 	"./pfizer.png": "(ssr)/./src/imports/pfizer.png",
+	"./pfizer/dash.png": "(ssr)/./src/imports/pfizer/dash.png",
 	"./zotmeet-mobile.png": "(ssr)/./src/imports/zotmeet-mobile.png",
 	"./zotmeet.png": "(ssr)/./src/imports/zotmeet.png",
 	"./zotmeet/architecture.png": "(ssr)/./src/imports/zotmeet/architecture.png",
@@ -346,6 +347,7 @@ var map = {
 	"src/imports/people/tomo.jpeg": "(ssr)/./src/imports/people/tomo.jpeg",
 	"src/imports/people/zmxaa.jpeg": "(ssr)/./src/imports/people/zmxaa.jpeg",
 	"src/imports/pfizer.png": "(ssr)/./src/imports/pfizer.png",
+	"src/imports/pfizer/dash.png": "(ssr)/./src/imports/pfizer/dash.png",
 	"src/imports/zotmeet-mobile.png": "(ssr)/./src/imports/zotmeet-mobile.png",
 	"src/imports/zotmeet.png": "(ssr)/./src/imports/zotmeet.png",
 	"src/imports/zotmeet/architecture.png": "(ssr)/./src/imports/zotmeet/architecture.png",
@@ -603,6 +605,17 @@ module.exports = __webpack_require__.p + "static/media/zmxaa.9b0f367c.jpeg";
 
 "use strict";
 module.exports = __webpack_require__.p + "static/media/pfizer.73444b03.png";
+
+/***/ }),
+
+/***/ "(ssr)/./src/imports/pfizer/dash.png":
+/*!*************************************!*\
+  !*** ./src/imports/pfizer/dash.png ***!
+  \*************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "static/media/dash.20ebb36e.png";
 
 /***/ }),
 

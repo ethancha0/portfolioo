@@ -1,6 +1,6 @@
 {
+  "/zotmeet/page": "app/zotmeet/page.js",
   "/page": "app/page.js",
   "/about/page": "app/about/page.js",
-  "/zotmeet/page": "app/zotmeet/page.js",
   "/pfizer/page": "app/pfizer/page.js"
 }
