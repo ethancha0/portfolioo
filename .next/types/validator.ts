@@ -54,6 +54,15 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
   type __Unused = __Check
 }
 
+// Validate ../../src/app/pfizer/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/pfizer">> = Specific
+  const handler = {} as typeof import("../../src/app/pfizer/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../src/app/zotmeet/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/zotmeet">> = Specific

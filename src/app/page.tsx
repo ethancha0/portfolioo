@@ -7,7 +7,6 @@ import pfizerImage from "@/imports/pfizer.png"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
 import { ClayButton, ClayFrame } from "@/components/clay"
 import zotmeet from "@/imports/zotmeet.png"
-import Grainient from "@/components/Grainient"
 import { ZotMeetGrainient } from "@/components/ZotMeetGrainient"
 import { ImageSpiral } from "@/components/home/ImageSpiral"
 import { CyclingTypewriter } from "@/components/home/CyclingTypewriter"
@@ -88,6 +87,9 @@ const heroPhrases = [
   "team lead",
 ]
 
+/** Temporary: flat 2D project cards — set true to restore popouts + tilt */
+const ENABLE_PROJECT_3D = false
+
 const projects: Project[] = [
   {
     id: "ZotMeet",
@@ -125,6 +127,7 @@ const projects: Project[] = [
       maxWidth: 80,
       maxHeight: 86,
     },
+    link: "/pfizer",
     /* gradient: ( 
       <div style={{ width: "2080px", height: "1080px", position: "relative" }}>
         <Grainient
@@ -248,20 +251,26 @@ function ProjectCard({
     <a href={link}>
       <div
         data-cursor-label="View Project"
-        className={`group relative z-0 cursor-pointer transition-[filter,opacity,transform] duration-300 [perspective:1100px] hover:z-30 ${
-          isDimmed ? "scale-[0.992] opacity-55 blur-[1.25px]" : ""
-        }`}
+        className={`group relative z-0 cursor-pointer transition-[filter,opacity,transform] duration-300 hover:z-30 ${
+          ENABLE_PROJECT_3D ? "[perspective:1100px]" : ""
+        } ${isDimmed ? "scale-[0.992] opacity-55 blur-[1.25px]" : ""}`}
         onPointerEnter={() => onPointerEnter(project.id)}
         onPointerMove={(event) => onPointerMove(event, project.id)}
         onPointerLeave={onPointerLeave}
       >
         <div
-          className="relative overflow-visible transition-[transform,box-shadow,filter] duration-400 ease-out will-change-transform [transform-style:preserve-3d]"
+          className={`relative rounded-[26px] transition-[transform,box-shadow,filter] duration-400 ease-out will-change-transform ${
+            ENABLE_PROJECT_3D
+              ? "overflow-visible [transform-style:preserve-3d]"
+              : "overflow-visible"
+          }`}
           style={{
             height: project.height,
             transform: isHovered
-              ? `rotateX(${rotateX * 0.55}deg) rotateY(${rotateY * 0.55}deg) translateY(-12px) translateZ(44px) scale(1.025)`
-              : "rotateX(0deg) rotateY(0deg) translateY(0) scale(1)",
+              ? ENABLE_PROJECT_3D
+                ? `rotateX(${rotateX * 0.55}deg) rotateY(${rotateY * 0.55}deg) translateY(-12px) translateZ(44px) scale(1.025)`
+                : "translateY(-6px)"
+              : "none",
             boxShadow: isHovered
               ? "0 24px 52px rgba(17, 17, 17, 0.18), 0 8px 18px rgba(17, 17, 17, 0.10)"
               : "0 0 0 rgba(17, 17, 17, 0)",
@@ -274,14 +283,16 @@ function ProjectCard({
             className="absolute inset-0 h-full w-full"
             innerClassName="!bg-transparent"
             shadow={!isHovered}
+            animate={ENABLE_PROJECT_3D}
           >
             <div className="absolute inset-0 overflow-hidden">
               <div
                 className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
                 style={{
-                  transform: isHovered
-                    ? "translateZ(28px) scale(1.035)"
-                    : "translateZ(0) scale(1)",
+                  transform:
+                    ENABLE_PROJECT_3D && isHovered
+                      ? "translateZ(28px) scale(1.035)"
+                      : "none",
                   background: cssBackground ?? containedImageFill,
                 }}
               >
@@ -333,65 +344,69 @@ function ProjectCard({
                     ? "bg-gradient-to-t from-black/25 via-transparent to-transparent"
                     : ""
                 }`}
-                style={{ transform: "translateZ(44px)" }}
+                style={
+                  ENABLE_PROJECT_3D ? { transform: "translateZ(44px)" } : undefined
+                }
               />
             </div>
           </ClayFrame>
 
-          <div className="pointer-events-none absolute inset-0 z-20 [transform-style:preserve-3d]">
-            {popoutItems.map((panel, index) => (
-              <div
-                key={`${panel.media.src}-${index}`}
-                className={`absolute opacity-0 transition-[opacity,transform,filter] duration-400 ease-out group-hover:opacity-100 ${panel.className} ${getPopoutSizeClass(panel.media)}`}
-                style={{ transitionDelay: `${panel.delay}ms` }}
-              >
-                <ClayFrame
-                  color="chocolate"
-                  thickness={4}
-                  rounded="md"
-                  className="h-full w-full"
+          {ENABLE_PROJECT_3D ? (
+            <div className="pointer-events-none absolute inset-0 z-20 [transform-style:preserve-3d]">
+              {popoutItems.map((panel, index) => (
+                <div
+                  key={`${panel.media.src}-${index}`}
+                  className={`absolute opacity-0 transition-[opacity,transform,filter] duration-400 ease-out group-hover:opacity-100 ${panel.className} ${getPopoutSizeClass(panel.media)}`}
+                  style={{ transitionDelay: `${panel.delay}ms` }}
                 >
-                  {isPopoutVideo(panel.media) ? (
-                    <video
-                      src={panel.media.src}
-                      poster={panel.media.poster}
-                      className="h-full w-full object-cover"
-                      style={{
-                        objectPosition: panel.media.objectPosition ?? "center",
-                      }}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      aria-label={
-                        panel.media.alt ??
-                        `${project.title} popout preview ${index + 1}`
-                      }
-                    />
-                  ) : (
-                    <ImageWithFallback
-                      src={panel.media.src}
-                      alt={
-                        panel.media.alt ??
-                        `${project.title} popout preview ${index + 1}`
-                      }
-                      className="h-full w-full object-cover"
-                      style={{
-                        objectPosition: panel.media.objectPosition ?? "center",
-                      }}
-                    />
-                  )}
-                </ClayFrame>
-                <div className="pointer-events-none absolute -bottom-3 left-4 right-4 h-4 rounded-full bg-black/20 blur-lg" />
-              </div>
-            ))}
-          </div>
+                  <ClayFrame
+                    color="chocolate"
+                    thickness={4}
+                    rounded="md"
+                    className="h-full w-full"
+                  >
+                    {isPopoutVideo(panel.media) ? (
+                      <video
+                        src={panel.media.src}
+                        poster={panel.media.poster}
+                        className="h-full w-full object-cover"
+                        style={{
+                          objectPosition: panel.media.objectPosition ?? "center",
+                        }}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        aria-label={
+                          panel.media.alt ??
+                          `${project.title} popout preview ${index + 1}`
+                        }
+                      />
+                    ) : (
+                      <ImageWithFallback
+                        src={panel.media.src}
+                        alt={
+                          panel.media.alt ??
+                          `${project.title} popout preview ${index + 1}`
+                        }
+                        className="h-full w-full object-cover"
+                        style={{
+                          objectPosition: panel.media.objectPosition ?? "center",
+                        }}
+                      />
+                    )}
+                  </ClayFrame>
+                  <div className="pointer-events-none absolute -bottom-3 left-4 right-4 h-4 rounded-full bg-black/20 blur-lg" />
+                </div>
+              ))}
+            </div>
+          ) : null}
 
           <div
-            className="pointer-events-none absolute inset-0 z-40 rounded-[22px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            className="pointer-events-none absolute inset-0 z-40 rounded-[26px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             style={{
-              transform: "translateZ(74px)",
+              transform: ENABLE_PROJECT_3D ? "translateZ(74px)" : undefined,
               background:
                 "linear-gradient(135deg, rgba(255,255,255,0.14), transparent 34%, rgba(255,255,255,0.05) 62%, transparent)",
             }}
@@ -420,6 +435,8 @@ export default function App() {
     event: PointerEvent<HTMLDivElement>,
     id: string,
   ) => {
+    if (!ENABLE_PROJECT_3D) return
+
     const bounds = event.currentTarget.getBoundingClientRect()
     const x = (event.clientX - bounds.left) / bounds.width - 0.5
     const y = (event.clientY - bounds.top) / bounds.height - 0.5

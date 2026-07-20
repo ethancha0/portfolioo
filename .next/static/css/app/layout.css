@@ -1203,6 +1203,9 @@
   .bg-\[\#f5f0e8\]\/80 {
     background-color: color-mix(in oklab, #f5f0e8 80%, transparent);
   }
+  .bg-\[\#f7f2ea\] {
+    background-color: #f7f2ea;
+  }
   .bg-\[\#f7f2ea\]\/80 {
     background-color: color-mix(in oklab, #f7f2ea 80%, transparent);
   }
