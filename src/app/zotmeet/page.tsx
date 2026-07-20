@@ -1,11 +1,14 @@
-import type { ReactNode } from "react"
+"use client"
+
+import { useEffect, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react"
 import { CaseStudyShell } from "@/components/casestudy/CaseStudyShell"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
 import { ZotMeetGrainient } from "@/components/ZotMeetGrainient"
 import { formatTimeline } from "@/lib/formatTimeline"
 import zotmeet from "@/imports/zotmeet.png"
 //import zotmeetMobile from "@/imports/zotmeet-mobile.png"
-import roomrec from "@/imports/zotmeet/videos/room-rec.mov"
+import roomrec from "@/imports/zotmeet/videos/room-rec.mp4"
+import meeting from "@/imports/zotmeet/meeting.png"
 
 const sections = [
   { id: "overview", label: "Overview" },
@@ -226,70 +229,154 @@ function MediaIcon({ kind }: { kind: "image" | "video" }) {
  * Media slot for feature imagery or looping clips. Pass `src` for a real
  * asset; otherwise it renders a labelled placeholder that reserves space.
  * Videos autoplay muted, loop, and never show playback controls.
+ * Images dim on hover and open a full-screen lightbox on click.
  */
 function MediaSlot({
   label,
   caption,
   kind,
-  ratio = "16 / 9",
+  ratio,
+  fit = "cover",
+  maxWidth,
   src,
   alt,
 }: {
   label?: string
   caption?: string
   kind?: "image" | "video"
+  /** Aspect ratio box, e.g. `"16 / 9"`. Omit to use the media's natural size. */
   ratio?: string
+  /** How media fills a fixed ratio box. Ignored when `ratio` is omitted. */
+  fit?: "cover" | "contain"
+  /** Caps the media width, e.g. `"420px"`, `"60%"`, or `480`. */
+  maxWidth?: string | number
   src?: string
   alt?: string
 }) {
+  const [expanded, setExpanded] = useState(false)
   const isVideo =
     kind === "video" ||
     (kind !== "image" && !!src && /\.(mov|mp4|webm|ogg)(\?|$)/i.test(src))
+  const isExpandableImage = Boolean(src) && !isVideo
+  const resolvedMaxWidth =
+    maxWidth == null
+      ? undefined
+      : typeof maxWidth === "number"
+        ? `${maxWidth}px`
+        : maxWidth
+  const resolvedRatio = ratio ?? (isVideo ? "16 / 9" : undefined)
+  const objectFitClass = fit === "contain" ? "object-contain" : "object-cover"
+
+  useEffect(() => {
+    if (!expanded) return
+    const onKey = (event: Event) => {
+      if ("key" in event && event.key === "Escape") setExpanded(false)
+    }
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    window.addEventListener("keydown", onKey)
+    return () => {
+      document.body.style.overflow = prevOverflow
+      window.removeEventListener("keydown", onKey)
+    }
+  }, [expanded])
 
   return (
-    <figure className="my-2">
-      <div
-        className="relative flex items-center justify-center overflow-hidden rounded-xl border border-[#ececec] bg-gradient-to-br from-[#faf9f7] to-[#f0eeea]"
-        style={{ aspectRatio: ratio }}
+    <>
+      <figure
+        className={`my-2 ${resolvedMaxWidth ? "mx-auto w-full" : ""}`}
+        style={resolvedMaxWidth ? { maxWidth: resolvedMaxWidth } : undefined}
       >
-        {src ? (
-          isVideo ? (
-            <video
-              src={src}
-              className="h-full w-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              controls={false}
-              disablePictureInPicture
-              preload="metadata"
-              aria-label={alt ?? label}
-            />
+        <div
+          className={`relative flex items-center justify-center overflow-hidden rounded-xl border border-[#ececec] bg-gradient-to-br from-[#faf9f7] to-[#f0eeea] ${
+            isExpandableImage ? "group cursor-pointer" : ""
+          }`}
+          style={resolvedRatio ? { aspectRatio: resolvedRatio } : undefined}
+          {...(isExpandableImage
+            ? {
+                role: "button" as const,
+                tabIndex: 0,
+                "data-cursor-label": "View Image",
+                "aria-label": `View larger: ${alt ?? label ?? "image"}`,
+                onClick: () => setExpanded(true),
+                onKeyDown: (event: ReactKeyboardEvent) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault()
+                    setExpanded(true)
+                  }
+                },
+              }
+            : {})}
+        >
+          {src ? (
+            isVideo ? (
+              <video
+                src={src}
+                className={`h-full w-full ${objectFitClass}`}
+                autoPlay
+                muted
+                loop
+                playsInline
+                controls={false}
+                disablePictureInPicture
+                preload="metadata"
+                aria-label={alt ?? label}
+              />
+            ) : (
+              <>
+                <ImageWithFallback
+                  src={src}
+                  alt={alt ?? label ?? ""}
+                  className={
+                    resolvedRatio
+                      ? `h-full w-full ${objectFitClass} transition-[filter,opacity] duration-300 group-hover:brightness-[0.82]`
+                      : "h-auto w-full transition-[filter,opacity] duration-300 group-hover:brightness-[0.82]"
+                  }
+                />
+                <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/18" />
+              </>
+            )
           ) : (
-            <ImageWithFallback
-              src={src}
-              alt={alt ?? label ?? ""}
-              className="h-full w-full object-cover"
-            />
-          )
-        ) : (
-          <div className="flex flex-col items-center gap-2.5 text-[#b9b4ac]">
-            <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e0d9] bg-white/70">
-              <MediaIcon kind={isVideo ? "video" : "image"} />
-            </span>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.16em]">
-              {label}
-            </span>
-          </div>
-        )}
-      </div>
-      {caption ? (
-        <figcaption className="mt-3 text-[13px] italic leading-snug text-[#8f8a83]">
-          {caption}
-        </figcaption>
+            <div
+              className="flex flex-col items-center gap-2.5 text-[#b9b4ac]"
+              style={resolvedRatio ? undefined : { aspectRatio: "16 / 9" }}
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e0d9] bg-white/70">
+                <MediaIcon kind={isVideo ? "video" : "image"} />
+              </span>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.16em]">
+                {label}
+              </span>
+            </div>
+          )}
+        </div>
+        {caption ? (
+          <figcaption className="mt-3 text-[13px] italic leading-snug text-[#8f8a83]">
+            {caption}
+          </figcaption>
+        ) : null}
+      </figure>
+
+      {expanded && src && !isVideo ? (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-5 backdrop-blur-[2px] sm:p-10"
+          role="dialog"
+          aria-modal="true"
+          aria-label={alt ?? label ?? "Expanded image"}
+          data-cursor-label="Close"
+          onClick={() => setExpanded(false)}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src}
+            alt={alt ?? label ?? ""}
+            className="max-h-full max-w-full rounded-xl object-contain shadow-[0_24px_80px_rgba(0,0,0,0.45)]"
+            onClick={(event) => event.stopPropagation()}
+            draggable={false}
+          />
+        </div>
       ) : null}
-    </figure>
+    </>
   )
 }
 
@@ -386,7 +473,7 @@ export default function Page() {
           <div className="absolute inset-0">
             <ZotMeetGrainient />
           </div>
-          <div className="relative flex h-full w-full items-center justify-center p-6">
+          <div className="relative flex h-full w-full items-center justify-center mt-12">
             <ImageWithFallback
               src={zotmeet}
               alt="ZotMeet app preview"
@@ -436,13 +523,19 @@ export default function Page() {
               developed under UCI's ICS Student Council (ICSSC)
             </p>
           </div>
-          <div className="mt-8">
+          <div className="mt-8 flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-center">
+            <MediaSlot
+              src={meeting}
+              alt="ZotMeet meeting availability grid"
+              maxWidth={900}
+            />
             <MediaSlot
               src={roomrec}
               kind="video"
               alt="ZotMeet across web and mobile"
-              caption="One codebase, three surfaces: responsive web, installable PWA, and native iOS."
-            //  ratio="16 / 9"
+              caption="Room Recommendations based on best available time slots"
+              ratio="4/5"
+              maxWidth={250}
             />
           </div>
         </Section>

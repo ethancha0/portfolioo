@@ -257,7 +257,8 @@ var map = {
 	"./pfizer.png": "(app-pages-browser)/./src/imports/pfizer.png",
 	"./zotmeet-mobile.png": "(app-pages-browser)/./src/imports/zotmeet-mobile.png",
 	"./zotmeet.png": "(app-pages-browser)/./src/imports/zotmeet.png",
-	"./zotmeet/videos/room-rec.mov": "(app-pages-browser)/./src/imports/zotmeet/videos/room-rec.mov",
+	"./zotmeet/meeting.png": "(app-pages-browser)/./src/imports/zotmeet/meeting.png",
+	"./zotmeet/videos/room-rec.mp4": "(app-pages-browser)/./src/imports/zotmeet/videos/room-rec.mp4",
 	"src/imports/dsa/dsa-dash.png": "(app-pages-browser)/./src/imports/dsa/dsa-dash.png",
 	"src/imports/food/mazemen.jpeg": "(app-pages-browser)/./src/imports/food/mazemen.jpeg",
 	"src/imports/fusion.png": "(app-pages-browser)/./src/imports/fusion.png",
@@ -281,7 +282,8 @@ var map = {
 	"src/imports/pfizer.png": "(app-pages-browser)/./src/imports/pfizer.png",
 	"src/imports/zotmeet-mobile.png": "(app-pages-browser)/./src/imports/zotmeet-mobile.png",
 	"src/imports/zotmeet.png": "(app-pages-browser)/./src/imports/zotmeet.png",
-	"src/imports/zotmeet/videos/room-rec.mov": "(app-pages-browser)/./src/imports/zotmeet/videos/room-rec.mov"
+	"src/imports/zotmeet/meeting.png": "(app-pages-browser)/./src/imports/zotmeet/meeting.png",
+	"src/imports/zotmeet/videos/room-rec.mp4": "(app-pages-browser)/./src/imports/zotmeet/videos/room-rec.mp4"
 };
 
 
@@ -570,14 +572,25 @@ module.exports = __webpack_require__.p + "static/media/zotmeet.9251372a.png";
 
 /***/ }),
 
-/***/ "(app-pages-browser)/./src/imports/zotmeet/videos/room-rec.mov":
+/***/ "(app-pages-browser)/./src/imports/zotmeet/meeting.png":
+/*!*****************************************!*\
+  !*** ./src/imports/zotmeet/meeting.png ***!
+  \*****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "static/media/meeting.7dc88f58.png";
+
+/***/ }),
+
+/***/ "(app-pages-browser)/./src/imports/zotmeet/videos/room-rec.mp4":
 /*!*************************************************!*\
-  !*** ./src/imports/zotmeet/videos/room-rec.mov ***!
+  !*** ./src/imports/zotmeet/videos/room-rec.mp4 ***!
   \*************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "static/media/room-rec.177d1447.mov";
+module.exports = __webpack_require__.p + "static/media/room-rec.ddfc71df.mp4";
 
 /***/ }),
 

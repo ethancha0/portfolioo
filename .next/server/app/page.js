@@ -256,7 +256,8 @@ var map = {
 	"./pfizer.png": "(ssr)/./src/imports/pfizer.png",
 	"./zotmeet-mobile.png": "(ssr)/./src/imports/zotmeet-mobile.png",
 	"./zotmeet.png": "(ssr)/./src/imports/zotmeet.png",
-	"./zotmeet/videos/room-rec.mov": "(ssr)/./src/imports/zotmeet/videos/room-rec.mov",
+	"./zotmeet/meeting.png": "(ssr)/./src/imports/zotmeet/meeting.png",
+	"./zotmeet/videos/room-rec.mp4": "(ssr)/./src/imports/zotmeet/videos/room-rec.mp4",
 	"src/imports/dsa/dsa-dash.png": "(ssr)/./src/imports/dsa/dsa-dash.png",
 	"src/imports/food/mazemen.jpeg": "(ssr)/./src/imports/food/mazemen.jpeg",
 	"src/imports/fusion.png": "(ssr)/./src/imports/fusion.png",
@@ -280,7 +281,8 @@ var map = {
 	"src/imports/pfizer.png": "(ssr)/./src/imports/pfizer.png",
 	"src/imports/zotmeet-mobile.png": "(ssr)/./src/imports/zotmeet-mobile.png",
 	"src/imports/zotmeet.png": "(ssr)/./src/imports/zotmeet.png",
-	"src/imports/zotmeet/videos/room-rec.mov": "(ssr)/./src/imports/zotmeet/videos/room-rec.mov"
+	"src/imports/zotmeet/meeting.png": "(ssr)/./src/imports/zotmeet/meeting.png",
+	"src/imports/zotmeet/videos/room-rec.mp4": "(ssr)/./src/imports/zotmeet/videos/room-rec.mp4"
 };
 
 
@@ -569,14 +571,25 @@ module.exports = __webpack_require__.p + "static/media/zotmeet.9251372a.png";
 
 /***/ }),
 
-/***/ "(ssr)/./src/imports/zotmeet/videos/room-rec.mov":
+/***/ "(ssr)/./src/imports/zotmeet/meeting.png":
+/*!*****************************************!*\
+  !*** ./src/imports/zotmeet/meeting.png ***!
+  \*****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "static/media/meeting.7dc88f58.png";
+
+/***/ }),
+
+/***/ "(ssr)/./src/imports/zotmeet/videos/room-rec.mp4":
 /*!*************************************************!*\
-  !*** ./src/imports/zotmeet/videos/room-rec.mov ***!
+  !*** ./src/imports/zotmeet/videos/room-rec.mp4 ***!
   \*************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "static/media/room-rec.177d1447.mov";
+module.exports = __webpack_require__.p + "static/media/room-rec.ddfc71df.mp4";
 
 /***/ }),
 
