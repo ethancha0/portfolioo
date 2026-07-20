@@ -9,13 +9,14 @@ import zotmeet from "@/imports/zotmeet.png"
 //import zotmeetMobile from "@/imports/zotmeet-mobile.png"
 import roomrec from "@/imports/zotmeet/videos/room-rec.mp4"
 import meeting from "@/imports/zotmeet/meeting.png"
+import architecture from "@/imports/zotmeet/architecture.png"
 
 const sections = [
   { id: "overview", label: "Overview" },
   { id: "problem", label: "The Problem" },
   { id: "tech-stack", label: "Tech Stack" },
   { id: "deployment", label: "Deployment & Infra" },
-  { id: "features", label: "Key Features" },
+ // { id: "features", label: "Key Features" },
   { id: "impact", label: "Impact" },
 ]
 
@@ -161,6 +162,10 @@ const moreFeatures: { name: string; blurb: string }[] = [
   },
 ]
 
+// Referenced by the temporarily commented Key Features section below
+void spotlightFeatures
+void moreFeatures
+
 const impactPoints: ReactNode[] = [
   <>
     Shipped a production application serving the UC Irvine student community
@@ -183,8 +188,8 @@ const impactPoints: ReactNode[] = [
 
 const impactStats: { value: string; label: string }[] = [
   { value: "3", label: "Platforms shipped" },
-  { value: "17", label: "DB migrations" },
   { value: "1", label: "Shared codebase" },
+  { value: "11K+", label: "Active Users" },
   { value: "Live", label: "zotmeet.com" },
 ]
 
@@ -588,14 +593,15 @@ export default function Page() {
           </div>
           <div className="mt-8">
             <MediaSlot
-              label="Add architecture / pipeline diagram"
-              caption="Showcase: the SST → AWS topology or the GitHub Actions deploy flow."
+              src={architecture}
+              label="ZotMeet Deployment Architecture"
+              caption="ZotMeet Deployment Architecture"
               ratio="16 / 9"
             />
           </div>
         </Section>
-
-        {/* Key Features */}
+        
+        {/* Key Features — temporarily hidden
         <Section
           id="features"
           eyebrow="Key Features"
@@ -641,6 +647,7 @@ export default function Page() {
             </div>
           </div>
         </Section>
+        */}
 
         {/* Impact */}
         <Section
