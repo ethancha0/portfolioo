@@ -4,7 +4,8 @@ import { ImageWithFallback } from "@/components/ImageWithFallback"
 import { ZotMeetGrainient } from "@/components/ZotMeetGrainient"
 import { formatTimeline } from "@/lib/formatTimeline"
 import zotmeet from "@/imports/zotmeet.png"
-import zotmeetMobile from "@/imports/zotmeet-mobile.png"
+//import zotmeetMobile from "@/imports/zotmeet-mobile.png"
+import roomrec from "@/imports/zotmeet/videos/room-rec.mov"
 
 const sections = [
   { id: "overview", label: "Overview" },
@@ -222,14 +223,14 @@ function MediaIcon({ kind }: { kind: "image" | "video" }) {
 }
 
 /**
- * Placeholder slot for feature imagery. Drop a real screenshot/video in later
- * by passing `src` (and `kind="video"` for clips); otherwise it renders a
- * labelled placeholder that reserves the exact space.
+ * Media slot for feature imagery or looping clips. Pass `src` for a real
+ * asset; otherwise it renders a labelled placeholder that reserves space.
+ * Videos autoplay muted, loop, and never show playback controls.
  */
 function MediaSlot({
   label,
   caption,
-  kind = "image",
+  kind,
   ratio = "16 / 9",
   src,
   alt,
@@ -241,6 +242,10 @@ function MediaSlot({
   src?: string
   alt?: string
 }) {
+  const isVideo =
+    kind === "video" ||
+    (kind !== "image" && !!src && /\.(mov|mp4|webm|ogg)(\?|$)/i.test(src))
+
   return (
     <figure className="my-2">
       <div
@@ -248,7 +253,7 @@ function MediaSlot({
         style={{ aspectRatio: ratio }}
       >
         {src ? (
-          kind === "video" ? (
+          isVideo ? (
             <video
               src={src}
               className="h-full w-full object-cover"
@@ -256,6 +261,8 @@ function MediaSlot({
               muted
               loop
               playsInline
+              controls={false}
+              disablePictureInPicture
               preload="metadata"
               aria-label={alt ?? label}
             />
@@ -269,7 +276,7 @@ function MediaSlot({
         ) : (
           <div className="flex flex-col items-center gap-2.5 text-[#b9b4ac]">
             <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e4e0d9] bg-white/70">
-              <MediaIcon kind={kind} />
+              <MediaIcon kind={isVideo ? "video" : "image"} />
             </span>
             <span className="text-[10px] font-semibold uppercase tracking-[0.16em]">
               {label}
@@ -360,6 +367,19 @@ export default function Page() {
             &#8599;
           </span>
         </a>
+        <a
+          href="https://apps.apple.com/us/app/zotmeet/id6773529198"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center gap-2 rounded-full border border-[#e6e3de] bg-white px-4 py-2 text-[12px] font-semibold uppercase tracking-widest text-[#333] transition-colors hover:border-[#e05a28] hover:text-[#e05a28]"
+        >
+          App Store!
+          <span className="transition-transform group-hover:translate-x-0.5">
+            &#8599;
+          </span>
+        </a>
+
+
 
         {/* Hero visual */}
         <div className="relative mt-10 h-[240px] overflow-hidden rounded-2xl bg-[#f2f0ed] md:h-[380px]">
@@ -413,15 +433,16 @@ export default function Page() {
             <p>
               It ships as one codebase across three surfaces — a responsive web
               app, an installable PWA, and a native iOS App Store build — and is
-              developed under ICSSC, UCI's Computer Science student club.
+              developed under UCI's ICS Student Council (ICSSC)
             </p>
           </div>
           <div className="mt-8">
             <MediaSlot
-              src={zotmeetMobile}
+              src={roomrec}
+              kind="video"
               alt="ZotMeet across web and mobile"
               caption="One codebase, three surfaces: responsive web, installable PWA, and native iOS."
-              ratio="16 / 9"
+            //  ratio="16 / 9"
             />
           </div>
         </Section>

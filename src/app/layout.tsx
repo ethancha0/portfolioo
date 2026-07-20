@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Fraunces } from "next/font/google"
+import { Fraunces, Outfit } from "next/font/google"
 import { CustomCursor } from "@/components/CustomCursor"
 import { SiteNav } from "@/components/SiteNav"
 import "./globals.css"
@@ -8,6 +8,13 @@ const fraunces = Fraunces({
   subsets: ["latin"],
   weight: ["500"],
   variable: "--font-fraunces",
+  display: "swap",
+})
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-outfit",
   display: "swap",
 })
 
@@ -22,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={fraunces.variable}>
-      <body className={fraunces.className}>
+    <html lang="en" className={`${fraunces.variable} ${outfit.variable}`}>
+      <body className={outfit.className}>
         <SiteNav />
         {children}
         <CustomCursor />

@@ -6,74 +6,17 @@ import interviewmeVideo from "@/imports/interviewme.mov"
 import pfizerImage from "@/imports/pfizer.png"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
 import zotmeet from "@/imports/zotmeet.png"
-//import fusion from "@/imports/fusion.png"
 import Grainient from "@/components/Grainient"
 import { ZotMeetGrainient } from "@/components/ZotMeetGrainient"
-//import dsadash from "@/imports/dsa/dsa-dash.png"
-
-type TimelineEvent = {
-  year: string
-  company: string
-  role: string
-  leadershipOnly?: boolean
-  delay?: number
-}
-
-const experience: TimelineEvent[] = [
-  { year: "2026", company: "Pfizer", role: "Software Engineering Extern" },
-  { year: "2026", company: "ZotMeet", role: "Lead Software Engineer" },
-  {
-    year: "2025",
-    company: "FUSION Engineering",
-    role: "Lead Software Engineer",
-  },
-  { year: "2025", company: "AntAlmanac", role: "Software Engineer" },
-]
-
-const leadershipEvents: TimelineEvent[] = [
-  {
-    year: "2026",
-    company: "ICS Student Council",
-    role: "Webmaster",
-    leadershipOnly: true,
-    delay: 60,
-  },
-  {
-    year: "2026",
-    company: "Tomo no Kai",
-    role: "Director of Public Relations",
-    leadershipOnly: true,
-    delay: 120,
-  },
-  {
-    year: "2025",
-    company: "Kababayan at UCI",
-    role: "Technical Lead",
-    leadershipOnly: true,
-    delay: 180,
-  },
-]
-
-const timelineRows: TimelineEvent[] = [
-  experience[0],
-  experience[1],
-  leadershipEvents[0],
-  experience[2],
-  leadershipEvents[1],
-  experience[3],
-  leadershipEvents[2],
-]
+import { ImageSpiral } from "@/components/home/ImageSpiral"
+import { CyclingTypewriter } from "@/components/home/CyclingTypewriter"
+import { img } from "@/imports/registry"
 
 type ProjectImageLayout = {
-  /** Scale relative to the card (1 = 100%). Default 0.82 */
   scale?: number
-  /** Horizontal shift in px (positive = right). Default 0 */
   x?: number
-  /** Vertical shift in px (positive = down). Default 0 */
   y?: number
-  /** Max width as % of the card. Default 82 */
   maxWidth?: number
-  /** Max height as % of the card. Default 72 */
   maxHeight?: number
 }
 
@@ -81,7 +24,7 @@ type Project = {
   id: string
   title: string
   displayTitle: string
-  link?:string
+  link?: string
   eyebrow?: string
   tags: string[]
   description: string
@@ -89,7 +32,6 @@ type Project = {
   isLight?: boolean
   gradient?: string | ReactNode
   image?: string
-  /** Size / position for product mockups over a component gradient */
   imageLayout?: ProjectImageLayout
   video?: string
   poster?: string
@@ -125,14 +67,33 @@ function isPopoutVideo(item: ProjectPopoutItem): boolean {
   return /\.(mov|mp4|webm|ogg)$/i.test(item.src)
 }
 
-const projects: Project[] = [
+const spiralImages = [
+  { src: img("zmxaa"), alt: "Friends at ZotMeet social" },
+  { src: img("bonsai"), alt: "Bonsai" },
+  { src: img("vball"), alt: "Volleyball" },
+  { src: img("sf"), alt: "San Francisco" },
+  { src: img("tomo"), alt: "Tomo no Kai" },
+  { src: img("hikinh"), alt: "Hiking" },
+  { src: img("seaside"), alt: "Seaside" },
+  { src: img("mazemen"), alt: "Food" },
+  { src: img("hollywood"), alt: "Hollywood hike" },
+  { src: img("jpop"), alt: "Concert" },
+  { src: img("masami"), alt: "Masami" },
+]
 
+const heroPhrases = [
+  "ethan chao",
+  "software engineer",
+  "product engineer",
+  "team lead",
+]
+
+const projects: Project[] = [
   {
     id: "ZotMeet",
     title: "ZotMeet",
     displayTitle: "ZotMeet",
     image: zotmeet,
-    // Tweak these to expand / move the product image in the card
     imageLayout: {
       scale: 1.3,
       x: 0,
@@ -140,33 +101,15 @@ const projects: Project[] = [
       maxWidth: 92,
       maxHeight: 86,
     },
-
     gradient: (
       <div style={{ width: "2080px", height: "1080px", position: "relative" }}>
         <ZotMeetGrainient />
       </div>
     ),
-    
     link: "/zotmeet",
     eyebrow: "Lead Product + Softare Engineer",
     tags: ["Product Engineering"],
-    description:
-      "Spearheaded & scaled developement for UCI's scheduler ",
-      /*
-    popoutImages: [
-      {
-        src: zotmeetMobile,
-        alt: "ZotMeet desktop preview",
-        size: "wide",
-      },
-      {
-        src: zotmeetMobile,
-        alt: "ZotMeet mobile preview",
-        size: "tall",
-        objectPosition: "top",
-      },
-    ],
-    */
+    description: "Spearheaded & scaled developement for UCI's scheduler ",
     height: 360,
   },
   {
@@ -175,68 +118,38 @@ const projects: Project[] = [
     displayTitle: "Pfizer",
     tags: ["Externship", "Engineering"],
     image: pfizerImage,
-    gradient: <div style={{ width: '2080px', height: '1080px', position: 'relative' }}>
-    <Grainient
-      color1="#4d4244"
-      color2="#21211e"
-      color3="#121009"
-      timeSpeed={1}
-      colorBalance={0}
-      warpStrength={1}
-      warpFrequency={5}
-      warpSpeed={3.6}
-      warpAmplitude={38}
-      blendAngle={0}
-      blendSoftness={0.05}
-      rotationAmount={500}
-      noiseScale={2}
-      grainAmount={0.1}
-      grainScale={2}
-      grainAnimated={false}
-      contrast={1.5}
-      gamma={0.9}
-      saturation={1}
-      centerX={0}
-      centerY={0}
-      zoom={0.9}
-    />
-  </div>,
-    description:
-      "Building OCR + RAG pipelines",
-      /*
-    popoutImages: [
-      {
-        src: pfizerImage,
-        alt: "Pfizer project preview",
-        size: "wide",
-      },
-    ],
-    */
+    gradient: (
+      <div style={{ width: "2080px", height: "1080px", position: "relative" }}>
+        <Grainient
+          color1="#4d4244"
+          color2="#21211e"
+          color3="#121009"
+          timeSpeed={1}
+          colorBalance={0}
+          warpStrength={1}
+          warpFrequency={5}
+          warpSpeed={3.6}
+          warpAmplitude={38}
+          blendAngle={0}
+          blendSoftness={0.05}
+          rotationAmount={500}
+          noiseScale={2}
+          grainAmount={0.1}
+          grainScale={2}
+          grainAnimated={false}
+          contrast={1.5}
+          gamma={0.9}
+          saturation={1}
+          centerX={0}
+          centerY={0}
+          zoom={0.9}
+        />
+      </div>
+    ),
+    description: "Building OCR + RAG pipelines",
     isLight: true,
     height: 360,
   },
-  /*
-  {
-    id: "fusion",
-    title: "FUSION Engineering",
-    image: fusion,
-    displayTitle: "FUSION Engineering",
-    eyebrow: "Lead Software Engineer",
-    tags: ["Product Design", ""],
-    gradient: "linear-gradient(135deg, #f0f7ff 0%, #d6eaff 50%, #b8d4ff 100%)",
-    description:
-      "Mentored 6 engineers to build software for UCI Kababayan",
-    popoutImages: [
-      {
-        src: fusion,
-        alt: "FUSION Engineering preview",
-        size: "wide",
-      },
-    ],
-    isLight: true,
-    height: 260,
-  },
-  */
   {
     id: "InterviewMe",
     title: "InterviewMe",
@@ -246,19 +159,8 @@ const projects: Project[] = [
     video: interviewmeVideo,
     gradient:
       "linear-gradient(135deg, #f7c59f 0%, #e8a87c 30%, #d4856a 60%, #c9768f 100%)",
-    description:
-      "Built for competitive programmers",
+    description: "Built for competitive programmers",
     height: 360,
-    /*
-    popoutImages: [
-      {
-        src: dsadash,
-        type: "image",
-        alt: "InterviewMe interviewer preview",
-        size: "wide",
-      },
-    ],
-    */
   },
 ]
 
@@ -328,164 +230,160 @@ function ProjectCard({
   }
   return (
     <a href={link}>
-    <div
-      data-cursor-label="View Project"
-      className={`group relative z-0 cursor-pointer transition-[filter,opacity,transform] duration-300 [perspective:1100px] hover:z-30 ${
-        isDimmed ? "scale-[0.992] opacity-55 blur-[1.25px]" : ""
-      }`}
-      onPointerEnter={() => onPointerEnter(project.id)}
-      onPointerMove={(event) => onPointerMove(event, project.id)}
-      onPointerLeave={onPointerLeave}
-    >
       <div
-        className="relative overflow-visible rounded-[2px] transition-[transform,box-shadow,filter] duration-400 ease-out will-change-transform [transform-style:preserve-3d]"
-        style={{
-          height: project.height,
-          transform: isHovered
-            ? `rotateX(${rotateX * 0.55}deg) rotateY(${rotateY * 0.55}deg) translateY(-12px) translateZ(44px) scale(1.025)`
-            : "rotateX(0deg) rotateY(0deg) translateY(0) scale(1)",
-          boxShadow: isHovered
-            ? "0 24px 52px rgba(17, 17, 17, 0.18), 0 8px 18px rgba(17, 17, 17, 0.10)"
-            : "0 0 0 rgba(17, 17, 17, 0)",
-        }}
+        data-cursor-label="View Project"
+        className={`group relative z-0 cursor-pointer transition-[filter,opacity,transform] duration-300 [perspective:1100px] hover:z-30 ${
+          isDimmed ? "scale-[0.992] opacity-55 blur-[1.25px]" : ""
+        }`}
+        onPointerEnter={() => onPointerEnter(project.id)}
+        onPointerMove={(event) => onPointerMove(event, project.id)}
+        onPointerLeave={onPointerLeave}
       >
-        <div className="absolute inset-0 overflow-hidden rounded-[2px]">
-          <div
-            className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
-            style={{
-              transform: isHovered
-                ? "translateZ(28px) scale(1.035)"
-                : "translateZ(0) scale(1)",
-              background: cssBackground,
-            }}
-          >
-            {hasComponentBackground ? (
-              <div className="absolute inset-0 z-0">{project.gradient}</div>
-            ) : null}
-            {project.video ? (
-              <video
-                src={project.video}
-                poster={project.poster}
-                className={`h-full w-full object-cover object-top ${
-                  hasComponentBackground ? "relative z-10" : ""
-                }`}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-label={`${project.title} preview`}
-              />
-            ) : project.image ? (
-              hasComponentBackground ? (
-                <div className="absolute inset-0 z-10 flex items-center justify-center p-8">
-                  <ImageWithFallback
-                    src={project.image}
-                    alt={`${project.title} interface`}
-                    className="object-contain"
-                    style={{
-                      maxWidth: `${imageMaxWidth}%`,
-                      maxHeight: `${imageMaxHeight}%`,
-                      transform: `translate(${imageX}px, ${imageY}px) scale(${imageScale})`,
-                      transformOrigin: "center center",
-                    }}
-                  />
-                </div>
-              ) : (
-                <ImageWithFallback
-                  src={project.image}
-                  alt={`${project.title} interface`}
-                  className="h-full w-full object-cover object-top"
-                />
-              )
-            ) : null}
-          </div>
-
-          <div
-            className={`absolute inset-0 transition-opacity duration-300 ${
-              hasRichMedia || hasComponentBackground
-                ? "bg-gradient-to-t from-black/25 via-transparent to-transparent"
-                : ""
-            }`}
-            style={{ transform: "translateZ(44px)" }}
-          />
-        </div>
-
-        <div className="pointer-events-none absolute inset-0 z-20 [transform-style:preserve-3d]">
-          {popoutItems.map((panel, index) => (
+        <div
+          className="relative overflow-visible rounded-[2px] transition-[transform,box-shadow,filter] duration-400 ease-out will-change-transform [transform-style:preserve-3d]"
+          style={{
+            height: project.height,
+            transform: isHovered
+              ? `rotateX(${rotateX * 0.55}deg) rotateY(${rotateY * 0.55}deg) translateY(-12px) translateZ(44px) scale(1.025)`
+              : "rotateX(0deg) rotateY(0deg) translateY(0) scale(1)",
+            boxShadow: isHovered
+              ? "0 24px 52px rgba(17, 17, 17, 0.18), 0 8px 18px rgba(17, 17, 17, 0.10)"
+              : "0 0 0 rgba(17, 17, 17, 0)",
+          }}
+        >
+          <div className="absolute inset-0 overflow-hidden rounded-[2px]">
             <div
-              key={`${panel.media.src}-${index}`}
-              className={`absolute overflow-hidden rounded-[7px] border border-white/70 bg-white/90 opacity-0 shadow-[0_18px_38px_rgba(17,17,17,0.20),0_6px_14px_rgba(17,17,17,0.12)] drop-shadow-lg backdrop-blur-sm transition-[opacity,transform,filter] duration-400 ease-out group-hover:opacity-100 ${panel.className} ${getPopoutSizeClass(panel.media)}`}
-              style={{ transitionDelay: `${panel.delay}ms` }}
+              className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
+              style={{
+                transform: isHovered
+                  ? "translateZ(28px) scale(1.035)"
+                  : "translateZ(0) scale(1)",
+                background: cssBackground,
+              }}
             >
-              {isPopoutVideo(panel.media) ? (
+              {hasComponentBackground ? (
+                <div className="absolute inset-0 z-0">{project.gradient}</div>
+              ) : null}
+              {project.video ? (
                 <video
-                  src={panel.media.src}
-                  poster={panel.media.poster}
-                  className="h-full w-full object-cover"
-                  style={{
-                    objectPosition: panel.media.objectPosition ?? "center",
-                  }}
+                  src={project.video}
+                  poster={project.poster}
+                  className={`h-full w-full object-cover object-top ${
+                    hasComponentBackground ? "relative z-10" : ""
+                  }`}
                   autoPlay
                   muted
                   loop
                   playsInline
                   preload="metadata"
-                  aria-label={
-                    panel.media.alt ??
-                    `${project.title} popout preview ${index + 1}`
-                  }
+                  aria-label={`${project.title} preview`}
                 />
-              ) : (
-                <ImageWithFallback
-                  src={panel.media.src}
-                  alt={
-                    panel.media.alt ??
-                    `${project.title} popout preview ${index + 1}`
-                  }
-                  className="h-full w-full object-cover"
-                  style={{
-                    objectPosition: panel.media.objectPosition ?? "center",
-                  }}
-                />
-              )}
-              <div className="pointer-events-none absolute inset-0 rounded-[7px] ring-1 ring-white/40" />
-              <div className="pointer-events-none absolute -bottom-3 left-4 right-4 h-4 rounded-full bg-black/20 blur-lg" />
+              ) : project.image ? (
+                hasComponentBackground ? (
+                  <div className="absolute inset-0 z-10 flex items-center justify-center p-8">
+                    <ImageWithFallback
+                      src={project.image}
+                      alt={`${project.title} interface`}
+                      className="object-contain"
+                      style={{
+                        maxWidth: `${imageMaxWidth}%`,
+                        maxHeight: `${imageMaxHeight}%`,
+                        transform: `translate(${imageX}px, ${imageY}px) scale(${imageScale})`,
+                        transformOrigin: "center center",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <ImageWithFallback
+                    src={project.image}
+                    alt={`${project.title} interface`}
+                    className="h-full w-full object-cover object-top"
+                  />
+                )
+              ) : null}
             </div>
-          ))}
+
+            <div
+              className={`absolute inset-0 transition-opacity duration-300 ${
+                hasRichMedia || hasComponentBackground
+                  ? "bg-gradient-to-t from-black/25 via-transparent to-transparent"
+                  : ""
+              }`}
+              style={{ transform: "translateZ(44px)" }}
+            />
+          </div>
+
+          <div className="pointer-events-none absolute inset-0 z-20 [transform-style:preserve-3d]">
+            {popoutItems.map((panel, index) => (
+              <div
+                key={`${panel.media.src}-${index}`}
+                className={`absolute overflow-hidden rounded-[7px] border border-white/70 bg-white/90 opacity-0 shadow-[0_18px_38px_rgba(17,17,17,0.20),0_6px_14px_rgba(17,17,17,0.12)] drop-shadow-lg backdrop-blur-sm transition-[opacity,transform,filter] duration-400 ease-out group-hover:opacity-100 ${panel.className} ${getPopoutSizeClass(panel.media)}`}
+                style={{ transitionDelay: `${panel.delay}ms` }}
+              >
+                {isPopoutVideo(panel.media) ? (
+                  <video
+                    src={panel.media.src}
+                    poster={panel.media.poster}
+                    className="h-full w-full object-cover"
+                    style={{
+                      objectPosition: panel.media.objectPosition ?? "center",
+                    }}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label={
+                      panel.media.alt ??
+                      `${project.title} popout preview ${index + 1}`
+                    }
+                  />
+                ) : (
+                  <ImageWithFallback
+                    src={panel.media.src}
+                    alt={
+                      panel.media.alt ??
+                      `${project.title} popout preview ${index + 1}`
+                    }
+                    className="h-full w-full object-cover"
+                    style={{
+                      objectPosition: panel.media.objectPosition ?? "center",
+                    }}
+                  />
+                )}
+                <div className="pointer-events-none absolute inset-0 rounded-[7px] ring-1 ring-white/40" />
+                <div className="pointer-events-none absolute -bottom-3 left-4 right-4 h-4 rounded-full bg-black/20 blur-lg" />
+              </div>
+            ))}
+          </div>
+
+          <div
+            className="pointer-events-none absolute inset-0 z-40 rounded-[2px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            style={{
+              transform: "translateZ(74px)",
+              background:
+                "linear-gradient(135deg, rgba(255,255,255,0.14), transparent 34%, rgba(255,255,255,0.05) 62%, transparent)",
+            }}
+          />
         </div>
 
-        <div
-          className="pointer-events-none absolute inset-0 z-40 rounded-[2px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{
-            transform: "translateZ(74px)",
-            background:
-              "linear-gradient(135deg, rgba(255,255,255,0.14), transparent 34%, rgba(255,255,255,0.05) 62%, transparent)",
-          }}
-        />
+        <div className="mt-4 flex items-start justify-between gap-6">
+          <h2 className="text-[20px] font-medium leading-tight tracking-tight text-[#111] md:text-[22px]">
+            {project.displayTitle}
+          </h2>
+          <p className="max-w-[56%] text-right text-[13px] leading-relaxed text-[#666]">
+            {project.description}
+          </p>
+        </div>
       </div>
-
-      <div className="mt-4 flex items-start justify-between gap-6">
-        <h2 className="text-[20px] font-medium leading-tight tracking-tight text-[#111] md:text-[22px]">
-          {project.displayTitle}
-        </h2>
-        <p className="max-w-[56%] text-right text-[13px] leading-relaxed text-[#666]">
-          {project.description}
-        </p>
-      </div>
-    </div>
-  </a>
+    </a>
   )
 }
 
 export default function App() {
-  const [timelineMode, setTimelineMode] = useState<"experience" | "leadership">(
-    "experience",
-  )
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
   const [tilt, setTilt] = useState<TiltState | null>(null)
   const isProjectFocused = hoveredProject !== null
-  const showLeadership = timelineMode === "leadership"
 
   const handleProjectPointerMove = (
     event: PointerEvent<HTMLDivElement>,
@@ -508,115 +406,88 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg- text-[#111]">
-      {/* Hero */}
-      <main className="pt-12">
-        <section className="max-w-[1200px] mx-auto px-6 py-16 lg:py-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left: headline */}
-          <div>
-            <h1 className="text-[42px] lg:text-[54px] leading-[1.1] font-light text-[#111] tracking-tight">
-              I'm Ethan, I build software
-              <br />
-              and the {" "}
-              <em
+    <div className="min-h-screen bg-[#f5f5f5] text-[#111]">
+      <main>
+        {/* Hero — mockup-inspired centered composition */}
+        <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-5 pb-16 pt-20">
+          {/* Soft atmosphere */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 55% at 50% 42%, #ffffff 0%, #f5f5f5 55%, #eeeeee 100%)",
+            }}
+          />
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.35]"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")",
+              backgroundSize: "180px",
+            }}
+          />
+
+          <div className="relative z-10 flex w-full max-w-[720px] flex-col items-center">
+            {/* Arc + portrait stack */}
+            <div className="relative mb-1 h-[300px] w-full max-w-[560px] sm:h-[340px] sm:max-w-[640px] md:h-[380px] md:max-w-[740px]">
+              <ImageSpiral images={spiralImages} />
+
+              <div className="absolute bottom-0 left-1/2 z-20 w-[108px] -translate-x-1/2 sm:w-[124px] md:w-[136px]">
+                <div className="overflow-hidden rounded-full shadow-[0_12px_40px_rgba(17,17,17,0.12)] ring-4 ring-white/90">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={img("portrait")}
+                    alt="Ethan Chao"
+                    className="aspect-square w-full object-cover object-[50%_18%]"
+                    draggable={false}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <CyclingTypewriter
+              phrases={heroPhrases}
+              className="min-h-[1.15em] text-center text-[36px] font-bold leading-none tracking-tight text-[#111] lowercase sm:text-[44px] md:text-[52px]"
+            />
+
+            <p className="mt-4 max-w-[340px] text-center text-[14px] leading-relaxed text-[#666] sm:max-w-[380px] sm:text-[15px]">
+              building software and the teams behind it — from campus products
+              to production systems
+            </p>
+
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#dff5e4] px-4 py-2 text-[13px] text-[#1f6b3a]">
+              <span className="size-1.5 rounded-full bg-[#2f9e5a] shadow-[0_0_0_3px_rgba(47,158,90,0.2)]" />
+              <span
+                className="font-medium"
                 style={{
-                  fontFamily: "'Instrument Serif', serif",
+                  fontFamily: "var(--font-fraunces), Georgia, serif",
                   fontStyle: "italic",
                 }}
-                className="font-normal"
               >
-                teams.
-              </em>
-              <h1>behind it </h1>
-            </h1>
-          </div>
-
-          {/* Right: experience timeline */}
-          <div className="pt-2">
-            <div className="mb-6 flex items-center justify-between gap-4">
-              <div className="relative flex rounded-full border border-[#e8e8e8] bg-[#f7f7f7] p-1">
-                <span
-                  className="absolute bottom-1 top-1 rounded-full bg-white shadow-[0_3px_10px_rgba(17,17,17,0.08)] transition-transform duration-300 ease-out"
-                  style={{
-                    left: 4,
-                    width: "calc(50% - 4px)",
-                    transform:
-                      timelineMode === "leadership"
-                        ? "translateX(100%)"
-                        : "translateX(0)",
-                  }}
-                />
-                {[
-                  ["experience", "Experience"],
-                  ["leadership", "Leadership"],
-                ].map(([mode, label]) => (
-                  <button
-                    key={mode}
-                    onClick={() =>
-                      setTimelineMode(mode as "experience" | "leadership")
-                    }
-                    className="relative z-10 min-w-24 rounded-full px-4 py-1.5 text-[10px] font-semibold uppercase tracking-widest transition-colors"
-                    style={{
-                      color: timelineMode === mode ? "#e05a28" : "#888",
-                    }}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-              <div className="w-2 h-2 rounded-full bg-[#e05a28]" />
-            </div>
-            <div className="w-full overflow-hidden">
-              {timelineRows.map((exp) => {
-                const isHiddenLeadership =
-                  exp.leadershipOnly && !showLeadership
-
-                return (
-                  <div
-                    key={`${exp.company}-${exp.role}-${exp.year}`}
-                    className={`group overflow-hidden border-t transition-[max-height,opacity,transform,border-color,background-color] duration-500 ease-out hover:bg-[#fafafa] ${
-                      exp.leadershipOnly
-                        ? "border-[#f1d8cf] bg-[#fffaf8]"
-                        : "border-[#e8e8e8]"
-                    }`}
-                    style={{
-                      maxHeight: isHiddenLeadership ? 0 : 52,
-                      opacity: isHiddenLeadership ? 0 : 1,
-                      transform: isHiddenLeadership
-                        ? "translateX(42px)"
-                        : "translateX(0)",
-                      transitionDelay:
-                        showLeadership && exp.leadershipOnly
-                          ? `${exp.delay ?? 0}ms`
-                          : "0ms",
-                    }}
-                  >
-                    <div className="grid grid-cols-[48px_minmax(150px,190px)_1fr] items-center py-3 pr-4">
-                      <span className="text-[11px] font-medium text-[#888]">
-                        {exp.year}
-                      </span>
-                      <span className="flex items-center gap-2 pr-8 text-[13px] font-semibold text-[#111]">
-                        {exp.company}
-                        {exp.leadershipOnly ? (
-                          <span className="rounded-full bg-[#e05a28]/10 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-widest text-[#e05a28]">
-                            Lead
-                          </span>
-                        ) : null}
-                      </span>
-                      <span className="text-[12px] text-[#666]">
-                        {exp.role}
-                      </span>
-                    </div>
-                  </div>
-                )
-              })}
+                open to work
+              </span>
             </div>
           </div>
+
+          <a
+            href="#work"
+            className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-[11px] tracking-widest text-[#aaa] uppercase transition-colors hover:text-[#666]"
+          >
+            scroll
+          </a>
         </section>
 
         {/* Projects */}
-        <section id="work" className="max-w-[1200px] mx-auto px-6 pb-24 mt-80">
-          <div className="grid grid-cols-1  gap-6">
+        <section
+          id="work"
+          className="mx-auto max-w-[1200px] border-t border-[#e4e4e4] px-6 pb-24 pt-20"
+        >
+          <div className="mb-10">
+            <h2 className="text-[11px] font-semibold tracking-widest text-[#888] uppercase">
+              Selected Work
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 gap-6">
             {projects.map((project) => (
               <ProjectCard
                 key={project.id}
@@ -634,51 +505,73 @@ export default function App() {
         </section>
 
         {/* About strip */}
-        <section id="about" className="border-t border-[#e8e8e8] max-w-[1200px] mx-auto px-6 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <section
+          id="about"
+          className="mx-auto max-w-[1200px] border-t border-[#e8e8e8] px-6 py-16"
+        >
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
             <div>
-              <h3 className="text-[10px] tracking-widest font-semibold text-[#888] uppercase mb-4">
+              <h3 className="mb-4 text-[10px] font-semibold tracking-widest text-[#888] uppercase">
                 About
               </h3>
               <p className="text-[14px] leading-relaxed text-[#444]">
-                I'm a developer who writes production code — equally comfortable
-                in Figma and a TypeScript codebase. I care about the details
-                that make software feel inevitable.
+                I&apos;m a developer who writes production code — equally
+                comfortable in Figma and a TypeScript codebase. I care about the
+                details that make software feel inevitable.
               </p>
             </div>
             <div>
-              <h3 className="text-[10px] tracking-widest font-semibold text-[#888] uppercase mb-4">
+              <h3 className="mb-4 text-[10px] font-semibold tracking-widest text-[#888] uppercase">
                 Currently
               </h3>
               <p className="text-[14px] leading-relaxed text-[#444]">
-                Building an OCR + RAG pipelines at{" "}
-                <strong className="text-[#111] font-medium">Pfizer</strong>.
+                Building OCR + RAG pipelines at{" "}
+                <strong className="font-medium text-[#111]">Pfizer</strong>.
                 While leading project teams at UC Irvine
               </p>
             </div>
             <div>
-              <h3 className="text-[10px] tracking-widest font-semibold text-[#888] uppercase mb-4">
+              <h3 className="mb-4 text-[10px] font-semibold tracking-widest text-[#888] uppercase">
                 Links
               </h3>
               <div className="flex flex-col gap-2">
-                {["LinkedIn", "GitHub", "Resume"].map((link) => (
-                  <button
-                    key={link}
-                    className="text-[13px] text-[#111] text-left hover:text-[#e05a28] transition-colors flex items-center gap-1.5 group/link"
-                  >
-                    <span className="text-[#ccc] group-hover/link:text-[#e05a28] transition-colors">
-                      →
-                    </span>
-                    {link}
-                  </button>
-                ))}
+                <a
+                  href="https://www.linkedin.com/in/ethanchaoo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/link flex items-center gap-1.5 text-left text-[13px] text-[#111] transition-colors hover:text-[#2f9e5a]"
+                >
+                  <span className="text-[#ccc] transition-colors group-hover/link:text-[#2f9e5a]">
+                    →
+                  </span>
+                  LinkedIn
+                </a>
+                <a
+                  href="https://drive.google.com/file/d/1a40jwDFfLG5DBDAXZaZafwwdplUpLRCl/view?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/link flex items-center gap-1.5 text-left text-[13px] text-[#111] transition-colors hover:text-[#2f9e5a]"
+                >
+                  <span className="text-[#ccc] transition-colors group-hover/link:text-[#2f9e5a]">
+                    →
+                  </span>
+                  Resume
+                </a>
+                <a
+                  href="/about"
+                  className="group/link flex items-center gap-1.5 text-left text-[13px] text-[#111] transition-colors hover:text-[#2f9e5a]"
+                >
+                  <span className="text-[#ccc] transition-colors group-hover/link:text-[#2f9e5a]">
+                    →
+                  </span>
+                  About
+                </a>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="border-t border-[#e8e8e8] max-w-[1200px] mx-auto px-6 py-8 flex items-center justify-between">
+        <footer className="mx-auto flex max-w-[1200px] items-center justify-between border-t border-[#e8e8e8] px-6 py-8">
           <span className="text-[10px] tracking-widest text-[#888] uppercase">
             Ethan Chao © 2026
           </span>

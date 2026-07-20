@@ -6,7 +6,7 @@
 
 @theme inline {
   --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
-  --font-sans: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  --font-sans: var(--font-outfit), 'Avenir Next', 'Segoe UI', sans-serif;
   --color-background: #f0f0f0;
   --color-foreground: #f0f0f0;
   --color-muted: #888888;
