@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Fraunces, Outfit } from "next/font/google"
+import { UmamiAnalytics } from "@/components/analytics/UmamiAnalytics"
 import { CustomCursor } from "@/components/CustomCursor"
 import { SiteNav } from "@/components/SiteNav"
 import "./globals.css"
@@ -34,6 +35,7 @@ export default function RootLayout({
         <SiteNav />
         {children}
         <CustomCursor />
+        <UmamiAnalytics />
       </body>
     </html>
   )

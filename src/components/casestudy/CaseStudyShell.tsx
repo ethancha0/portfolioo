@@ -74,6 +74,7 @@ export function CaseStudyShell({
               variant="outline"
               size="sm"
               className="uppercase tracking-widest"
+              umamiEventData={{ location: "case-study-nav" }}
             >
               <span>&larr;</span>
               {backLabel}
@@ -86,6 +87,8 @@ export function CaseStudyShell({
                   <a
                     key={section.id}
                     href={`#${section.id}`}
+                    data-umami-event={`Section: ${section.label}`}
+                    data-umami-event-location="case-study-nav"
                     onClick={(event) => {
                       event.preventDefault()
                       scrollToSection(section.id)
@@ -120,6 +123,7 @@ export function CaseStudyShell({
               variant="outline"
               size="sm"
               className="uppercase tracking-widest"
+              umamiEventData={{ location: "case-study-nav-mobile" }}
             >
               <span>&larr;</span>
               {backLabel}

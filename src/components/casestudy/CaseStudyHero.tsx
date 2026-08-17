@@ -68,6 +68,8 @@ export function CaseStudyHero({
                 variant={cta.variant ?? "outline"}
                 size="md"
                 className="uppercase tracking-widest"
+                umamiEvent={cta.label}
+                umamiEventData={{ location: "case-study-hero" }}
               >
                 {cta.label}
                 {isExternal ? <span>&#8599;</span> : null}

@@ -25,11 +25,14 @@ export function SiteNav() {
             colorIndex={2}
             variant="soft"
             className="size-8"
+            umamiEventData={{ location: "nav" }}
           >
             <Home className="size-3.5" strokeWidth={2} />
           </ClayButton>
           <a
             href="/"
+            data-umami-event="Home"
+            data-umami-event-location="nav"
             className="text-[14px] font-semibold tracking-tight text-[#111] lowercase transition-colors hover:text-[#555]"
           >
             ethan chao
@@ -42,6 +45,7 @@ export function SiteNav() {
               colorIndex={0}
               variant="soft"
               className="size-7"
+              umamiEventData={{ location: "nav" }}
             >
               <Mail className="size-3.5" strokeWidth={2} />
             </ClayButton>
@@ -54,6 +58,7 @@ export function SiteNav() {
               colorIndex={3}
               variant="soft"
               className="size-7"
+              umamiEventData={{ location: "nav" }}
             >
               <LinkedInIcon />
             </ClayButton>
@@ -66,6 +71,7 @@ export function SiteNav() {
             colorIndex={4}
             variant={onHome ? "soft" : "outline"}
             size="sm"
+            umamiEventData={{ location: "nav" }}
           >
             Work
           </ClayButton>
@@ -74,6 +80,7 @@ export function SiteNav() {
             colorIndex={5}
             variant={onAboutPage ? "solid" : "outline"}
             size="sm"
+            umamiEventData={{ location: "nav" }}
           >
             About
           </ClayButton>
@@ -84,6 +91,7 @@ export function SiteNav() {
             colorIndex={1}
             variant="outline"
             size="sm"
+            umamiEventData={{ location: "nav" }}
           >
             Resume
           </ClayButton>

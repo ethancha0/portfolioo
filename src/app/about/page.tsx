@@ -167,6 +167,9 @@ export default function AboutPage() {
                 href="https://www.linkedin.com/in/ethanchaoo"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-umami-event="LinkedIn"
+                data-umami-event-url="https://www.linkedin.com/in/ethanchaoo"
+                data-umami-event-location="about"
                 className="inline-flex items-center gap-1.5 text-[#0a66c2] transition-opacity hover:opacity-80"
               >
                 <LinkedInIcon />

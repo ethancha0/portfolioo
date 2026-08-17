@@ -7,10 +7,13 @@ import pfizerImage from "@/imports/pfizer.png"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
 import { ClayButton, ClayFrame } from "@/components/clay"
 import zotmeet from "@/imports/zotmeet.png"
+import zotmeeticon from "@/imports/icons/zotmeet.png"
+import linkedin from "@/imports/icons/linkedin.png"
 import { ZotMeetGrainient } from "@/components/ZotMeetGrainient"
 import { ImageSpiral } from "@/components/home/ImageSpiral"
 import { CyclingTypewriter } from "@/components/home/CyclingTypewriter"
 import { img } from "@/imports/registry"
+import Image from "next/image"
 
 type ProjectImageLayout = {
   scale?: number
@@ -248,7 +251,14 @@ function ProjectCard({
     return media.className ?? popoutSizeClasses[media.size ?? "default"]
   }
   return (
-    <a href={link}>
+    <a
+      href={link}
+      data-umami-event={
+        link ? `View project: ${project.title}` : `Project: ${project.title}`
+      }
+      data-umami-event-project={project.id}
+      data-umami-event-location="home-work"
+    >
       <div
         data-cursor-label="View Project"
         className={`group relative z-0 cursor-pointer transition-[filter,opacity,transform] duration-300 hover:z-30 ${
@@ -526,10 +536,20 @@ export default function App() {
                 open to work
               </span>
             </div>
+              
+              {/*
+              <div className="flex items-center">
+                <Image src={zotmeet} height={80} width={80} alt="zotmeet"/>
+                <Image src={linkedin} height={80} width={80} alt="linkedin"/>                
+              </div>
+              */}
+
+
           </div>
 
           <a
             href="#work"
+            data-umami-event="Scroll to work"
             className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-[11px] tracking-widest text-[#aaa] uppercase transition-colors hover:text-[#666]"
           >
             scroll
@@ -603,6 +623,7 @@ export default function App() {
                   variant="outline"
                   size="sm"
                   className="w-fit"
+                  umamiEventData={{ location: "home-links" }}
                 >
                   LinkedIn
                 </ClayButton>
@@ -614,6 +635,7 @@ export default function App() {
                   variant="outline"
                   size="sm"
                   className="w-fit"
+                  umamiEventData={{ location: "home-links" }}
                 >
                   Resume
                 </ClayButton>
@@ -623,6 +645,7 @@ export default function App() {
                   variant="outline"
                   size="sm"
                   className="w-fit"
+                  umamiEventData={{ location: "home-links" }}
                 >
                   About
                 </ClayButton>

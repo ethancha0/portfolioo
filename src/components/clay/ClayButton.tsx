@@ -5,6 +5,11 @@ import type {
   MouseEventHandler,
   ReactNode,
 } from "react"
+import {
+  getClickEventName,
+  textFromReactNode,
+  umamiEventAttributes,
+} from "@/lib/umami"
 import { cn } from "@/lib/utils"
 import { clayColorAt, clayColor, type ClayColorName } from "./palette"
 
@@ -19,6 +24,9 @@ type ClayButtonBase = {
   size?: ClayButtonSize
   variant?: ClayButtonVariant
   style?: CSSProperties
+  /** Umami event name. Defaults to aria-label, visible text, or href. */
+  umamiEvent?: string
+  umamiEventData?: Record<string, string | number>
 }
 
 type ClayButtonAsButton = ClayButtonBase &
@@ -57,7 +65,23 @@ export function ClayButton(props: ClayButtonProps) {
     size = "md",
     variant = "soft",
     style,
+    umamiEvent,
+    umamiEventData,
   } = props
+  const href = "href" in props ? props.href : undefined
+  const ariaLabel = props["aria-label"]
+  const umamiAttrs = umamiEventAttributes(
+    getClickEventName({
+      event: umamiEvent,
+      ariaLabel,
+      href,
+      childrenText: textFromReactNode(children),
+    }),
+    {
+      href,
+      ...umamiEventData,
+    },
+  )
 
   const clay = color ? clayColor(color) : clayColorAt(colorIndex)
   const classes = cn(
@@ -110,10 +134,11 @@ export function ClayButton(props: ClayButtonProps) {
           href={props.href}
           target={props.target}
           rel={props.rel}
-          aria-label={props["aria-label"]}
+          aria-label={ariaLabel}
           className={classes}
           style={clayStyle}
           onClick={props.onClick}
+          {...umamiAttrs}
         >
           {children}
         </a>
@@ -123,18 +148,18 @@ export function ClayButton(props: ClayButtonProps) {
     return (
       <Link
         href={props.href}
-        aria-label={props["aria-label"]}
+        aria-label={ariaLabel}
         className={classes}
         style={clayStyle}
         onClick={props.onClick}
+        {...umamiAttrs}
       >
         {children}
       </Link>
     )
   }
 
-  const { type = "button", disabled, onClick, "aria-label": ariaLabel } =
-    props as ClayButtonAsButton
+  const { type = "button", disabled, onClick } = props as ClayButtonAsButton
 
   return (
     <button
@@ -144,6 +169,7 @@ export function ClayButton(props: ClayButtonProps) {
       className={cn(classes, disabled && "pointer-events-none opacity-50")}
       style={clayStyle}
       onClick={onClick}
+      {...umamiAttrs}
     >
       {children}
     </button>
