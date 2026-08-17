@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect } from "react"
-import Script from "next/script"
 import {
   getClickEventName,
   identifySession,
@@ -9,13 +8,6 @@ import {
 } from "@/lib/umami"
 
 const CLICK_SELECTOR = "a, button, [role='button']"
-
-function shouldLoadUmami(): boolean {
-  const websiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID
-  if (!websiteId) return false
-  if (process.env.NEXT_PUBLIC_UMAMI_TRACK_LOCAL === "true") return true
-  return process.env.NODE_ENV === "production"
-}
 
 function sessionContext(): Record<string, string> {
   const params = new URLSearchParams(window.location.search)
@@ -82,27 +74,29 @@ function onDocumentClick(event: MouseEvent): void {
 }
 
 export function UmamiAnalytics() {
-  const websiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID
-  const scriptUrl =
-    process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL ?? "https://cloud.umami.is/script.js"
-  const domains = process.env.NEXT_PUBLIC_UMAMI_DOMAINS
-  const enabled = shouldLoadUmami()
-
   useEffect(() => {
-    if (!enabled) return
     document.addEventListener("click", onDocumentClick, true)
-    return () => document.removeEventListener("click", onDocumentClick, true)
-  }, [enabled])
 
-  if (!enabled || !websiteId) return null
+    let cancelled = false
+    const startedAt = Date.now()
+    const waitForUmami = window.setInterval(() => {
+      if (cancelled) return
+      if (window.umami) {
+        identifySession(sessionContext())
+        window.clearInterval(waitForUmami)
+        return
+      }
+      if (Date.now() - startedAt > 8000) {
+        window.clearInterval(waitForUmami)
+      }
+    }, 100)
 
-  return (
-    <Script
-      src={scriptUrl}
-      data-website-id={websiteId}
-      {...(domains ? { "data-domains": domains } : {})}
-      strategy="afterInteractive"
-      onLoad={() => identifySession(sessionContext())}
-    />
-  )
+    return () => {
+      cancelled = true
+      window.clearInterval(waitForUmami)
+      document.removeEventListener("click", onDocumentClick, true)
+    }
+  }, [])
+
+  return null
 }

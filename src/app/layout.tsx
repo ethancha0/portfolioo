@@ -31,6 +31,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${fraunces.variable} ${outfit.variable}`}>
+      <head>
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="234ff9bb-bedf-4c9d-8339-822be28ae7aa"
+        />
+      </head>
       <body className={outfit.className}>
         <SiteNav />
         {children}
