@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { AccordionCardStrip } from "@/components/about/AccordionCardStrip"
-import { CoreValues } from "@/components/about/CoreValues"
+//import { CoreValues } from "@/components/about/CoreValues"
 import { HoverCardStrip } from "@/components/about/HoverCardStrip"
 import { PhotoStack } from "@/components/about/PhotoStack"
 import { ScrollReveal } from "@/components/about/ScrollReveal"
@@ -114,6 +114,7 @@ const hobbyCards = [
   },
 ]
 
+/*
 const values = [
   {
     before: "Change your future's",
@@ -129,6 +130,7 @@ const values = [
     emphasis: ":)",
   },
 ]
+  */
 
 export default function AboutPage() {
   const [bioVisible, setBioVisible] = useState(false)

@@ -1,25 +1,58 @@
 {
   "pages": {
-    "/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/layout.css",
-      "static/chunks/app/layout.js"
+    "/_not-found/page": [
+      "static/chunks/webpack-7de5a601981da07f.js",
+      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
+      "static/chunks/31-67d01d2fd75026a0.js",
+      "static/chunks/main-app-33d3577dff38fab3.js",
+      "static/chunks/app/_not-found/page-59ecbbd6f7439d2b.js"
     ],
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+    "/layout": [
+      "static/chunks/webpack-7de5a601981da07f.js",
+      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
+      "static/chunks/31-67d01d2fd75026a0.js",
+      "static/chunks/main-app-33d3577dff38fab3.js",
+      "static/css/f03dec2e60418bac.css",
+      "static/chunks/541-9f072a8144045ace.js",
+      "static/chunks/app/layout-29378b626210e90c.js"
     ],
     "/about/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/about/page.js"
+      "static/chunks/webpack-7de5a601981da07f.js",
+      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
+      "static/chunks/31-67d01d2fd75026a0.js",
+      "static/chunks/main-app-33d3577dff38fab3.js",
+      "static/chunks/541-9f072a8144045ace.js",
+      "static/chunks/app/about/page-5207b85929fe39aa.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-7de5a601981da07f.js",
+      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
+      "static/chunks/31-67d01d2fd75026a0.js",
+      "static/chunks/main-app-33d3577dff38fab3.js",
+      "static/chunks/541-9f072a8144045ace.js",
+      "static/chunks/608-095428044dd2ebb5.js",
+      "static/chunks/146-facb8f0e3de586dc.js",
+      "static/chunks/app/page-8a23b37daaf5964e.js"
     ],
     "/pfizer/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/pfizer/page.js"
+      "static/chunks/webpack-7de5a601981da07f.js",
+      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
+      "static/chunks/31-67d01d2fd75026a0.js",
+      "static/chunks/main-app-33d3577dff38fab3.js",
+      "static/chunks/541-9f072a8144045ace.js",
+      "static/chunks/558-b85f223e454480cd.js",
+      "static/chunks/app/pfizer/page-1f3b902514fe4c2a.js"
+    ],
+    "/zotmeet/page": [
+      "static/chunks/webpack-7de5a601981da07f.js",
+      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
+      "static/chunks/31-67d01d2fd75026a0.js",
+      "static/chunks/main-app-33d3577dff38fab3.js",
+      "static/chunks/541-9f072a8144045ace.js",
+      "static/chunks/608-095428044dd2ebb5.js",
+      "static/chunks/146-facb8f0e3de586dc.js",
+      "static/chunks/558-b85f223e454480cd.js",
+      "static/chunks/app/zotmeet/page-6296e1fcea13d53c.js"
     ]
   }
 }
