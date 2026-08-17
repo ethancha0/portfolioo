@@ -222,7 +222,7 @@ export default function AboutPage() {
         </ScrollReveal>
       </section>
 
-      {/* Core Values */}
+      {/* Core Values
       <section className="mx-auto max-w-[1100px] px-6 py-16 lg:py-20">
         <ScrollReveal>
           <div className="mb-2 flex items-center gap-3">
@@ -240,7 +240,7 @@ export default function AboutPage() {
           <CoreValues values={values} />
         </ScrollReveal>
       </section>
-
+ */}
       <footer className="mx-auto max-w-[1100px] px-6 pb-16 pt-4">
         <p className="text-[12px] text-[#888]">
           Thanks for reading. Let&apos;s grab coffee (on me!)

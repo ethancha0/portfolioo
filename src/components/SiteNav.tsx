@@ -5,7 +5,7 @@ import { Home, Mail } from "lucide-react"
 import { ClayButton } from "@/components/clay"
 
 const RESUME_HREF =
-  "https://drive.google.com/file/d/1a40jwDFfLG5DBDAXZaZafwwdplUpLRCl/view?usp=sharing"
+  "https://drive.google.com/file/d/1Eq03lzeh3H61gGyS2ZSiAgE0P1mIWHpJ/view?usp=sharing"
 const LINKEDIN_HREF = "https://www.linkedin.com/in/ethanchaoo"
 const EMAIL_HREF = "mailto:ewchao1@uci.edu"
 
