@@ -7,13 +7,13 @@ import pfizerImage from "@/imports/pfizer.png"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
 import { ClayButton, ClayFrame } from "@/components/clay"
 import zotmeet from "@/imports/zotmeet.png"
-import zotmeeticon from "@/imports/icons/zotmeet.png"
-import linkedin from "@/imports/icons/linkedin.png"
+//import zotmeeticon from "@/imports/icons/zotmeet.png"
+//import linkedin from "@/imports/icons/linkedin.png"
 import { ZotMeetGrainient } from "@/components/ZotMeetGrainient"
 import { ImageSpiral } from "@/components/home/ImageSpiral"
 import { CyclingTypewriter } from "@/components/home/CyclingTypewriter"
 import { img } from "@/imports/registry"
-import Image from "next/image"
+//import Image from "next/image"
 
 type ProjectImageLayout = {
   scale?: number
