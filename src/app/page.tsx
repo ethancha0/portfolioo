@@ -164,6 +164,7 @@ const projects: Project[] = [
     isLight: true,
     height: 300,
   },
+  /*
   {
     id: "InterviewMe",
     title: "InterviewMe",
@@ -176,6 +177,7 @@ const projects: Project[] = [
     description: "Built for competitive programmers",
     height: 360,
   },
+  */
 ]
 
 type TiltState = {
