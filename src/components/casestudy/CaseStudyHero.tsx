@@ -27,6 +27,16 @@ type CaseStudyHeroProps = {
   heroImage?: {
     src: string
     alt: string
+    /** Shift right (+) or left (−), in pixels. */
+    offsetX?: number
+    /** Shift down (+) or up (−), in pixels. */
+    offsetY?: number
+    /** Scale from center. `1` is unchanged. */
+    scale?: number
+    /** Max width of the image inside the frame, as a percent. */
+    maxWidth?: number
+    /** Max height of the image inside the frame, as a percent. */
+    maxHeight?: number
   }
   /** Custom hero media instead of image + background */
   heroMedia?: ReactNode
@@ -93,11 +103,17 @@ export function CaseStudyHero({
             ) : (
               <div className="absolute inset-0 bg-[#f7f2ea]" />
             )}
-            <div className="relative mt-12 flex h-full w-full items-center justify-center">
+            <div className="absolute inset-0 z-[1] flex items-center justify-center">
               <ImageWithFallback
                 src={heroImage.src}
                 alt={heroImage.alt}
-                className="max-h-[86%] max-w-[92%] object-contain drop-shadow-2xl"
+                className="h-auto w-auto object-contain drop-shadow-2xl"
+                style={{
+                  maxWidth: `${heroImage.maxWidth ?? 85}%`,
+                  maxHeight: `${heroImage.maxHeight ?? 72}%`,
+                  transform: `translate(${heroImage.offsetX ?? 0}px, ${heroImage.offsetY ?? 0}px) scale(${heroImage.scale ?? 1})`,
+                  transformOrigin: "center center",
+                }}
               />
             </div>
           </ClayFrame>

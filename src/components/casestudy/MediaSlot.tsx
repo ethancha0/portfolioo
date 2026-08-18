@@ -53,6 +53,16 @@ export type MediaSlotProps = {
   ratio?: string
   /** How media fills a fixed ratio box. Ignored when `ratio` is omitted. */
   fit?: "cover" | "contain"
+  /** CSS object-position, e.g. `"left center"` or `"40% 50%"`. */
+  objectPosition?: string
+  /** Shift media right (+) or left (−), in pixels. */
+  offsetX?: number
+  /** Shift media down (+) or up (−), in pixels. */
+  offsetY?: number
+  /** Scale from `origin`. `1` is unchanged. */
+  scale?: number
+  /** CSS transform-origin for `scale` / offsets. Default `"center"`. */
+  origin?: string
   /** Caps the media width, e.g. `"420px"`, `"60%"`, or `480`. */
   maxWidth?: string | number
   src?: string
@@ -71,6 +81,11 @@ export function MediaSlot({
   kind,
   ratio,
   fit = "cover",
+  objectPosition,
+  offsetX = 0,
+  offsetY = 0,
+  scale = 1,
+  origin = "center",
   maxWidth,
   src,
   alt,
@@ -89,6 +104,14 @@ export function MediaSlot({
         : maxWidth
   const resolvedRatio = ratio ?? (isVideo ? "16 / 9" : undefined)
   const objectFitClass = fit === "contain" ? "object-contain" : "object-cover"
+  const hasTransform = offsetX !== 0 || offsetY !== 0 || scale !== 1
+  const mediaStyle = {
+    objectPosition,
+    transform: hasTransform
+      ? `translate(${offsetX}px, ${offsetY}px) scale(${scale})`
+      : undefined,
+    transformOrigin: origin,
+  }
   const clay = clayColorNameAt(colorIndex)
 
   useEffect(() => {
@@ -140,7 +163,12 @@ export function MediaSlot({
               isVideo ? (
                 <video
                   src={src}
-                  className={`h-full w-full ${objectFitClass}`}
+                  className={
+                    resolvedRatio
+                      ? `absolute inset-0 h-full w-full ${objectFitClass}`
+                      : `h-auto w-full ${objectFitClass}`
+                  }
+                  style={mediaStyle}
                   autoPlay
                   muted
                   loop
@@ -157,9 +185,10 @@ export function MediaSlot({
                     alt={alt ?? label ?? ""}
                     className={
                       resolvedRatio
-                        ? `h-full w-full ${objectFitClass} transition-[filter,opacity] duration-300 group-hover:brightness-[0.82]`
+                        ? `absolute inset-0 h-full w-full ${objectFitClass} transition-[filter,opacity] duration-300 group-hover:brightness-[0.82]`
                         : "h-auto w-full transition-[filter,opacity] duration-300 group-hover:brightness-[0.82]"
                     }
+                    style={mediaStyle}
                   />
                   <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/18" />
                 </>

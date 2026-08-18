@@ -14,6 +14,7 @@ import {
 import { formatTimeline } from "@/lib/formatTimeline"
 import pfizerImage from "@/imports/pfizer.png"
 import dash from "@/imports/pfizer/dash.png"
+import architecture from "@/imports/pfizer/architecture.png"
 
 const sections = [
   { id: "overview", label: "Overview" },
@@ -86,7 +87,15 @@ export default function Page() {
         ctas={[]}
         details={details}
         frameColor="cream"
-        heroImage={{ src: pfizerImage, alt: "Pfizer project preview" }}
+        heroImage={{
+          src: pfizerImage,
+          alt: "Pfizer project preview",
+          offsetX: 0,
+          offsetY: 0,
+          scale: 1,
+          maxWidth: 70,
+          maxHeight: 58,
+        }}
       />
 
       <div className="mt-16">
@@ -110,12 +119,19 @@ export default function Page() {
               make information searchable across large collections of files.
             </p>
           </div>
-          <div className="mt-8">
+          <div className="mt-8 flex justify-center">
             <MediaSlot
               src={dash}
               label="Pipeline / UI screenshot"
               caption="Document intelligence interface or extraction output"
               ratio="16 / 9"
+              fit="cover"
+              maxWidth={900}
+              objectPosition="left center"
+              offsetX={0}
+              offsetY={0}
+              scale={1}
+              origin="left center"
               colorIndex={1}
             />
           </div>
@@ -196,9 +212,11 @@ export default function Page() {
           </div>
           <div className="mt-8">
             <MediaSlot
+              src={architecture}
               label="Architecture diagram"
               caption="Ingest → preprocess → OCR → structured JSON → classify → RAG"
               ratio="16 / 9"
+              fit="contain"
               colorIndex={3}
             />
           </div>
