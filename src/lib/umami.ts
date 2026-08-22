@@ -71,7 +71,10 @@ export function umamiEventAttributes(
   return attrs
 }
 
-export function trackEvent(eventName: string, data?: EventData): void {
+export function trackEvent(
+  eventName: string,
+  data?: EventData,
+): Promise<void> | undefined {
   if (typeof window === "undefined" || !window.umami) return
 
   const cleaned: Record<string, string | number> = {}
@@ -84,11 +87,10 @@ export function trackEvent(eventName: string, data?: EventData): void {
   }
 
   if (Object.keys(cleaned).length > 0) {
-    void window.umami.track(truncate(eventName, EVENT_NAME_MAX), cleaned)
-    return
+    return window.umami.track(truncate(eventName, EVENT_NAME_MAX), cleaned)
   }
 
-  void window.umami.track(truncate(eventName, EVENT_NAME_MAX))
+  return window.umami.track(truncate(eventName, EVENT_NAME_MAX))
 }
 
 export function identifySession(data: EventData): void {

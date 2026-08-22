@@ -1,11 +1,1 @@
-{
-  "version": 4,
-  "routes": {},
-  "dynamicRoutes": {},
-  "notFoundRoutes": [],
-  "preview": {
-    "previewModeId": "29d4c1a483f92777f04f3df6e27f6ed2",
-    "previewModeSigningKey": "8c6b0d3bcd548ff40f018b9b0067155c26024aac1bd1ced04368184cfcfcda5a",
-    "previewModeEncryptionKey": "2de88bdab589cc4ad333a1d4fe717634061c65c832fadb10c6d304f1ccee3559"
-  }
-}
+{"version":4,"routes":{"/go/facetrace":{},"/go/dsa-interviewer":{},"/go/dsa":{},"/go/interviewme":{},"/go/traceqa":{},"/go/trace-qa":{}},"dynamicRoutes":{"/go/[slug]":{"dataRoute":null,"dataRouteRegex":null,"fallback":null,"fallbackRevalidate":false,"fallbackSourceRoute":"/go/[slug]","routeRegex":"^\\/go\\/([^/]+?)(?:\\/)?$","allowHeader":[]}},"notFoundRoutes":[],"preview":{"previewModeId":"7dbd72925f12301a6cc36253168b90dc","previewModeSigningKey":"8838b744748d117c4558d837741c39faa8ab56310ca048ca0153546d5742ef8a","previewModeEncryptionKey":"8f2e8e93370183d1485dc30c75707306f084916efbac122b288fb01963291fa0"}}

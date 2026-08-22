@@ -14,6 +14,8 @@ export function SiteNav() {
   const onAboutPage = pathname.startsWith("/about")
   const onHome = pathname === "/"
 
+  if (pathname.startsWith("/go")) return null
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#f5f0e8]/80 backdrop-blur-md">
       <nav className="mx-auto flex h-14 max-w-[1100px] items-center justify-between px-5 sm:px-8">

@@ -509,9 +509,6 @@
   .mt-10 {
     margin-top: calc(var(--spacing) * 10);
   }
-  .mt-12 {
-    margin-top: calc(var(--spacing) * 12);
-  }
   .mt-16 {
     margin-top: calc(var(--spacing) * 16);
   }
@@ -692,9 +689,6 @@
   .max-h-\[85vh\] {
     max-height: 85vh;
   }
-  .max-h-\[86\%\] {
-    max-height: 86%;
-  }
   .max-h-full {
     max-height: 100%;
   }
@@ -787,9 +781,6 @@
   }
   .max-w-\[56\%\] {
     max-width: 56%;
-  }
-  .max-w-\[92\%\] {
-    max-width: 92%;
   }
   .max-w-\[340px\] {
     max-width: 340px;
