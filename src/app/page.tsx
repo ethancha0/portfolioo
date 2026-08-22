@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import type { PointerEvent, ReactNode } from "react"
-import interviewmeVideo from "@/imports/interviewme.mov"
+//import interviewmeVideo from "@/imports/interviewme.mov"
 import pfizerImage from "@/imports/pfizer.png"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
 import { ClayButton, ClayFrame } from "@/components/clay"
