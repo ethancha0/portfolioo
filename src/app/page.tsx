@@ -75,21 +75,28 @@ type ExperienceRow = {
   end?: string
   company: string
   role: string
+  link?: string
 }
 
 // Dummy data — replace with real entries. Dates are month-precision ("YYYY-MM").
 const experience: ExperienceRow[] = [
-  { start: "2025-05", end: "2025-09", company: "Pfizer", role: "AI Extern" },
   {
-    start: "2024-12",
-    company: "ZotMeet · UC Irvine",
+    start: "2025-10",
+    company: "ZotMeet",
     role: "Lead Software Engineer",
+    link: "/zotmeet"
+  },
+  { 
+    start: "2026-06",
+    end: "2026-09",
+    company: "Pfizer", 
+    role: "AI Extern" ,
+    link: "/pfizer"
   },
   {
-    start: "2024-09",
-    end: "2025-07",
-    company: "ICS Student Council · UCI",
-    role: "Webmaster",
+    start: "2026-05",
+    company: "ICS Student Council",
+    role: "Technical Director",
   },
 ]
 
@@ -564,12 +571,12 @@ export default function App() {
                   )
                   return (
                     <li key={i} className="py-4">
-                      <div className="grid grid-cols-[4.5rem_1fr_auto] items-baseline gap-x-4">
+                      <div className="grid grid-cols-[4.5rem_1fr_auto] items-baseline gap-x-8">
                         <span className="text-[#a8a294] whitespace-nowrap">
                           {formatDuration(months)}
                           {row.ongoing ? " · now" : ""}
                         </span>
-                        <span className="text-[#2a2320]">{row.company}</span>
+                        <a href ={row.link}><span className="text-[#2a2320]">{row.company}</span></a>
                         <span className="text-right text-[#8a8378]">
                           {row.role}
                         </span>
