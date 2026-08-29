@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Fraunces, Outfit } from "next/font/google"
+import { Fraunces, Outfit, JetBrains_Mono } from "next/font/google"
 import { UmamiAnalytics } from "@/components/analytics/UmamiAnalytics"
 import { CustomCursor } from "@/components/CustomCursor"
 import { SiteNav } from "@/components/SiteNav"
@@ -7,8 +7,16 @@ import "./globals.css"
 
 const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["500"],
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
   variable: "--font-fraunces",
+  display: "swap",
+})
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
   display: "swap",
 })
 
@@ -30,7 +38,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${outfit.variable}`}>
+    <html
+      lang="en"
+      className={`${fraunces.variable} ${outfit.variable} ${mono.variable}`}
+    >
       <head>
         <script
           defer

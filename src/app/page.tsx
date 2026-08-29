@@ -10,9 +10,6 @@ import zotmeet from "@/imports/zotmeet.png"
 //import zotmeeticon from "@/imports/icons/zotmeet.png"
 //import linkedin from "@/imports/icons/linkedin.png"
 import { ZotMeetGrainient } from "@/components/ZotMeetGrainient"
-import { ImageSpiral } from "@/components/home/ImageSpiral"
-import { CyclingTypewriter } from "@/components/home/CyclingTypewriter"
-import { img } from "@/imports/registry"
 //import Image from "next/image"
 
 type ProjectImageLayout = {
@@ -31,6 +28,7 @@ type Project = {
   eyebrow?: string
   tags: string[]
   description: string
+  meta?: string
   height: number
   isLight?: boolean
   gradient?: string | ReactNode
@@ -70,25 +68,61 @@ function isPopoutVideo(item: ProjectPopoutItem): boolean {
   return /\.(mov|mp4|webm|ogg)$/i.test(item.src)
 }
 
-const spiralImages = [
-  { src: img("zmxaa"), alt: "Friends at ZotMeet social" },
-  { src: img("bonsai"), alt: "Bonsai" },
-  { src: img("vball"), alt: "Volleyball" },
-  { src: img("sf"), alt: "San Francisco" },
-  { src: img("tomo"), alt: "Tomo no Kai" },
-  { src: img("hikinh"), alt: "Hiking" },
-  { src: img("seaside"), alt: "Seaside" },
-  { src: img("mazemen"), alt: "Food" },
-  { src: img("hollywood"), alt: "Hollywood hike" },
-  { src: img("jpop"), alt: "Concert" },
-  { src: img("masami"), alt: "Masami" },
+type ExperienceRow = {
+  /** Inclusive start month, "YYYY-MM" */
+  start: string
+  /** Exclusive end month, "YYYY-MM". Omit for ongoing. */
+  end?: string
+  company: string
+  role: string
+}
+
+// Dummy data — replace with real entries. Dates are month-precision ("YYYY-MM").
+const experience: ExperienceRow[] = [
+  { start: "2025-05", end: "2025-09", company: "Pfizer", role: "AI Extern" },
+  {
+    start: "2024-12",
+    company: "ZotMeet · UC Irvine",
+    role: "Lead Software Engineer",
+  },
+  {
+    start: "2024-09",
+    end: "2025-07",
+    company: "ICS Student Council · UCI",
+    role: "Webmaster",
+  },
 ]
 
-const heroPhrases = [
-  "software engineer",
-  "product engineer",
-  "team lead",
+const MONTH_ABBR = [
+  "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+  "JUL", "AUG", "SEP", "OCT", "NOV", "DEC",
 ]
+
+/** Months since year 0 for a "YYYY-MM" string. */
+function monthIndex(value: string): number {
+  const [year, month] = value.split("-").map(Number)
+  return year * 12 + (month - 1)
+}
+
+function currentMonthIndex(): number {
+  const now = new Date()
+  return now.getFullYear() * 12 + now.getMonth()
+}
+
+/** "4 mos", "1y", "1y 8m" */
+function formatDuration(months: number): string {
+  const span = Math.max(1, months)
+  const years = Math.floor(span / 12)
+  const rem = span % 12
+  if (years === 0) return `${rem} mon.`
+  if (rem === 0) return `${years}y`
+  return `${years}y ${rem}m`
+}
+
+/** "SEP 2024" */
+function formatAxisLabel(index: number): string {
+  return `${MONTH_ABBR[index % 12]} ${Math.floor(index / 12)}`
+}
 
 /** Temporary: flat 2D project cards — set true to restore popouts + tilt */
 const ENABLE_PROJECT_3D = false
@@ -114,8 +148,9 @@ const projects: Project[] = [
     link: "/zotmeet",
     eyebrow: "Lead Product + Softare Engineer",
     tags: ["Product Engineering"],
-    description: "Spearheaded & scaled developement for UCI's scheduler ",
-    height: 360,
+    description: "Spearheaded & scaled development for UCI's scheduler",
+    meta: "ZotMeet · UC Irvine",
+    height: 400,
   },
   {
     id: "pfizer",
@@ -161,8 +196,9 @@ const projects: Project[] = [
     ),
     */
     description: "Building OCR + RAG pipelines",
+    meta: "Pfizer · Externship 2025",
     isLight: true,
-    height: 300,
+    height: 400,
   },
   /*
   {
@@ -425,12 +461,18 @@ function ProjectCard({
           />
         </div>
 
-        <div className="mt-4 flex items-start justify-between gap-6">
-          <h2 className="text-[20px] font-medium leading-tight tracking-tight text-[#111] md:text-[22px]">
-            {project.displayTitle}
-          </h2>
-          <p className="max-w-[56%] text-right text-[13px] leading-relaxed text-[#666]">
+        <div className="mt-4 flex items-baseline justify-between gap-6">
+          <p
+            className="text-[15px] leading-snug text-[#2a2320] sm:text-[16px]"
+            style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
+          >
             {project.description}
+          </p>
+          <p
+            className="whitespace-nowrap text-[10.5px] uppercase tracking-[0.14em] text-[#8a8378]"
+            style={{ fontFamily: "var(--font-mono), ui-monospace, monospace" }}
+          >
+            {project.meta ?? project.displayTitle}
           </p>
         </div>
       </div>
@@ -442,6 +484,17 @@ export default function App() {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
   const [tilt, setTilt] = useState<TiltState | null>(null)
   const isProjectFocused = hoveredProject !== null
+
+  // Shared timeline axis for the experience table
+  const nowIndex = currentMonthIndex()
+  const timelineRows = experience.map((row) => {
+    const startIdx = monthIndex(row.start)
+    const endIdx = row.end ? monthIndex(row.end) : nowIndex
+    return { ...row, startIdx, endIdx, ongoing: !row.end }
+  })
+  const axisStart = Math.min(...timelineRows.map((r) => r.startIdx))
+  const axisEnd = Math.max(...timelineRows.map((r) => r.endIdx))
+  const axisSpan = Math.max(1, axisEnd - axisStart)
 
   const handleProjectPointerMove = (
     event: PointerEvent<HTMLDivElement>,
@@ -466,20 +519,20 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f0e8] text-[#2a1f16]">
+    <div className="min-h-screen bg-[#f5f4f1] text-[#2a1f16]">
       <main>
-        {/* Hero — mockup-inspired centered composition */}
-        <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-5 pb-16 pt-20">
+        {/* Hero — editorial split composition */}
+        <section className="relative flex min-h-[92svh] items-center overflow-hidden px-6 pb-20 pt-32">
           {/* Soft atmosphere */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse 70% 55% at 50% 42%, #fbf7f0 0%, #f5f0e8 52%, #ebe3d6 100%)",
+                "radial-gradient(ellipse 80% 60% at 50% 30%, #fbfbf9 0%, #f5f4f1 55%, #eeece6 100%)",
             }}
           />
           <div
-            className="pointer-events-none absolute inset-0 opacity-[0.28]"
+            className="pointer-events-none absolute inset-0 opacity-[0.22]"
             style={{
               backgroundImage:
                 "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")",
@@ -487,72 +540,63 @@ export default function App() {
             }}
           />
 
-          <div className="relative z-10 flex w-full max-w-[720px] flex-col items-center">
-            {/* Arc + portrait stack */}
-            <div className="relative mb-1 h-[300px] w-full max-w-[560px] sm:h-[340px] sm:max-w-[640px] md:h-[380px] md:max-w-[740px]">
-              <ImageSpiral images={spiralImages} />
-
-              <div className="absolute bottom-0 left-1/2 z-20 w-[108px] -translate-x-1/2 sm:w-[124px] md:w-[136px]">
-                <ClayFrame
-                  color="chocolate"
-                  thickness={5}
-                //  rounded="full"
-                  className="w-full"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={img("portrait")}
-                    alt="Ethan Chao"
-                    className="aspect-square w-full object-cover object-[50%_18%]"
-                    draggable={false}
-                  />
-                </ClayFrame>
-              </div>
-            </div>
-
-
-            <h1 className="min-h-[1.15em] text-center text-[36px] font-bold leading-none tracking-tight text-[#111] lowercase sm:text-[44px] md:text-[52px]">
-              Ethan Chao
+          <div className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-col items-center justify-center gap-16 md:flex-row md:items-center md:gap-24">
+            <h1
+              className="max-w-[16ch] text-[38px] leading-[1.06] tracking-[-0.02em] text-[#1f2a30] sm:text-[48px] md:text-[60px]"
+              style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
+            >
+              I&apos;m Ethan, a software engineer who{" "}
+              <em className="font-normal italic">builds teams</em>
+              <span className="text-[#5c7a3d]">.</span>
             </h1>
 
-            <CyclingTypewriter
-              phrases={heroPhrases}
-              className="mt-4 max-w-[340px] text-center text-[14px] leading-relaxed text-[#666] sm:max-w-[380px] sm:text-[15px]"
-            />
-
-
-            <p className="mt-4 max-w-[340px] text-center text-[14px] leading-relaxed text-[#666] sm:max-w-[380px] sm:text-[15px]">
-              building software and the teams behind it — from campus products
-              to production systems
-            </p>
-
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border-[3.5px] border-[#8fad6e] bg-[#eef3e4] px-4 py-2 text-[13px] text-[#3d5a2e] shadow-[0_2px_0_#6f8c52,0_5px_12px_rgba(60,40,25,0.08)]">
-              <span className="size-1.5 rounded-full bg-[#6f8c52] shadow-[0_0_0_3px_rgba(111,140,82,0.25)]" />
-              <span
-                className="font-medium"
-                style={{
-                  fontFamily: "var(--font-fraunces), Georgia, serif",
-                  fontStyle: "italic",
-                }}
-              >
-                open to work
-              </span>
-            </div>
-              
-              {/*
-              <div className="flex items-center">
-                <Image src={zotmeet} height={80} width={80} alt="zotmeet"/>
-                <Image src={linkedin} height={80} width={80} alt="linkedin"/>                
+            <div
+              className="w-full max-w-[520px] text-[13px] leading-snug sm:text-[14px]"
+              style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
+            >
+              <ul className="divide-y divide-[#e4e1d9]">
+                {timelineRows.map((row, i) => {
+                  const months = row.endIdx - row.startIdx
+                  const left = ((row.startIdx - axisStart) / axisSpan) * 100
+                  const width = Math.max(
+                    2,
+                    ((row.endIdx - row.startIdx) / axisSpan) * 100,
+                  )
+                  return (
+                    <li key={i} className="py-4">
+                      <div className="grid grid-cols-[4.5rem_1fr_auto] items-baseline gap-x-4">
+                        <span className="text-[#a8a294] whitespace-nowrap">
+                          {formatDuration(months)}
+                          {row.ongoing ? " · now" : ""}
+                        </span>
+                        <span className="text-[#2a2320]">{row.company}</span>
+                        <span className="text-right text-[#8a8378]">
+                          {row.role}
+                        </span>
+                      </div>
+                      <div className="relative mt-3 h-[2px] w-full">
+                        <div
+                          className="absolute top-0 h-[2px] rounded-full bg-[#b3823a]"
+                          style={{ left: `${left}%`, width: `${width}%` }}
+                        />
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+              <div className="mt-3 flex justify-between text-[11px] uppercase tracking-[0.14em] text-[#a8a294]">
+                <span>{formatAxisLabel(axisStart)}</span>
+                <span>
+                  {axisEnd >= nowIndex ? "NOW" : formatAxisLabel(axisEnd)}
+                </span>
               </div>
-              */}
-
-
+            </div>
           </div>
 
           <a
             href="#work"
             data-umami-event="Scroll to work"
-            className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-[11px] tracking-widest text-[#aaa] uppercase transition-colors hover:text-[#666]"
+            className="absolute bottom-8 left-6 z-10 text-[11px] tracking-widest text-[#aaa] uppercase transition-colors hover:text-[#666]"
           >
             scroll
           </a>
@@ -564,11 +608,14 @@ export default function App() {
           className="mx-auto max-w-[1200px] border-t border-[#e4e4e4] px-6 pb-24 pt-20"
         >
           <div className="mb-10">
-            <h2 className="text-[11px] font-semibold tracking-widest text-[#888] uppercase">
+            <h2
+              className="text-[11px] uppercase tracking-[0.16em] text-[#8a8378]"
+              style={{ fontFamily: "var(--font-mono), ui-monospace, monospace" }}
+            >
               Selected Work
             </h2>
           </div>
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 gap-x-6 gap-y-14 md:grid-cols-2">
             {projects.map((project, index) => (
               <ProjectCard
                 key={project.id}
