@@ -23,6 +23,12 @@ export const GITHUB_REDIRECTS: GitHubRedirect[] = [
     href: "https://github.com/ethancha0/TraceQA",
     aliases: ["trace-qa"],
   },
+  {
+    slug: "fretly",
+    name: "Fretly",
+    href: "https://github.com/ethancha0/learn-guitar",
+    aliases: ["learn-guitar"],
+  },
 ]
 
 const bySlug = new Map<string, GitHubRedirect>()
