@@ -1,3 +1,4 @@
 {
+  "/fretly/page": "app/fretly/page.js",
   "/page": "app/page.js"
 }

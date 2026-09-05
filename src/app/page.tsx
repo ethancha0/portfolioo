@@ -10,6 +10,7 @@ import zotmeet from "@/imports/zotmeet.png"
 //import zotmeeticon from "@/imports/icons/zotmeet.png"
 //import linkedin from "@/imports/icons/linkedin.png"
 import { ZotMeetGrainient } from "@/components/ZotMeetGrainient"
+import fretlyPlayer from "@/imports/fretly/player.mov"
 //import Image from "next/image"
 
 type ProjectImageLayout = {
@@ -205,6 +206,18 @@ const projects: Project[] = [
     description: "Building OCR + RAG pipelines",
     meta: "Pfizer · Externship 2025",
     isLight: true,
+    height: 400,
+  },
+  {
+    id: "fretly",
+    title: "Fretly",
+    displayTitle: "Fretly",
+    tags: ["Personal Project", "Audio"],
+    video: fretlyPlayer,
+    link: "/fretly",
+    eyebrow: "Personal Project",
+    description: "Syncing guitar tabs to the real recording",
+    meta: "Fretly · Shipped 2026",
     height: 400,
   },
   /*

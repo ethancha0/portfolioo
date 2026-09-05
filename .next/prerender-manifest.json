@@ -1,11 +1,1 @@
-{
-  "version": 4,
-  "routes": {},
-  "dynamicRoutes": {},
-  "notFoundRoutes": [],
-  "preview": {
-    "previewModeId": "b14d71623731e4624b0ac55c6e1ac18d",
-    "previewModeSigningKey": "f7c7ae39f1f18ea606f75bf14dfd5a6f42e2dd0a89d7ccffe3557b1e0e9774dc",
-    "previewModeEncryptionKey": "9defdeccb3ffc35ad13b36c9f03cd6a61f8188b8fa68032597c1ed73514ad1b9"
-  }
-}
+{"version":4,"routes":{"/go/facetrace":{},"/go/dsa-interviewer":{},"/go/dsa":{},"/go/interviewme":{},"/go/traceqa":{},"/go/trace-qa":{},"/go/fretly":{},"/go/learn-guitar":{}},"dynamicRoutes":{"/go/[slug]":{"dataRoute":null,"dataRouteRegex":null,"fallback":null,"fallbackRevalidate":false,"fallbackSourceRoute":"/go/[slug]","routeRegex":"^\\/go\\/([^/]+?)(?:\\/)?$","allowHeader":[]}},"notFoundRoutes":[],"preview":{"previewModeId":"72b45c9ab1058850ce78cd2acb53ce39","previewModeSigningKey":"8da9ed3f960ce89caf46d33a8935b7494d8df732d5d0a19c64c8cb35ed9d0173","previewModeEncryptionKey":"bfa520ad480a72bf34d265a1cc44a2a043a7d5a05a4830bd59259fceb5a122b3"}}
