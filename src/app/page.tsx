@@ -680,7 +680,7 @@ export default function App() {
                   LinkedIn
                 </ClayButton>
                 <ClayButton
-                  href="https://drive.google.com/file/d/1a40jwDFfLG5DBDAXZaZafwwdplUpLRCl/view?usp=sharing"
+                  href="https://drive.google.com/file/d/15NfR6ZGFBNBexQ7rof6dPcIRoau7synD/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                   colorIndex={0}
