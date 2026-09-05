@@ -236,6 +236,7 @@ function ProjectCard({
   tilt,
   link,
   colorIndex = 0,
+  height,
   onPointerMove,
   onPointerEnter,
   onPointerLeave,
@@ -245,6 +246,7 @@ function ProjectCard({
   isDimmed: boolean
   link?: string
   colorIndex?: number
+  height?: number
   tilt: TiltState | null
   onPointerMove: (event: PointerEvent<HTMLDivElement>, id: string) => void
   onPointerEnter: (id: string) => void
@@ -320,7 +322,7 @@ function ProjectCard({
               : "overflow-visible"
           }`}
           style={{
-            height: project.height,
+            height: height ?? project.height,
             transform: isHovered
               ? ENABLE_PROJECT_3D
                 ? `rotateX(${rotateX * 0.55}deg) rotateY(${rotateY * 0.55}deg) translateY(-12px) translateZ(44px) scale(1.025)`
@@ -529,7 +531,7 @@ export default function App() {
     <div className="min-h-screen bg-[#f5f4f1] text-[#2a1f16]">
       <main>
         {/* Hero — editorial split composition */}
-        <section className="relative flex min-h-[92svh] items-center overflow-hidden px-6 pb-20 pt-32">
+        <section className="relative flex min-h-[40svh] overflow-hidden pb-8 pt-40">
           {/* Soft atmosphere */}
           <div
             className="pointer-events-none absolute inset-0"
@@ -547,9 +549,9 @@ export default function App() {
             }}
           />
 
-          <div className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-col items-center justify-center gap-16 md:flex-row md:items-center md:gap-24">
+          <div className="relative z-10 mx-auto grid w-full max-w-[1200px] grid-cols-1 items-center gap-x-6 gap-y-12 px-6 md:grid-cols-[1.05fr_0.95fr]">
             <h1
-              className="max-w-[16ch] text-[38px] leading-[1.06] tracking-[-0.02em] text-[#1f2a30] sm:text-[48px] md:text-[60px]"
+              className="max-w-[15ch] text-left text-[38px] leading-[1.06] tracking-[-0.02em] text-[#1f2a30] sm:text-[48px] md:text-[60px]"
               style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
             >
               I&apos;m Ethan, a software engineer who{" "}
@@ -558,7 +560,7 @@ export default function App() {
             </h1>
 
             <div
-              className="w-full max-w-[520px] text-[13px] leading-snug sm:text-[14px]"
+              className="w-full text-[13px] leading-snug sm:text-[14px]"
               style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
             >
               <ul className="divide-y divide-[#e4e1d9]">
@@ -574,7 +576,7 @@ export default function App() {
                       <div className="grid grid-cols-[4.5rem_1fr_auto] items-baseline gap-x-8">
                         <span className="text-[#a8a294] whitespace-nowrap">
                           {formatDuration(months)}
-                          {row.ongoing ? " · now" : ""}
+                          {row.ongoing ? " +" : ""}
                         </span>
                         <a href ={row.link}><span className="text-[#2a2320]">{row.company}</span></a>
                         <span className="text-right text-[#8a8378]">
@@ -600,35 +602,29 @@ export default function App() {
             </div>
           </div>
 
-          <a
-            href="#work"
-            data-umami-event="Scroll to work"
-            className="absolute bottom-8 left-6 z-10 text-[11px] tracking-widest text-[#aaa] uppercase transition-colors hover:text-[#666]"
-          >
-            scroll
-          </a>
         </section>
 
         {/* Projects */}
         <section
           id="work"
-          className="mx-auto max-w-[1200px] border-t border-[#e4e4e4] px-6 pb-24 pt-20"
+          className="mx-auto w-full max-w-[1200px] border-t border-[#e4e4e4] px-6 pb-24 pt-20"
         >
-          <div className="mb-10">
+          <div className="mb-8">
             <h2
               className="text-[11px] uppercase tracking-[0.16em] text-[#8a8378]"
               style={{ fontFamily: "var(--font-mono), ui-monospace, monospace" }}
             >
-              Selected Work
+              Featured Work
             </h2>
           </div>
-          <div className="grid grid-cols-1 gap-x-6 gap-y-14 md:grid-cols-2">
+          <div className="grid grid-cols-1 items-start gap-x-6 gap-y-14 md:grid-cols-[1.05fr_0.95fr]">
             {projects.map((project, index) => (
               <ProjectCard
                 key={project.id}
                 project={project}
                 link={project.link}
                 colorIndex={index}
+                height={index % 2 === 0 ? 360 : 440}
                 isHovered={hoveredProject === project.id}
                 isDimmed={isProjectFocused && hoveredProject !== project.id}
                 tilt={tilt}
@@ -643,7 +639,7 @@ export default function App() {
         {/* About strip */}
         <section
           id="about"
-          className="mx-auto max-w-[1200px] border-t border-[#e8e8e8] px-6 py-16"
+          className="mx-auto w-full max-w-[1200px] border-t border-[#e8e8e8] px-6 py-16"
         >
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
             <div>
@@ -710,7 +706,7 @@ export default function App() {
           </div>
         </section>
 
-        <footer className="mx-auto flex max-w-[1200px] items-center justify-between border-t border-[#e8e8e8] px-6 py-8">
+        <footer className="mx-auto flex w-full max-w-[1200px] items-center justify-between border-t border-[#e8e8e8] px-6 py-8">
           <span className="text-[10px] tracking-widest text-[#888] uppercase">
             Ethan Chao © 2026
           </span>
