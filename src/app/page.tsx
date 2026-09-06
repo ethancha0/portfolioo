@@ -254,7 +254,6 @@ function ProjectCard({
   isDimmed,
   tilt,
   link,
-  colorIndex = 0,
   height,
   onPointerMove,
   onPointerEnter,
@@ -264,7 +263,6 @@ function ProjectCard({
   isHovered: boolean
   isDimmed: boolean
   link?: string
-  colorIndex?: number
   height?: number
   tilt: TiltState | null
   onPointerMove: (event: PointerEvent<HTMLDivElement>, id: string) => void
@@ -636,7 +634,6 @@ export default function App() {
                 key={project.id}
                 project={project}
                 link={project.link}
-                colorIndex={index}
                 height={
                   project.aspectRatio
                     ? undefined

@@ -1,0 +1,9 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/about/page": "/about",
+  "/page": "/",
+  "/pfizer/page": "/pfizer",
+  "/zotmeet/page": "/zotmeet",
+  "/fretly/page": "/fretly",
+  "/go/[slug]/page": "/go/[slug]"
+}
