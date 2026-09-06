@@ -15,7 +15,6 @@ import fretlyPlayer from "@/imports/fretly/player.mov"
 import { formatTimeline } from "@/lib/formatTimeline"
 import scroll from "@/imports/fretly/scroll.png"
 import architecture from "@/imports/fretly/architecture.png"
-import { arch } from "os"
 
 
 // TODO(ethan): drop screenshots into src/imports/fretly/ and import them here.

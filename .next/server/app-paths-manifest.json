@@ -1,4 +1,5 @@
 {
   "/page": "app/page.js",
-  "/fretly/page": "app/fretly/page.js"
+  "/fretly/page": "app/fretly/page.js",
+  "/pfizer/page": "app/pfizer/page.js"
 }

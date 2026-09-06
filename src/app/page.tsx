@@ -31,6 +31,8 @@ type Project = {
   description: string
   meta?: string
   height: number
+  /** CSS aspect-ratio for the media frame, e.g. `"1902 / 1066"`. Wins over `height`. */
+  aspectRatio?: string
   isLight?: boolean
   gradient?: string | ReactNode
   image?: string
@@ -157,9 +159,25 @@ const projects: Project[] = [
     eyebrow: "Lead Product + Softare Engineer",
     tags: ["Product Engineering"],
     description: "Spearheaded & scaled development for UCI's scheduler",
-    meta: "ZotMeet · UC Irvine",
+    meta: "ZotMeet · Since Oct. 2025",
     height: 400,
   },
+
+  {
+    id: "fretly",
+    title: "Fretly",
+    displayTitle: "Fretly",
+    tags: ["Personal Project", "Audio"],
+    video: fretlyPlayer,
+    aspectRatio: "1902 / 1066",
+    link: "/fretly",
+    eyebrow: "Personal Project",
+    description: "Syncing guitar tabs to the real recording",
+    meta: "Fretly · Shipped 2026",
+    height: 400,
+  },
+
+
   {
     id: "pfizer",
     title: "Pfizer",
@@ -206,18 +224,6 @@ const projects: Project[] = [
     description: "Building OCR + RAG pipelines",
     meta: "Pfizer · Externship 2025",
     isLight: true,
-    height: 400,
-  },
-  {
-    id: "fretly",
-    title: "Fretly",
-    displayTitle: "Fretly",
-    tags: ["Personal Project", "Audio"],
-    video: fretlyPlayer,
-    link: "/fretly",
-    eyebrow: "Personal Project",
-    description: "Syncing guitar tabs to the real recording",
-    meta: "Fretly · Shipped 2026",
     height: 400,
   },
   /*
@@ -335,7 +341,9 @@ function ProjectCard({
               : "overflow-visible"
           }`}
           style={{
-            height: height ?? project.height,
+            ...(project.aspectRatio
+              ? { aspectRatio: project.aspectRatio }
+              : { height: height ?? project.height }),
             transform: isHovered
               ? ENABLE_PROJECT_3D
                 ? `rotateX(${rotateX * 0.55}deg) rotateY(${rotateY * 0.55}deg) translateY(-12px) translateZ(44px) scale(1.025)`
@@ -346,16 +354,8 @@ function ProjectCard({
               : "0 0 0 rgba(17, 17, 17, 0)",
           }}
         >
-          <ClayFrame
-            colorIndex={colorIndex}
-            thickness={6}
-            rounded="xl"
-            className="absolute inset-0 h-full w-full"
-            innerClassName="!bg-transparent"
-            shadow={!isHovered}
-            animate={ENABLE_PROJECT_3D}
-          >
-            <div className="absolute inset-0 overflow-hidden">
+
+            <div className="absolute inset-0 overflow-hidden rounded-[26px]">
               <div
                 className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
                 style={{
@@ -373,7 +373,7 @@ function ProjectCard({
                   <video
                     src={project.video}
                     poster={project.poster}
-                    className={`h-full w-full object-cover object-top ${
+                    className={`h-full w-full object-contain object-center ${
                       hasComponentBackground ? "relative z-10" : ""
                     }`}
                     autoPlay
@@ -419,7 +419,7 @@ function ProjectCard({
                 }
               />
             </div>
-          </ClayFrame>
+
 
           {ENABLE_PROJECT_3D ? (
             <div className="pointer-events-none absolute inset-0 z-20 [transform-style:preserve-3d]">
@@ -637,7 +637,13 @@ export default function App() {
                 project={project}
                 link={project.link}
                 colorIndex={index}
-                height={index % 2 === 0 ? 360 : 440}
+                height={
+                  project.aspectRatio
+                    ? undefined
+                    : index % 2 === 0
+                      ? 360
+                      : 360
+                }
                 isHovered={hoveredProject === project.id}
                 isDimmed={isProjectFocused && hoveredProject !== project.id}
                 tilt={tilt}
