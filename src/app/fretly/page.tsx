@@ -14,7 +14,8 @@ import {
 import fretlyPlayer from "@/imports/fretly/player.mov"
 import { formatTimeline } from "@/lib/formatTimeline"
 import scroll from "@/imports/fretly/scroll.png"
-
+import architecture from "@/imports/fretly/architecture.png"
+import { arch } from "os"
 
 
 // TODO(ethan): drop screenshots into src/imports/fretly/ and import them here.
@@ -281,6 +282,7 @@ export default function Page() {
               ratio="16 / 9"
               fit="contain"
               colorIndex={3}
+              src={architecture}
             />
           </div>
         </CaseStudySection>
@@ -335,6 +337,7 @@ export default function Page() {
               where it landed — so I built the tooling that could.
             </p>
           </div>
+          {/*}
           <div className="mt-8">
             <MediaSlot
               label="Drift plot"
@@ -344,6 +347,7 @@ export default function Page() {
               colorIndex={0}
             />
           </div>
+          */}
         </CaseStudySection>
 
         <CaseStudySection

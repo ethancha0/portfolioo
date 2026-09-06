@@ -1,72 +1,20 @@
 {
   "pages": {
-    "/_not-found/page": [
-      "static/chunks/webpack-a74776e6f95f8c71.js",
-      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
-      "static/chunks/31-67d01d2fd75026a0.js",
-      "static/chunks/main-app-33d3577dff38fab3.js",
-      "static/chunks/app/_not-found/page-59ecbbd6f7439d2b.js"
-    ],
     "/layout": [
-      "static/chunks/webpack-a74776e6f95f8c71.js",
-      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
-      "static/chunks/31-67d01d2fd75026a0.js",
-      "static/chunks/main-app-33d3577dff38fab3.js",
-      "static/css/db4f74271ea0ec27.css",
-      "static/chunks/541-9f072a8144045ace.js",
-      "static/chunks/app/layout-37bae740d5d0cdf7.js"
-    ],
-    "/about/page": [
-      "static/chunks/webpack-a74776e6f95f8c71.js",
-      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
-      "static/chunks/31-67d01d2fd75026a0.js",
-      "static/chunks/main-app-33d3577dff38fab3.js",
-      "static/chunks/541-9f072a8144045ace.js",
-      "static/chunks/app/about/page-3ef095af775af74c.js"
-    ],
-    "/fretly/page": [
-      "static/chunks/webpack-a74776e6f95f8c71.js",
-      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
-      "static/chunks/31-67d01d2fd75026a0.js",
-      "static/chunks/main-app-33d3577dff38fab3.js",
-      "static/chunks/541-9f072a8144045ace.js",
-      "static/chunks/558-5bb057f9218d7c0b.js",
-      "static/chunks/app/fretly/page-863fadaab689c4d5.js"
-    ],
-    "/pfizer/page": [
-      "static/chunks/webpack-a74776e6f95f8c71.js",
-      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
-      "static/chunks/31-67d01d2fd75026a0.js",
-      "static/chunks/main-app-33d3577dff38fab3.js",
-      "static/chunks/541-9f072a8144045ace.js",
-      "static/chunks/558-5bb057f9218d7c0b.js",
-      "static/chunks/app/pfizer/page-c8e1dd11d64f2caa.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
     ],
     "/page": [
-      "static/chunks/webpack-a74776e6f95f8c71.js",
-      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
-      "static/chunks/31-67d01d2fd75026a0.js",
-      "static/chunks/main-app-33d3577dff38fab3.js",
-      "static/chunks/541-9f072a8144045ace.js",
-      "static/chunks/608-095428044dd2ebb5.js",
-      "static/chunks/app/page-b1588f562611014b.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
     ],
-    "/zotmeet/page": [
-      "static/chunks/webpack-a74776e6f95f8c71.js",
-      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
-      "static/chunks/31-67d01d2fd75026a0.js",
-      "static/chunks/main-app-33d3577dff38fab3.js",
-      "static/chunks/541-9f072a8144045ace.js",
-      "static/chunks/608-095428044dd2ebb5.js",
-      "static/chunks/558-5bb057f9218d7c0b.js",
-      "static/chunks/app/zotmeet/page-0f0e9cb2c40418b7.js"
-    ],
-    "/go/[slug]/page": [
-      "static/chunks/webpack-a74776e6f95f8c71.js",
-      "static/chunks/11b6c2b0-1bbb41e278cdcc94.js",
-      "static/chunks/31-67d01d2fd75026a0.js",
-      "static/chunks/main-app-33d3577dff38fab3.js",
-      "static/chunks/app/go/[slug]/page-6693d3cf7e08831c.js"
+    "/fretly/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/fretly/page.js"
     ]
   }
 }

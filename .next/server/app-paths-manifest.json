@@ -1,9 +1,4 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/about/page": "app/about/page.js",
-  "/fretly/page": "app/fretly/page.js",
-  "/pfizer/page": "app/pfizer/page.js",
   "/page": "app/page.js",
-  "/zotmeet/page": "app/zotmeet/page.js",
-  "/go/[slug]/page": "app/go/[slug]/page.js"
+  "/fretly/page": "app/fretly/page.js"
 }
