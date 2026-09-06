@@ -24,6 +24,7 @@ import Image from "next/image"
 
 /** TODO(ethan): swap in the deployed URL. */
 const LIVE_URL = "https://learn-guitar-beta.vercel.app/"
+const GITHUB_URL = "https://github.com/ethancha0/learn-guitar"
 /** TODO(ethan): confirm the start month — used for the timeline label. */
 const START_MONTH = "Jun. 2026"
 
@@ -118,7 +119,9 @@ const impactPoints: ReactNode[] = [
     </a>
     , with source on{" "}
     <a
-      href="/go/fretly"
+      href={GITHUB_URL}
+      target="_blank"
+      rel="noopener noreferrer"
       data-umami-event="fretly github"
       className="font-medium text-[#8fad6e] underline decoration-[1.5px] underline-offset-2"
     >
@@ -147,7 +150,7 @@ export default function Page() {
             colorIndex: 0,
           },
           {
-            href: "/go/fretly",
+            href: GITHUB_URL,
             label: "GitHub",
             variant: "outline",
             colorIndex: 2,

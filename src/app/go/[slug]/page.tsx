@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 import { GitHubRedirect } from "@/components/analytics/GitHubRedirect"
 import {
   getGitHubRedirect,
@@ -30,6 +30,7 @@ export default async function GitHubRedirectPage({ params }: PageProps) {
   const { slug } = await params
   const dest = getGitHubRedirect(slug)
   if (!dest) notFound()
+  if (dest.href.startsWith("/")) redirect(dest.href)
 
   return <GitHubRedirect slug={slug} name={dest.name} href={dest.href} />
 }

@@ -26,7 +26,7 @@ export const GITHUB_REDIRECTS: GitHubRedirect[] = [
   {
     slug: "fretly",
     name: "Fretly",
-    href: "https://github.com/ethancha0/learn-guitar",
+    href: "/fretly",
     aliases: ["learn-guitar"],
   },
 ]
