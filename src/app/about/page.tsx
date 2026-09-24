@@ -161,14 +161,11 @@ export default function AboutPage() {
               transform: bioVisible ? "translateY(0)" : "translateY(12px)",
             }}
           >
-            <p className="text-[16px] leading-[1.6] text-[#1f1a16] sm:text-[17px]">
-            This summer I’m currently an working as an extern at Pfizer where I’m working on an AI pipeline to extract and organize data across pharmaceutical vendor documents
+            <p className="text-[15px] leading-[1.7] text-[#4a443d]">
+            At UC Irvine, I serve as Webmaster for the Computer Science Student Council and Lead Software Engineer for ZotMeet. 
             </p>
             <p className="text-[15px] leading-[1.7] text-[#4a443d]">
-            At UC Irvine, I serve as Webmaster for the Computer Science Student Council and Lead Software Engineer for ZotMeet, which is a campus wide study room scheduler where I lead a team of designers and engineers. 
-            </p>
-            <p className="text-[15px] leading-[1.7] text-[#4a443d]">
-              I love talking product and systems — let&apos;s chat! Find me on{" "}
+              Let&apos;s chat! Find me on{" "}
               <Link
                 href="https://www.linkedin.com/in/ethanchaoo"
                 target="_blank"
@@ -222,7 +219,7 @@ export default function AboutPage() {
             className="text-[26px] tracking-[-0.01em] text-[#1f1a16] sm:text-[30px]"
             style={{ fontFamily: serif }}
           >
-            So What Else?
+            Hobbies & Activities
           </h2>
           <p className="mt-2 max-w-md text-[14px] leading-[1.7] text-[#4a443d]">
             I love exploring new cities, hobbies, and foods!
