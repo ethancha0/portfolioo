@@ -113,7 +113,7 @@ const impactPoints: ReactNode[] = [
       rel="noopener noreferrer"
       data-umami-event="fretly live"
       data-umami-event-url={LIVE_URL}
-      className="font-medium text-[#8fad6e] underline decoration-[1.5px] underline-offset-2"
+      className="text-[#1f1a16] underline decoration-[#b3823a] decoration-[1.5px] underline-offset-2 transition-opacity hover:opacity-70"
     >
       {LIVE_URL.replace(/^https?:\/\//, "")}
     </a>
@@ -123,7 +123,7 @@ const impactPoints: ReactNode[] = [
       target="_blank"
       rel="noopener noreferrer"
       data-umami-event="fretly github"
-      className="font-medium text-[#8fad6e] underline decoration-[1.5px] underline-offset-2"
+      className="text-[#1f1a16] underline decoration-[#b3823a] decoration-[1.5px] underline-offset-2 transition-opacity hover:opacity-70"
     >
       GitHub
     </a>

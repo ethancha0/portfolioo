@@ -1,9 +1,9 @@
-/** Shared typography classes for case study pages */
+/** Shared typography classes for case study pages — see @/components/theme */
 export const caseStudyBody =
-  "text-[16px] leading-[1.72] text-[#4a3f34] md:text-[17px]"
+  "text-[16px] leading-[1.72] text-[#4a443d] md:text-[17px]"
 
 export const caseStudyEyebrow =
-  "text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9a8f82]"
+  "text-[11px] uppercase tracking-[0.16em] text-[#8a8378]"
 
 export const caseStudyMuted =
-  "text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9a8f82]"
+  "text-[10px] uppercase tracking-[0.16em] text-[#8a8378]"

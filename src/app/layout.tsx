@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { Fraunces, Outfit, JetBrains_Mono } from "next/font/google"
 import { UmamiAnalytics } from "@/components/analytics/UmamiAnalytics"
 import { CustomCursor } from "@/components/CustomCursor"
-import { SiteNav } from "@/components/SiteNav"
 import "./globals.css"
 
 const fraunces = Fraunces({
@@ -50,7 +49,6 @@ export default function RootLayout({
         />
       </head>
       <body className={outfit.className}>
-        <SiteNav />
         {children}
         <CustomCursor />
         <UmamiAnalytics />

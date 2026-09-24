@@ -10,6 +10,8 @@ import { ScrollReveal } from "@/components/about/ScrollReveal"
 import { TypewriterGreeting } from "@/components/about/TypewriterGreeting"
 import { placeholderSrc } from "@/components/about/placeholder"
 import { img } from "@/imports/registry"
+import { serif } from "@/components/theme"
+import { SiteShell } from "@/components/SiteRail"
 
 const heroCards = [
   {
@@ -136,9 +138,10 @@ export default function AboutPage() {
   const [bioVisible, setBioVisible] = useState(false)
 
   return (
-    <main className="min-h-screen bg-[#f7f7f7] text-[#111] pt-12">
+    <SiteShell>
+      <main className="px-6 pb-8 pt-14 sm:px-10 lg:px-16 lg:pt-20">
       {/* Hero */}
-      <section className="mx-auto grid max-w-[1100px] grid-cols-1 items-center gap-10 px-6 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 lg:py-24">
+      <section className="grid grid-cols-1 items-center gap-10 pb-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
         <ScrollReveal>
           <PhotoStack cards={heroCards} />
         </ScrollReveal>
@@ -146,7 +149,8 @@ export default function AboutPage() {
         <div className="max-w-xl">
           <TypewriterGreeting
             text="Hey there, I'm Ethan!"
-            className="mb-5 text-[34px] leading-tight tracking-tight text-[#111] sm:text-[42px]"
+            className="mb-5 text-[34px] leading-tight tracking-[-0.01em] text-[#1f1a16] sm:text-[42px]"
+            style={{ fontFamily: serif }}
             onDone={() => setBioVisible(true)}
           />
 
@@ -157,13 +161,13 @@ export default function AboutPage() {
               transform: bioVisible ? "translateY(0)" : "translateY(12px)",
             }}
           >
-            <p className="text-[16px] font-semibold leading-snug text-[#222] sm:text-[17px]">
+            <p className="text-[16px] leading-[1.6] text-[#1f1a16] sm:text-[17px]">
             This summer I’m currently an working as an extern at Pfizer where I’m working on an AI pipeline to extract and organize data across pharmaceutical vendor documents
             </p>
-            <p className="text-[14px] leading-relaxed text-[#555]">
+            <p className="text-[15px] leading-[1.7] text-[#4a443d]">
             At UC Irvine, I serve as Webmaster for the Computer Science Student Council and Lead Software Engineer for ZotMeet, which is a campus wide study room scheduler where I lead a team of designers and engineers. 
             </p>
-            <p className="text-[14px] leading-relaxed text-[#555]">
+            <p className="text-[15px] leading-[1.7] text-[#4a443d]">
               I love talking product and systems — let&apos;s chat! Find me on{" "}
               <Link
                 href="https://www.linkedin.com/in/ethanchaoo"
@@ -172,7 +176,7 @@ export default function AboutPage() {
                 data-umami-event="LinkedIn"
                 data-umami-event-url="https://www.linkedin.com/in/ethanchaoo"
                 data-umami-event-location="about"
-                className="inline-flex items-center gap-1.5 text-[#0a66c2] transition-opacity hover:opacity-80"
+                className="inline-flex items-center gap-1.5 text-[#5c564d] transition-colors hover:text-[#1f1a16]"
               >
                 <LinkedInIcon />
                 <span className="sr-only">LinkedIn</span>
@@ -183,16 +187,19 @@ export default function AboutPage() {
       </section>
 
       {/* Awesome People */}
-      <section className="mx-auto max-w-[1100px] px-6 py-16 lg:py-20">
+      <section className="border-t border-[#e4e1d9] py-14">
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[0.9fr_1.6fr] lg:gap-10">
           <ScrollReveal>
-            <h2 className="text-[26px] tracking-tight text-[#111] sm:text-[30px]">
+            <h2
+              className="text-[26px] tracking-[-0.01em] text-[#1f1a16] sm:text-[30px]"
+              style={{ fontFamily: serif }}
+            >
               Awesome People
             </h2>
-            <p className="mt-2 max-w-xs text-[13px] leading-relaxed text-[#777]">
+            <p className="mt-2 max-w-xs text-[14px] leading-[1.7] text-[#4a443d]">
               The many friends I made along the way of the journey called life :)
             </p>
-            <p className="mt-8 text-[11px] tracking-wide text-[#bbb]">
+            <p className="mt-8 text-[11px] uppercase tracking-[0.16em] text-[#a8a294]">
               hover over the cards
             </p>
           </ScrollReveal>
@@ -209,12 +216,15 @@ export default function AboutPage() {
       </section>
 
       {/* So What Else */}
-      <section className="mx-auto max-w-[1100px] px-6 py-16 lg:py-20">
+      <section className="border-t border-[#e4e1d9] py-14">
         <ScrollReveal>
-          <h2 className="text-[26px] tracking-tight text-[#111] sm:text-[30px]">
+          <h2
+            className="text-[26px] tracking-[-0.01em] text-[#1f1a16] sm:text-[30px]"
+            style={{ fontFamily: serif }}
+          >
             So What Else?
           </h2>
-          <p className="mt-2 max-w-md text-[13px] leading-relaxed text-[#777]">
+          <p className="mt-2 max-w-md text-[14px] leading-[1.7] text-[#4a443d]">
             I love exploring new cities, hobbies, and foods!
           </p>
         </ScrollReveal>
@@ -225,7 +235,7 @@ export default function AboutPage() {
       </section>
 
       {/* Core Values
-      <section className="mx-auto max-w-[1100px] px-6 py-16 lg:py-20">
+      <section className="border-t border-[#e4e1d9] py-14">
         <ScrollReveal>
           <div className="mb-2 flex items-center gap-3">
             <h2 className="text-[26px] tracking-tight text-[#111] sm:text-[30px]">
@@ -243,13 +253,16 @@ export default function AboutPage() {
         </ScrollReveal>
       </section>
  */}
-      <footer className="mx-auto max-w-[1100px] px-6 pb-16 pt-4">
-        <p className="text-[12px] text-[#888]">
+      <footer className="border-t border-[#e4e1d9] pb-8 pt-8">
+        <p className="text-[14px] text-[#4a443d]">
           Thanks for reading. Let&apos;s grab coffee (on me!)
         </p>
-        <p className="mt-1 text-[11px] text-[#bbb]">© Ethan Chao 2026</p>
+        <p className="mt-2 text-[10px] uppercase tracking-widest text-[#8a8378]">
+          Ethan Chao © 2026
+        </p>
       </footer>
-    </main>
+      </main>
+    </SiteShell>
   )
 }
 

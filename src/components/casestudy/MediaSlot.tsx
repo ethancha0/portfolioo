@@ -5,7 +5,6 @@ import {
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react"
-import { ClayFrame, clayColorNameAt } from "@/components/clay"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
 
 function MediaIcon({ kind }: { kind: "image" | "video" }) {
@@ -67,6 +66,7 @@ export type MediaSlotProps = {
   maxWidth?: string | number
   src?: string
   alt?: string
+  /** @deprecated Slots are no longer color-coded; kept so callers don't break. */
   colorIndex?: number
 }
 
@@ -89,7 +89,6 @@ export function MediaSlot({
   maxWidth,
   src,
   alt,
-  colorIndex = 0,
 }: MediaSlotProps) {
   const [expanded, setExpanded] = useState(false)
   const isVideo =
@@ -112,7 +111,6 @@ export function MediaSlot({
       : undefined,
     transformOrigin: origin,
   }
-  const clay = clayColorNameAt(colorIndex)
 
   useEffect(() => {
     if (!expanded) return
@@ -134,15 +132,14 @@ export function MediaSlot({
         className={`my-2 ${resolvedMaxWidth ? "mx-auto w-full" : ""}`}
         style={resolvedMaxWidth ? { maxWidth: resolvedMaxWidth } : undefined}
       >
-        <ClayFrame
-          color={clay}
-          thickness={5}
-          rounded="xl"
-          className={isExpandableImage ? "group cursor-pointer" : ""}
+        <div
+          className={`overflow-hidden rounded-[18px] border border-[#e4e1d9] ${
+            isExpandableImage ? "group cursor-pointer" : ""
+          }`}
           style={resolvedRatio ? { aspectRatio: resolvedRatio } : undefined}
         >
           <div
-            className="relative flex h-full w-full items-center justify-center bg-gradient-to-br from-[#faf6ef] to-[#efe6d6]"
+            className="relative flex h-full w-full items-center justify-center bg-[#f7f2ea]"
             {...(isExpandableImage
               ? {
                   role: "button" as const,
@@ -195,21 +192,21 @@ export function MediaSlot({
               )
             ) : (
               <div
-                className="flex flex-col items-center gap-2.5 text-[#b5a894]"
+                className="flex flex-col items-center gap-2.5 text-[#a8a294]"
                 style={resolvedRatio ? undefined : { aspectRatio: "16 / 9" }}
               >
-                <span className="flex h-11 w-11 items-center justify-center rounded-full border-[2.5px] border-[#c4b49a] bg-[#f7f2ea]/80">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#d8d4cb] bg-[#f7f2ea]/80">
                   <MediaIcon kind={isVideo ? "video" : "image"} />
                 </span>
-                <span className="text-[10px] font-semibold uppercase tracking-[0.16em]">
+                <span className="text-[10px] uppercase tracking-[0.16em]">
                   {label}
                 </span>
               </div>
             )}
           </div>
-        </ClayFrame>
+        </div>
         {caption ? (
-          <figcaption className="mt-3 text-[13px] italic leading-snug text-[#8f8578]">
+          <figcaption className="mt-3 text-[13px] italic leading-snug text-[#8a8378]">
             {caption}
           </figcaption>
         ) : null}
@@ -217,7 +214,7 @@ export function MediaSlot({
 
       {expanded && src && !isVideo ? (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#2a1f16]/70 p-5 backdrop-blur-[2px] sm:p-10"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#1f1a16]/70 p-5 backdrop-blur-[2px] sm:p-10"
           role="dialog"
           aria-modal="true"
           aria-label={alt ?? label ?? "Expanded image"}
@@ -228,15 +225,13 @@ export function MediaSlot({
             className="max-h-full max-w-full"
             onClick={(event) => event.stopPropagation()}
           >
-            <ClayFrame color={clay} thickness={6} rounded="xl" animate={false}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={src}
-                alt={alt ?? label ?? ""}
-                className="max-h-[85vh] max-w-full object-contain"
-                draggable={false}
-              />
-            </ClayFrame>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={src}
+              alt={alt ?? label ?? ""}
+              className="max-h-[85vh] max-w-full rounded-[18px] object-contain"
+              draggable={false}
+            />
           </div>
         </div>
       ) : null}

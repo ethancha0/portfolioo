@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
-import { ClayButton, ClayFrame, type ClayColorName } from "@/components/clay"
+import type { ClayColorName } from "@/components/clay"
+import { pillClass, serif } from "@/components/theme"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
 import { caseStudyBody, caseStudyEyebrow, caseStudyMuted } from "./styles"
 
@@ -40,6 +41,7 @@ type CaseStudyHeroProps = {
   }
   /** Custom hero media instead of image + background */
   heroMedia?: ReactNode
+  /** @deprecated Hero media is now an unframed well; kept so callers don't break. */
   frameColor?: ClayColorName
 }
 
@@ -52,12 +54,14 @@ export function CaseStudyHero({
   heroBackground,
   heroImage,
   heroMedia,
-  frameColor = "matcha",
 }: CaseStudyHeroProps) {
   return (
     <header>
       <p className={`mb-5 ${caseStudyEyebrow}`}>{eyebrow}</p>
-      <h1 className="mb-5 max-w-[640px] text-[40px] font-semibold leading-[1.05] tracking-tight text-[#2a1f16] md:text-[54px]">
+      <h1
+        className="mb-5 max-w-[640px] text-[40px] leading-[1.06] tracking-[-0.01em] text-[#1f1a16] md:text-[54px]"
+        style={{ fontFamily: serif }}
+      >
         {title}
       </h1>
       <p className={`mb-8 max-w-[560px] ${caseStudyBody}`}>{description}</p>
@@ -69,21 +73,18 @@ export function CaseStudyHero({
               cta.external ??
               /^(https?:|mailto:|tel:)/i.test(cta.href)
             return (
-              <ClayButton
+              <a
                 key={cta.href + cta.label}
                 href={cta.href}
                 target={isExternal ? "_blank" : undefined}
                 rel={isExternal ? "noopener noreferrer" : undefined}
-                colorIndex={cta.colorIndex ?? 0}
-                variant={cta.variant ?? "outline"}
-                size="md"
-                className="uppercase tracking-widest"
-                umamiEvent={cta.label}
-                umamiEventData={{ location: "case-study-hero" }}
+                data-umami-event={cta.label}
+                data-umami-event-location="case-study-hero"
+                className={pillClass}
               >
                 {cta.label}
-                {isExternal ? <span>&#8599;</span> : null}
-              </ClayButton>
+                {isExternal ? <span aria-hidden>&#8599;</span> : null}
+              </a>
             )
           })}
         </div>
@@ -91,13 +92,7 @@ export function CaseStudyHero({
 
       {heroMedia ??
         (heroImage ? (
-          <ClayFrame
-            color={frameColor}
-            thickness={6}
-            rounded="2xl"
-            className="relative mt-10 h-[240px] w-full md:h-[380px]"
-            innerClassName="!bg-transparent"
-          >
+          <div className="relative mt-10 h-[240px] w-full overflow-hidden rounded-[26px] md:h-[380px]">
             {heroBackground ? (
               <div className="absolute inset-0">{heroBackground}</div>
             ) : (
@@ -116,15 +111,15 @@ export function CaseStudyHero({
                 }}
               />
             </div>
-          </ClayFrame>
+          </div>
         ) : null)}
 
       {details.length > 0 ? (
-        <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-[#e4ddd2] pt-8 md:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-[#e4e1d9] pt-8 md:grid-cols-4">
           {details.map((detail) => (
             <div key={detail.label}>
               <p className={`mb-2 ${caseStudyMuted}`}>{detail.label}</p>
-              <p className="text-[13px] leading-[1.5] text-[#3d3228]">
+              <p className="text-[13px] leading-[1.5] text-[#4a443d]">
                 {detail.value}
               </p>
             </div>

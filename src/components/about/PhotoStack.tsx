@@ -26,7 +26,7 @@ export function PhotoStack({ cards, className }: PhotoStackProps) {
     >
       {/* Decorative blobs */}
       <span
-        className="pointer-events-none absolute -left-6 top-10 size-16 rotate-12 rounded-[40%] bg-[#7cff4a] opacity-90"
+        className="pointer-events-none absolute -left-6 top-10 size-16 rotate-12 rounded-[40%] bg-[#b3823a] opacity-80"
         style={{
           clipPath:
             "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
@@ -37,7 +37,7 @@ export function PhotoStack({ cards, className }: PhotoStackProps) {
         className="pointer-events-none absolute -right-4 bottom-16 h-24 w-28 rounded-full opacity-80"
         style={{
           background:
-            "radial-gradient(circle at 30% 30%, #ff8fb8 0%, #6a8cff 55%, #ff9a4a 100%)",
+            "radial-gradient(circle at 30% 30%, #f5bfcc 0%, #e0afbb 55%, #f16486 100%)",
           filter: "blur(2px)",
           animation: "about-float 6.5s ease-in-out infinite reverse",
         }}

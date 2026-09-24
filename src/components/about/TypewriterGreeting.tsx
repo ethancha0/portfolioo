@@ -1,10 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, type CSSProperties } from "react"
 
 type TypewriterGreetingProps = {
   text: string
   className?: string
+  style?: CSSProperties
   charMs?: number
   onDone?: () => void
 }
@@ -12,6 +13,7 @@ type TypewriterGreetingProps = {
 export function TypewriterGreeting({
   text,
   className,
+  style,
   charMs = 55,
   onDone,
 }: TypewriterGreetingProps) {
@@ -37,7 +39,7 @@ export function TypewriterGreeting({
   }, [count, done, charMs])
 
   return (
-    <h1 className={className}>
+    <h1 className={className} style={style}>
       <span>{text.slice(0, count)}</span>
       <span
         aria-hidden

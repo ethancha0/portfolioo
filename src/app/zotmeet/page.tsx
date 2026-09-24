@@ -106,7 +106,7 @@ const impactPoints: ReactNode[] = [
       rel="noopener noreferrer"
       data-umami-event="zotmeet.com"
       data-umami-event-url="https://zotmeet.com"
-      className="font-medium text-[#8fad6e] underline decoration-[1.5px] underline-offset-2"
+      className="text-[#1f1a16] underline decoration-[#b3823a] decoration-[1.5px] underline-offset-2 transition-opacity hover:opacity-70"
     >
       zotmeet.com
     </a>
