@@ -5,12 +5,15 @@ import type { PointerEvent, ReactNode } from "react"
 //import interviewmeVideo from "@/imports/interviewme.mov"
 import pfizerImage from "@/imports/pfizer.png"
 import { ImageWithFallback } from "@/components/ImageWithFallback"
-import { ClayButton, ClayFrame } from "@/components/clay"
+// Re-enable together with <ExperienceTimeline /> below
+//import { ExperienceTimeline } from "@/components/home/ExperienceTimeline"
+import { ClayFrame } from "@/components/clay"
 import zotmeet from "@/imports/zotmeet.png"
 //import zotmeeticon from "@/imports/icons/zotmeet.png"
 //import linkedin from "@/imports/icons/linkedin.png"
 import { ZotMeetGrainient } from "@/components/ZotMeetGrainient"
 import fretlyPlayer from "@/imports/fretly/player.mov"
+import { usePathname } from "next/navigation"
 //import Image from "next/image"
 
 type ProjectImageLayout = {
@@ -35,6 +38,8 @@ type Project = {
   aspectRatio?: string
   isLight?: boolean
   gradient?: string | ReactNode
+  /** Static CSS paint under `gradient`, so the card still reads when WebGL is unavailable. */
+  fallbackBackground?: string
   image?: string
   imageLayout?: ProjectImageLayout
   video?: string
@@ -71,69 +76,6 @@ function isPopoutVideo(item: ProjectPopoutItem): boolean {
   return /\.(mov|mp4|webm|ogg)$/i.test(item.src)
 }
 
-type ExperienceRow = {
-  /** Inclusive start month, "YYYY-MM" */
-  start: string
-  /** Exclusive end month, "YYYY-MM". Omit for ongoing. */
-  end?: string
-  company: string
-  role: string
-  link?: string
-}
-
-// Dummy data — replace with real entries. Dates are month-precision ("YYYY-MM").
-const experience: ExperienceRow[] = [
-  {
-    start: "2025-10",
-    company: "ZotMeet",
-    role: "Lead Software Engineer",
-    link: "/zotmeet"
-  },
-  { 
-    start: "2026-06",
-    end: "2026-09",
-    company: "Pfizer", 
-    role: "AI Extern" ,
-    link: "/pfizer"
-  },
-  {
-    start: "2026-05",
-    company: "ICS Student Council",
-    role: "Technical Director",
-  },
-]
-
-const MONTH_ABBR = [
-  "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
-  "JUL", "AUG", "SEP", "OCT", "NOV", "DEC",
-]
-
-/** Months since year 0 for a "YYYY-MM" string. */
-function monthIndex(value: string): number {
-  const [year, month] = value.split("-").map(Number)
-  return year * 12 + (month - 1)
-}
-
-function currentMonthIndex(): number {
-  const now = new Date()
-  return now.getFullYear() * 12 + now.getMonth()
-}
-
-/** "4 mos", "1y", "1y 8m" */
-function formatDuration(months: number): string {
-  const span = Math.max(1, months)
-  const years = Math.floor(span / 12)
-  const rem = span % 12
-  if (years === 0) return `${rem} mon.`
-  if (rem === 0) return `${years}y`
-  return `${years}y ${rem}m`
-}
-
-/** "SEP 2024" */
-function formatAxisLabel(index: number): string {
-  return `${MONTH_ABBR[index % 12]} ${Math.floor(index / 12)}`
-}
-
 /** Temporary: flat 2D project cards — set true to restore popouts + tilt */
 const ENABLE_PROJECT_3D = false
 
@@ -146,7 +88,7 @@ const projects: Project[] = [
     imageLayout: {
       scale: 1.3,
       x: 0,
-      y: 60,
+      y: 70,
       maxWidth: 92,
       maxHeight: 86,
     },
@@ -155,6 +97,8 @@ const projects: Project[] = [
         <ZotMeetGrainient />
       </div>
     ),
+    fallbackBackground:
+      "linear-gradient(135deg, #f16486 0%, #f07e9b 45%, #f5bfcc 100%)",
     link: "/zotmeet",
     eyebrow: "Lead Product + Softare Engineer",
     tags: ["Product Engineering"],
@@ -240,6 +184,17 @@ const projects: Project[] = [
     height: 360,
   },
   */
+]
+
+// Re-enable together with the Resume link in the rail
+//const RESUME_HREF =
+//  "https://drive.google.com/file/d/15NfR6ZGFBNBexQ7rof6dPcIRoau7synD/view?usp=sharing"
+const LINKEDIN_HREF = "https://www.linkedin.com/in/ethanchaoo"
+const EMAIL_HREF = "mailto:ewchao1@uci.edu"
+
+const navLinks: { label: string; href: string; external?: boolean }[] = [
+  { label: "Highlighted Work", href: "/" },
+  { label: "About Me", href: "/about" },
 ]
 
 type TiltState = {
@@ -353,7 +308,7 @@ function ProjectCard({
           }}
         >
 
-            <div className="absolute inset-0 overflow-hidden rounded-[26px]">
+            <div className="absolute inset-0 overflow-hidden">
               <div
                 className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
                 style={{
@@ -361,7 +316,10 @@ function ProjectCard({
                     ENABLE_PROJECT_3D && isHovered
                       ? "translateZ(28px) scale(1.035)"
                       : "none",
-                  background: cssBackground ?? containedImageFill,
+                  background:
+                    cssBackground ??
+                    containedImageFill ??
+                    project.fallbackBackground,
                 }}
               >
                 {hasComponentBackground ? (
@@ -481,19 +439,30 @@ function ProjectCard({
           />
         </div>
 
-        <div className="mt-4 flex items-baseline justify-between gap-6">
-          <p
-            className="text-[15px] leading-snug text-[#2a2320] sm:text-[16px]"
+        <div className="mt-5">
+          <h3
+            className="text-[24px] leading-tight tracking-[-0.01em] text-[#1f1a16] sm:text-[27px]"
             style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
           >
+            {project.displayTitle}
+          </h3>
+          <p className="mt-3 max-w-[34ch] text-[15px] leading-[1.55] text-[#4a443d] sm:text-[16px]">
             {project.description}
           </p>
-          <p
-            className="whitespace-nowrap text-[10.5px] uppercase tracking-[0.14em] text-[#8a8378]"
-            style={{ fontFamily: "var(--font-mono), ui-monospace, monospace" }}
-          >
-            {project.meta ?? project.displayTitle}
-          </p>
+          {project.tags.length > 0 ? (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {project.tags
+                .filter(Boolean)
+                .map((tag) => (
+                  <span
+                    key={tag}
+                    className=" border border-[#d8d4cb] px-3 py-1.5 text-[12.5px] text-[#5c564d] transition-colors group-hover:border-[#bdb7ab]"
+                  >
+                    {tag}
+                  </span>
+                ))}
+            </div>
+          ) : null}
         </div>
       </div>
     </a>
@@ -504,17 +473,6 @@ export default function App() {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
   const [tilt, setTilt] = useState<TiltState | null>(null)
   const isProjectFocused = hoveredProject !== null
-
-  // Shared timeline axis for the experience table
-  const nowIndex = currentMonthIndex()
-  const timelineRows = experience.map((row) => {
-    const startIdx = monthIndex(row.start)
-    const endIdx = row.end ? monthIndex(row.end) : nowIndex
-    return { ...row, startIdx, endIdx, ongoing: !row.end }
-  })
-  const axisStart = Math.min(...timelineRows.map((r) => r.startIdx))
-  const axisEnd = Math.max(...timelineRows.map((r) => r.endIdx))
-  const axisSpan = Math.max(1, axisEnd - axisStart)
 
   const handleProjectPointerMove = (
     event: PointerEvent<HTMLDivElement>,
@@ -538,199 +496,202 @@ export default function App() {
     setTilt(null)
   }
 
+  const pathname = usePathname()
+
   return (
     <div className="min-h-screen bg-[#f5f4f1] text-[#2a1f16]">
-      <main>
-        {/* Hero — editorial split composition */}
-        <section className="relative flex min-h-[40svh] overflow-hidden pb-8 pt-40">
-          {/* Soft atmosphere */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 80% 60% at 50% 30%, #fbfbf9 0%, #f5f4f1 55%, #eeece6 100%)",
-            }}
-          />
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.22]"
-            style={{
-              backgroundImage:
-                "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")",
-              backgroundSize: "180px",
-            }}
-          />
-
-          <div className="relative z-10 mx-auto grid w-full max-w-[1200px] grid-cols-1 items-center gap-x-6 gap-y-12 px-6 md:grid-cols-[1.05fr_0.95fr]">
+      <div className="mx-auto flex w-full max-w-[1600px] flex-col lg:flex-row">
+        {/* Left rail — identity, nav, links */}
+        <aside className="flex flex-col px-6 pb-12 pt-16 sm:px-10 lg:sticky lg:top-0 lg:h-screen lg:w-[clamp(270px,25vw,400px)] lg:shrink-0 lg:pb-12 lg:pt-20">
+          <div>
             <h1
-              className="max-w-[15ch] text-left text-[38px] leading-[1.06] tracking-[-0.02em] text-[#1f2a30] sm:text-[48px] md:text-[60px]"
+              className="text-[34px] leading-[1.1] tracking-[-0.01em] text-[#1f1a16] sm:text-[38px]"
               style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
             >
-              I&apos;m Ethan, a software engineer who{" "}
-              <em className="font-normal italic">builds teams</em>
-              <span className="text-[#5c7a3d]">.</span>
+              Ethan Chao
             </h1>
+            <p className="mt-1 max-w-[24ch] text-[14px] leading-[1.45] text-[#4a443d]">
+              Builds software by building teams
+            </p>
+            <p className="mt-1 text-[17px] leading-[1.45] text-[#8a8378]">
+              Software Engineering @ UC Irvine
+            </p>
+          </div>
 
-            <div
-              className="w-full text-[13px] leading-snug sm:text-[14px]"
+          <nav className="mt-10 flex flex-col items-start gap-3 lg:mt-14">
+            {navLinks.map((item) => {
+              const isActive = pathname === item.href
+
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noopener noreferrer" : undefined}
+                  aria-current={isActive ? "page" : undefined}
+                  data-umami-event={`Nav: ${item.label}`}
+                  data-umami-event-location="home-rail"
+                  className={`group relative flex items-center text-[16px] transition-colors hover:text-[#1f1a16] ${
+                    isActive ? "text-[#1f1a16]" : "text-[#8a8378]"
+                  }`}
+                >
+                  <span
+                    className={`absolute -left-6 transition-opacity duration-200 group-hover:opacity-100 ${
+                      isActive ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    &rarr;
+                  </span>
+                  {item.label}
+                </a>
+              )
+            })}
+          </nav>
+
+          <div className="mt-12 flex items-center gap-5 lg:mt-auto lg:pt-16">
+            <a
+              href={LINKEDIN_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              data-umami-event="LinkedIn"
+              data-umami-event-location="home-rail"
+              className="text-[#5c564d] transition-colors hover:text-[#1f1a16]"
+            >
+              <LinkedInGlyph />
+            </a>
+            <a
+              href={EMAIL_HREF}
+              aria-label="Email"
+              data-umami-event="Email"
+              data-umami-event-location="home-rail"
+              className="text-[#5c564d] transition-colors hover:text-[#1f1a16]"
+            >
+              <MailGlyph />
+            </a>
+           {/* <a
+              href={RESUME_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-umami-event="Resume"
+              data-umami-event-location="home-rail"
+              className="text-[20px] italic text-[#1f1a16] transition-opacity hover:opacity-60"
               style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
             >
-              <ul className="divide-y divide-[#e4e1d9]">
-                {timelineRows.map((row, i) => {
-                  const months = row.endIdx - row.startIdx
-                  const left = ((row.startIdx - axisStart) / axisSpan) * 100
-                  const width = Math.max(
-                    2,
-                    ((row.endIdx - row.startIdx) / axisSpan) * 100,
-                  )
-                  return (
-                    <li key={i} className="py-4">
-                      <div className="grid grid-cols-[4.5rem_1fr_auto] items-baseline gap-x-8">
-                        <span className="text-[#a8a294] whitespace-nowrap">
-                          {formatDuration(months)}
-                          {row.ongoing ? " +" : ""}
-                        </span>
-                        <a href ={row.link}><span className="text-[#2a2320]">{row.company}</span></a>
-                        <span className="text-right text-[#8a8378]">
-                          {row.role}
-                        </span>
-                      </div>
-                      <div className="relative mt-3 h-[2px] w-full">
-                        <div
-                          className="absolute top-0 h-[2px] rounded-full bg-[#b3823a]"
-                          style={{ left: `${left}%`, width: `${width}%` }}
-                        />
-                      </div>
-                    </li>
-                  )
-                })}
-              </ul>
-              <div className="mt-3 flex justify-between text-[11px] uppercase tracking-[0.14em] text-[#a8a294]">
-                <span>{formatAxisLabel(axisStart)}</span>
-                <span>
-                  {axisEnd >= nowIndex ? "NOW" : formatAxisLabel(axisEnd)}
-                </span>
-              </div>
-            </div>
+              Resume
+            </a>
+            */}
           </div>
+        </aside>
 
-        </section>
+        {/* Right column — scrolling content */}
+        <div className="min-w-0 flex-1 border-t border-[#e4e1d9] lg:border-l lg:border-t-0">
+          <main className="px-6 pb-24 pt-14 sm:px-10 lg:px-16 lg:pt-20">
+            {/* Projects */}
+            <section id="work" className="scroll-mt-16">
+              <h2 className="sr-only">Featured work</h2>
+              <div className="gap-x-12 md:columns-2">
+                {projects.map((project, index) => (
+                  <div
+                    key={project.id}
+                    className={`mb-16 break-inside-avoid ${
+                      index === 1 ? "md:-mt-0" : ""
+                    }`}
+                  >
+                    <ProjectCard
+                      project={project}
+                      link={project.link}
+                      height={project.aspectRatio ? undefined : 360}
+                      isHovered={hoveredProject === project.id}
+                      isDimmed={isProjectFocused && hoveredProject !== project.id}
+                      tilt={tilt}
+                      onPointerEnter={setHoveredProject}
+                      onPointerMove={handleProjectPointerMove}
+                      onPointerLeave={clearProjectHover}
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
 
-        {/* Projects */}
-        <section
-          id="work"
-          className="mx-auto w-full max-w-[1200px] border-t border-[#e4e4e4] px-6 pb-24 pt-20"
-        >
-          <div className="mb-8">
-            <h2
-              className="text-[11px] uppercase tracking-[0.16em] text-[#8a8378]"
-              style={{ fontFamily: "var(--font-mono), ui-monospace, monospace" }}
+            {/* <ExperienceTimeline /> */}
+
+            {/* About strip */}
+            {/*
+            <section
+              id="about"
+              className="mt-16 scroll-mt-16 border-t border-[#e4e1d9] pt-12"
             >
-              Featured Work
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 items-start gap-x-6 gap-y-14 md:grid-cols-[1.05fr_0.95fr]">
-            {projects.map((project, index) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                link={project.link}
-                height={
-                  project.aspectRatio
-                    ? undefined
-                    : index % 2 === 0
-                      ? 360
-                      : 360
-                }
-                isHovered={hoveredProject === project.id}
-                isDimmed={isProjectFocused && hoveredProject !== project.id}
-                tilt={tilt}
-                onPointerEnter={setHoveredProject}
-                onPointerMove={handleProjectPointerMove}
-                onPointerLeave={clearProjectHover}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* About strip */}
-        <section
-          id="about"
-          className="mx-auto w-full max-w-[1200px] border-t border-[#e8e8e8] px-6 py-16"
-        >
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
-            <div>
-              <h3 className="mb-4 text-[10px] font-semibold tracking-widest text-[#888] uppercase">
-                About
-              </h3>
-              <p className="text-[14px] leading-relaxed text-[#444]">
-                I&apos;m a developer who writes production code — equally
-                comfortable in Figma and a TypeScript codebase. I care about the
-                details that make software feel inevitable.
-              </p>
-            </div>
-            <div>
-              <h3 className="mb-4 text-[10px] font-semibold tracking-widest text-[#888] uppercase">
-                Currently
-              </h3>
-              <p className="text-[14px] leading-relaxed text-[#444]">
-                Building OCR + RAG pipelines at{" "}
-                <strong className="font-medium text-[#111]">Pfizer</strong>.
-                While leading project teams at UC Irvine
-              </p>
-            </div>
-            <div>
-              <h3 className="mb-4 text-[10px] font-semibold tracking-widest text-[#888] uppercase">
-                Links
-              </h3>
-              <div className="flex flex-col gap-2.5">
-                <ClayButton
-                  href="https://www.linkedin.com/in/ethanchaoo"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  colorIndex={3}
-                  variant="outline"
-                  size="sm"
-                  className="w-fit"
-                  umamiEventData={{ location: "home-links" }}
-                >
-                  LinkedIn
-                </ClayButton>
-                <ClayButton
-                  href="https://drive.google.com/file/d/15NfR6ZGFBNBexQ7rof6dPcIRoau7synD/view?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  colorIndex={0}
-                  variant="outline"
-                  size="sm"
-                  className="w-fit"
-                  umamiEventData={{ location: "home-links" }}
-                >
-                  Resume
-                </ClayButton>
-                <ClayButton
-                  href="/about"
-                  colorIndex={2}
-                  variant="outline"
-                  size="sm"
-                  className="w-fit"
-                  umamiEventData={{ location: "home-links" }}
-                >
-                  About
-                </ClayButton>
+              <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
+                <div>
+                  <h3 className="mb-4 text-[10px] font-semibold uppercase tracking-widest text-[#8a8378]">
+                    About
+                  </h3>
+                  <p className="max-w-[46ch] text-[14px] leading-relaxed text-[#4a443d]">
+                    I&apos;m a developer who writes production code — equally
+                    comfortable in Figma and a TypeScript codebase. I care about
+                    the details that make software feel inevitable.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="mb-4 text-[10px] font-semibold uppercase tracking-widest text-[#8a8378]">
+                    Currently
+                  </h3>
+                  <p className="max-w-[46ch] text-[14px] leading-relaxed text-[#4a443d]">
+                    Building OCR + RAG pipelines at{" "}
+                    <strong className="font-medium text-[#1f1a16]">Pfizer</strong>
+                    . While leading project teams at UC Irvine.
+                  </p>
+                </div>
               </div>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        <footer className="mx-auto flex w-full max-w-[1200px] items-center justify-between border-t border-[#e8e8e8] px-6 py-8">
-          <span className="text-[10px] tracking-widest text-[#888] uppercase">
-            Ethan Chao © 2026
-          </span>
-          <span className="text-[10px] tracking-widest text-[#888] uppercase">
-            Product + Software Engineer
-          </span>
-        </footer>
-      </main>
+            */}
+
+            <footer className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-[#e4e1d9] pt-8">
+              <span className="text-[10px] uppercase tracking-widest text-[#8a8378]">
+                Ethan Chao © 2026
+              </span>
+              <span className="text-[10px] uppercase tracking-widest text-[#8a8378]">
+                Product + Software Engineer
+              </span>
+            </footer>
+          </main>
+        </div>
+      </div>
     </div>
+  )
+}
+
+function LinkedInGlyph() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden
+    >
+      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.23 0z" />
+    </svg>
+  )
+}
+
+function MailGlyph() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <rect x="2.5" y="4.5" width="19" height="15" rx="2" />
+      <path d="m3 6.5 9 6 9-6" />
+    </svg>
   )
 }
